@@ -33,3 +33,5 @@ yarn-error.log*
 *.sln
 
 .vscode
+
+src/pages/IndexPage.vue
