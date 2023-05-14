@@ -13,7 +13,7 @@
             </div>
           </div>
         
-          <!-- 로그인 & 마이페이지 버튼 -->
+          <!-- 로그인 & 마이페이지 버튼2 -->
           <q-avatar class = "q-mr-sm" size="30px">
           <q-img src="../../public/icons/favicon-16x16.png">
             <q-menu touch-position>
