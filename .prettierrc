@@ -2,9 +2,15 @@
     "printWidth": 80,
     "tabWidth": 2,
     "useTabs": false,
+<<<<<<< HEAD
     "semi": true,
     "singleQuote": true,
     "trailingComma": "es6",
+=======
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "none",
+>>>>>>> feat/navbar
     "bracketSpacing": true,
     "arrowParens": "avoid",
     "endOfLine": "auto",
