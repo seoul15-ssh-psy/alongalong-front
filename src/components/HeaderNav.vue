@@ -1,15 +1,15 @@
 <template>
-  <div class="transparent q-mx-xs" >
+  <div class="q-mx-xs" >
       <!--큰 메뉴-->
-      <div class="gt-xs full-width row justify-between items-center">
+      <div class="gt-xs full-width row justify-between items-center fixed-top">
           
         <q-img id="logoImg" src="../../public/icons/mainIcon.png" class="q-ml-lg"></q-img>
           <div class="row ">
             <div class="col-12 q-ml-md">
-              <a class="q-mr-md">지역별 여행지</a>
-              <a class="q-mx-md">핫플 게시판</a>
-              <a class="q-mx-md">나의 여행계획</a>
-              <a class="q-ml-md">자유게시판</a>
+              <a class="q-mr-md ">지역별 여행지</a>
+              <a class="q-mx-md ">핫플 게시판</a>
+              <a class="q-mx-md ">나의 여행계획</a>
+              <a class="q-ml-md ">자유게시판</a>
             </div>
           </div>
         
@@ -31,7 +31,7 @@
       </div>
 
       <!--작은 메뉴-->
-      <div class="lt-sm full-width">
+      <div class="lt-sm full-width q-pb-sm">
         <div class="row justify-center items-center"> 
           <img id="logoImg2 " class="" src="../../public/icons/mainIcon2.png" >
           <q-avatar class = "absolute-right q-mr-sm q-mt-xs" size="25px">
@@ -63,7 +63,7 @@
 
 <script>
 export default {
-
+   
 }
 </script>
 
