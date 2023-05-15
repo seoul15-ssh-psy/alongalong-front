@@ -48,16 +48,16 @@
             transition-next="slide-left"
             animated
             id = "upperImgList2"
-            class="transparent"
+            class=""
             >
-                <q-carousel-slide name="imgList1" class="transparent padding-0">
-                    <img src="../../../public/attraction/upperIntro/skyrim(1).jpg" class="img rounded-borders">
+                <q-carousel-slide name="imgList1" class=" padding-0">
+                    <img src="../../../public/attraction/upperIntro/skyrim(1).jpg" class="img2 rounded-borders">
                 </q-carousel-slide>
                 <q-carousel-slide name="imgList2" class="transparent padding-0">
-                    <img src="../../../public/attraction/upperIntro/skyrim(2).jpg" class="img rounded-borders">
+                    <img src="../../../public/attraction/upperIntro/skyrim(2).jpg" class="img2 rounded-borders">
                 </q-carousel-slide>
                 <q-carousel-slide name="imgList3" class="transparent padding-0">
-                    <img src="../../../public/attraction/upperIntro/skyrim(3).jpg" class="img rounded-borders">
+                    <img src="../../../public/attraction/upperIntro/skyrim(3).jpg" class="img2 rounded-borders">
                 </q-carousel-slide>
             </q-carousel>
             <q-linear-progress :value="progress" size="3.5px" color="black" class="q-mt-sm" instant-feedback="true" animation-speed="500"/>
@@ -199,6 +199,11 @@ export default {
 }
 .img{
     height:auto;
+    width:100% !important;
+}
+
+.img2{
+    height:98% !important;
     width:100% !important;
 }
 #imgArea{
