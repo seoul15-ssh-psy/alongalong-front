@@ -60,7 +60,7 @@
                     <img src="../../../public/attraction/upperIntro/skyrim(3).jpg" class="img rounded-borders">
                 </q-carousel-slide>
             </q-carousel>
-            <q-linear-progress :value="progress" size="5px" color="secondary" class="q-mt-sm" instant-feedback="true" animation-speed="500"/>
+            <q-linear-progress :value="progress" size="3.5px" color="black" class="q-mt-sm" instant-feedback="true" animation-speed="500"/>
             <p class="upperText2" v-html="slideText"></p>
         </div>
     </div>
@@ -89,7 +89,7 @@ export default {
             toggleOn: true,
             goLeft: false,
             goRight: false,
-            bgColor: '#FFDAE177',
+            bgColor: '#FFDAE188',
             imgWidth:100,
             upperColorPL:100,
             upperColorPB: 100,
@@ -111,7 +111,7 @@ export default {
     mounted() {
         let slideList = [ref('imgList1'), ref('imgList2'), ref('imgList3')];
         let upperTextContent = ["밤 나들이 <br>야간 개장으로 만나는 <br>고즈넉~","여기는<br> 또 어떤 느낌의 <br>여행지일까요 ㅎㅎ","여기는<br> 스카이림 <br>노드의 땅"];
-        let bgColorList = ['#FFDAE177','#AFEEEE77','#E6E6FA77'];
+        let bgColorList = ['#FFDAE177','#AFEEEE55','#E6E6FAAA'];
         this.interval = setInterval(() => {
             if (this.toggleOn) { 
                 this.progress = this.progress + 0.01;
