@@ -3,7 +3,7 @@
       <!--큰 메뉴-->
       <div class="gt-xs full-width row justify-between items-center fixed-top">
           
-        <q-img id="logoImg" src="../../public/icons/mainIcon.png" class="q-ml-lg"></q-img>
+        <q-img id="logoImg" src="../../public/icons/mainIcon1.png" class="q-ml-lg"></q-img>
           <div class="row ">
             <div class="col-12 q-ml-md">
               <a class="q-mr-md ">지역별 여행지</a>
