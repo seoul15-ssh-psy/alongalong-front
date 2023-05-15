@@ -6,15 +6,15 @@
             <p class="upperText1 moveArea2" :style="{fontSize:upperText1Size+'px'}" v-html="slideText" ></p>
         </div>
         <!-- 하단 숫자 01/05 & 재생, 앞으로 가기, 뒤로 가기-->
-        <div class="row" id="upperBar" :style="{paddingLeft:upperColorPL+'px'}">
-            <div class="col-3 row ">
-                <q-linear-progress :value="progress" size="5px" color="secondary" class="q-mt-sm" instant-feedback="true" animation-speed="500"/>
+        <div class="row " id="upperBar" :style="{paddingLeft:upperColorPL+'px'}" >
+            <div class="col-2 row">
+                <q-linear-progress :value="progress" size="3.5px" color="black" class="q-mt-sm vertical-middle" instant-feedback="true" animation-speed="500"/>
             </div>
             <div class="row">
-                <p v-text:="(i+1) +' / '+max"/>
-                <button v-on:click="imgListLeft">왼</button>
-                <button v-on:click="imgListToggle">재</button>
-                <button v-on:click="imgListRight">오</button>
+                <p v-text:="(i+1) +' / '+max" class="vertical-middle" :style="[{paddingLeft:'15px'},{paddingRight:upperBarPR+'px'}]"/>
+                <q-btn v-on:click="imgListLeft" icon="arrow_back" class="upperImgBtn" size="13px" padding="3px" flat > </q-btn>
+                <q-btn v-on:click="imgListToggle" :icon="toggleIcon" class="upperImgBtn" size="13px" padding="3px" flat ></q-btn>
+                <q-btn v-on:click="imgListRight" icon="arrow_forward" class="upperImgBtn" size="13px" padding="3px" flat ></q-btn>
             </div>
         </div>
         <q-carousel
@@ -71,6 +71,9 @@ import { useQuasar } from 'quasar'
 import { computed } from 'vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
+let toggleIconList = ["play_circle_outline","pause_circle_outline"];
+
+
 export default {
 
     
@@ -86,26 +89,29 @@ export default {
             toggleOn: true,
             goLeft: false,
             goRight: false,
-            bgColor: '#FDC4F8',
+            bgColor: '#FFDAE177',
             imgWidth:100,
             upperColorPL:100,
-            upperColorPB:100,
+            upperColorPB: 100,
+            upperBarPR: 100,
+            toggleIcon:"play_circle_outline",
         };
     },
     created(){ 
         const screenWidth = window.innerWidth
         this.upperText1Size = screenWidth;
         this.upperText1Size = this.upperText1Size / 60 + 10;
-            this.imgWidth = screenWidth / 3 + 100;
-        this.upperColorPL = screenWidth * screenWidth / 10000;
+        this.imgWidth = screenWidth / 3 + 150;
+        this.upperColorPL = screenWidth * screenWidth / 6000 - 100;
         this.upperColorPB = (screenWidth / 10) - 50;
+        this.upperBarPR = (screenWidth / 10) - 70;
+
     },
    
     mounted() {
         let slideList = [ref('imgList1'), ref('imgList2'), ref('imgList3')];
         let upperTextContent = ["밤 나들이 <br>야간 개장으로 만나는 <br>고즈넉~","여기는<br> 또 어떤 느낌의 <br>여행지일까요 ㅎㅎ","여기는<br> 스카이림 <br>노드의 땅"];
-        let bgColorList = ['#FDC4F8','#CB9FFD','#BAE7AF'];
-        
+        let bgColorList = ['#FFDAE177','#AFEEEE77','#E6E6FA77'];
         this.interval = setInterval(() => {
             if (this.toggleOn) { 
                 this.progress = this.progress + 0.01;
@@ -144,19 +150,23 @@ export default {
     },
 
     methods: {
+        
         onResize: function(event){ 
             const screenWidth = window.innerWidth
             this.upperText1Size = screenWidth;
             this.upperText1Size = this.upperText1Size / 60 + 10;
-            this.imgWidth = screenWidth / 3 + 100;
-            this.upperColorPL = screenWidth * screenWidth / 10000;
+            this.imgWidth = screenWidth / 3 + 150;
+            this.upperColorPL = screenWidth * screenWidth * screenWidth / 10000000;
             this.upperColorPB = (screenWidth / 10) - 50;
+            this.upperBarPR = (screenWidth / 10) - 70;
+            console.log(this.upperColorPL);
         },
         imgListLeft: function (event) { 
             this.goLeft = true;
         },
         imgListToggle: function(event){ 
             this.toggleOn = !this.toggleOn;
+            this.toggleIcon = this.toggleOn?toggleIconList[0]:toggleIconList[1];
         },
         imgListRight: function (event) {
             this.goRight = true;
@@ -180,8 +190,7 @@ export default {
     padding-bottom:10px;
 }
 #upperColor{
-    padding-top: 180px;
-    padding-left:5%;
+    padding-top: 220px;
 }
 #upperBar{
     padding-top: 2%;
@@ -224,6 +233,11 @@ export default {
 }
 .padding-0{
     padding: 0;
+}
+
+.vertical-middle{
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 </style>
