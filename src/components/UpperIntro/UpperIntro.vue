@@ -184,7 +184,7 @@ export default {
     padding-left:5%;
 }
 #upperBar{
-    padding-top: 4%;
+    padding-top: 2%;
     padding-left:15%;
     height: 10px;
 }
