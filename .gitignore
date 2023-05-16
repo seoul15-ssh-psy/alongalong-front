@@ -35,3 +35,5 @@ yarn-error.log*
 .vscode
 
 src/pages/IndexPage.vue
+
+src/boot/key.js
