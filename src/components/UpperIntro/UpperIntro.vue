@@ -8,15 +8,16 @@
         <!-- 하단 숫자 01/05 & 재생, 앞으로 가기, 뒤로 가기-->
         <div class="row " id="upperBar" :style="{paddingLeft:upperColorPL+'px'}" >
             <div class="col-2 row">
-                <q-linear-progress :value="progress" size="3.5px" color="black" class="q-mt-sm vertical-middle" instant-feedback="true" animation-speed="500"/>
+                <q-linear-progress :value="progress" size="3.5px" color="black" class="q-mt-sm verticalMiddle" instant-feedback="true" animation-speed="500"/>
             </div>
             <div class="row">
-                <p v-text:="(i+1) +' / '+max" class="vertical-middle" :style="[{paddingLeft:'15px'},{paddingRight:upperBarPR+'px'}]"/>
+                <p v-text:="(i+1) +' / '+max" class="verticalMiddle" :style="[{paddingLeft:'15px'},{paddingRight:upperBarPR+'px'}]"/>
                 <q-btn v-on:click="imgListLeft" icon="arrow_back" class="upperImgBtn" size="13px" padding="3px" flat > </q-btn>
                 <q-btn v-on:click="imgListToggle" :icon="toggleIcon" class="upperImgBtn" size="13px" padding="3px" flat ></q-btn>
                 <q-btn v-on:click="imgListRight" icon="arrow_forward" class="upperImgBtn" size="13px" padding="3px" flat ></q-btn>
             </div>
         </div>
+        <img src="../../../public/attraction/upperIntro/transparent.png" class="shadowImg rounded-borders moveArea2 imgShadow" :style="{width:imgWidth+'px'}">
         <q-carousel
             v-model="slide"
             transition-prev="slide-right"
@@ -27,7 +28,7 @@
             :style="{width:imgWidth+'px'}"
             class="transparent moveArea2"
             >
-            <q-carousel-slide name="imgList1" class="transparent padding-0 ">
+            <q-carousel-slide name="imgList1" class="transparent padding-0" >
                 <img src="../../../public/attraction/upperIntro/skyrim(1).jpg" class="img rounded-borders">
             </q-carousel-slide>
             <q-carousel-slide name="imgList2" class="transparent  padding-0">
@@ -37,7 +38,8 @@
                 <img src="../../../public/attraction/upperIntro/skyrim(3).jpg" class="img rounded-borders">
             </q-carousel-slide>
         </q-carousel>
-        
+        <!--빙글빙글 돌아가는 텍스트 이미지-->
+        <img src="../../../public/icons/logo.png" class="logoTextImg" :style="{right:imgWidth-70+'px'}">
     </div>
 
     <div class="lt-sm" :style="{backgroundColor:bgColor}"  id="upperParent2">
@@ -48,7 +50,7 @@
             transition-next="slide-left"
             animated
             id = "upperImgList2"
-            class=""
+            class="transparent"
             >
                 <q-carousel-slide name="imgList1" class=" padding-0">
                     <img src="../../../public/attraction/upperIntro/skyrim(1).jpg" class="img2 rounded-borders">
@@ -71,16 +73,17 @@ import { useQuasar } from 'quasar'
 import { computed } from 'vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-let toggleIconList = ["play_circle_outline","pause_circle_outline"];
-
+let toggleIconList = ["pause_circle_outline", "play_circle_outline"];
+let slideList = [ref('imgList1'), ref('imgList2'), ref('imgList3')];
+let upperTextContent = ["밤 나들이 <br>야간 개장으로 만나는 <br>고즈넉~","여기는<br> 또 어떤 느낌의 <br>여행지일까요 ㅎㅎ","여기는<br> 스카이림 <br>노드의 땅"];
+let bgColorList = ['#FFDAE177','#AFEEEE55','#E6E6FAAA'];
 
 export default {
 
-    
     data() { 
         return {
-            slide: ref('imgList1'),
-            slideText:"밤 나들이 <br> 야간 개장으로 만나는<br> 고즈넉~",
+            slide: slideList[0],
+            slideText:upperTextContent[0],
             progress: 0,
             interval: 0,
             upperText1Size: 30,
@@ -94,7 +97,7 @@ export default {
             upperColorPL:100,
             upperColorPB: 100,
             upperBarPR: 100,
-            toggleIcon:"play_circle_outline",
+            toggleIcon: "pause_circle_outline",
         };
     },
     created(){ 
@@ -102,16 +105,13 @@ export default {
         this.upperText1Size = screenWidth;
         this.upperText1Size = this.upperText1Size / 60 + 10;
         this.imgWidth = screenWidth / 3 + 150;
-        this.upperColorPL = screenWidth * screenWidth / 6000 - 100;
+        this.upperColorPL = screenWidth * screenWidth / 6000 - 93;
         this.upperColorPB = (screenWidth / 10) - 50;
         this.upperBarPR = (screenWidth / 10) - 70;
-
     },
    
     mounted() {
-        let slideList = [ref('imgList1'), ref('imgList2'), ref('imgList3')];
-        let upperTextContent = ["밤 나들이 <br>야간 개장으로 만나는 <br>고즈넉~","여기는<br> 또 어떤 느낌의 <br>여행지일까요 ㅎㅎ","여기는<br> 스카이림 <br>노드의 땅"];
-        let bgColorList = ['#FFDAE177','#AFEEEE55','#E6E6FAAA'];
+        
         this.interval = setInterval(() => {
             if (this.toggleOn) { 
                 this.progress = this.progress + 0.01;
@@ -146,7 +146,7 @@ export default {
         }, 100);
 
         window.addEventListener('resize', this.onResize);
-
+        
     },
 
     methods: {
@@ -156,10 +156,9 @@ export default {
             this.upperText1Size = screenWidth;
             this.upperText1Size = this.upperText1Size / 60 + 10;
             this.imgWidth = screenWidth / 3 + 150;
-            this.upperColorPL = screenWidth * screenWidth * screenWidth / 10000000;
+            this.upperColorPL = screenWidth * screenWidth / 6000 - 93;
             this.upperColorPB = (screenWidth / 10) - 50;
             this.upperBarPR = (screenWidth / 10) - 70;
-            console.log(this.upperColorPL);
         },
         imgListLeft: function (event) { 
             this.goLeft = true;
@@ -190,7 +189,7 @@ export default {
     padding-bottom:10px;
 }
 #upperColor{
-    padding-top: 220px;
+    padding-top: 250px;
 }
 #upperBar{
     padding-top: 2%;
@@ -214,12 +213,14 @@ export default {
 #upperImgList{
     right: 0;
     top:0;
-    margin-top:110px;
+    margin-top:160px;
     z-index: 2;
     position: absolute;
     padding:0px !important;
     height : auto;
 }
+
+
 .upperText1{
     margin: 0;
     font-weight: 600;
@@ -232,17 +233,48 @@ export default {
 }
 .moveArea1{
     transition: 1s background ease;
+
 }
 .moveArea2{
     transition: 0.1s ease;
 }
+.shadowImg{
+    right: 0;
+    top:0;
+    margin-top:160px;
+    z-index: 3;
+    position: absolute;
+    padding:0px !important;
+    
+}
+
 .padding-0{
     padding: 0;
 }
 
-.vertical-middle{
+.verticalMiddle{
     margin-top: auto;
     margin-bottom: auto;
+}
+
+.imgShadow{
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+
+.logoTextImg{
+    z-index:3;
+    animation: rotate_image 15s linear infinite;
+    transform-origin: 50% 50%;
+    position:absolute;
+    right:0;
+    top:105px;
+    width:150px;
+}
+
+@keyframes rotate_image{
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 </style>
