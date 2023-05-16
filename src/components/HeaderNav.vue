@@ -1,20 +1,20 @@
 <template>
   <div class="q-mx-xs" >
       <!--큰 메뉴-->
-      <div class="gt-xs full-width row justify-between items-center fixed-top">
+      <div class="gt-xs full-width row justify-between items-center fixed-top background q-pl-lg" id="headNavBigMenu" :style="[{backgroundColor:headerNavColor},{boxShadow:headerNavShadow}]">
           
         <q-img id="logoImg" src="../../public/icons/mainIcon1.png" class="q-ml-lg"></q-img>
           <div class="row ">
             <div class="col-12 q-ml-md">
-              <a class="q-mr-md ">지역별 여행지</a>
-              <a class="q-mx-md ">핫플 게시판</a>
-              <a class="q-mx-md ">나의 여행계획</a>
-              <a class="q-ml-md ">자유게시판</a>
+              <a class="headerNavMenu" :style="[{fontSize:headerNavMenuSize+'px'}]">지역별 여행지</a>
+              <a class="headerNavMenu" :style="[{paddingLeft:headerNavMenuPad+'px'},{fontSize:headerNavMenuSize+'px'}]">핫플 게시판</a>
+              <a class="headerNavMenu" :style="[{paddingLeft:headerNavMenuPad+'px'},{fontSize:headerNavMenuSize+'px'}]">나의 여행계획</a>
+              <a class="headerNavMenu" :style="[{paddingLeft:headerNavMenuPad+'px'},{fontSize:headerNavMenuSize+'px'}]">자유게시판</a>
             </div>
           </div>
           <!---->
           <!-- 로그인 & 마이페이지 버튼2 -->
-          <q-avatar class = "q-mr-sm" size="30px">
+          <q-avatar class = "q-mr-md" size="30px">
           <q-img src="../../public/icons/favicon-16x16.png">
             <q-menu touch-position>
               <q-list dense style="min-width: 100px">
@@ -51,10 +51,10 @@
           </q-avatar>
         </div>
         <div class="row full-width justify-around">
-              <a>지역별 여행지</a>
-              <a>핫플 게시판</a>
-              <a>나의 여행계획</a>
-              <a>자유게시판</a>
+              <a class="headerNavMenu2" >지역별 여행지</a>
+              <a class="headerNavMenu2">핫플 게시판</a>
+              <a class="headerNavMenu2">나의 여행계획</a>
+              <a class="headerNavMenu2">자유게시판</a>
             </div>
       </div>
   </div>
@@ -63,15 +63,55 @@
 
 <script>
 export default {
-   
+  data() {
+    return {
+      headerNavMenuSize : 18,
+      headerNavMenuPad: 0,
+      headerNavMenuPad: 0,
+      headerNavLogoSize : 10,
+      headerNavColor: "",
+      headerNavShadow:"",
+    }
+  },
+  mounted() { 
+    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("resize", this.resize);
+  },
+
+  created(){ 
+    this.handleScroll();
+    this.resize();
+  },
+
+  methods: { 
+    handleScroll() { 
+      if (window.scrollY == 0) {
+        this.headerNavColor = "";
+        this.headerNavShadow = "";
+      } else { 
+        this.headerNavColor = "white";
+        this.headerNavShadow = "0 1px 3px rgba(0,0,0,0.30)";
+      }
+    },
+
+    resize() { 
+      const screenWidth = window.innerWidth;
+      if (screenWidth>700) { 
+        this.headerNavMenuSize = 18;
+      } else {
+        this.headerNavMenuSize = 15;
+      }
+      this.headerNavMenuPad = screenWidth / 30;
+    }
+  }
 }
 </script>
 
 <style scoped>
   
   #logoImg{
-    width: 100px;
-    height: 70px;
+    width: 80px;
+    height: auto;
   }
 
   #logoImg2{
@@ -79,6 +119,28 @@ export default {
     height: 50px;
   }
 
+  .headerNavMenu{
+    color: gray;
+    padding-top: 20px;
+    padding-bottom:20px;
+  }
+
+  .headerNavMenu:hover,.headerNavMenu2:hover{
+    color: black;
+  }
+
+  .headerNavMenu2{
+    color: gray;
+    padding-top: 5px;
+    padding-bottom:5px;
+  }
+
+
+  #headNavBigMenu{
+    z-index: 5;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
 
 
 </style>
