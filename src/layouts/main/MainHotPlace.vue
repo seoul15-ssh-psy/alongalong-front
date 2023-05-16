@@ -12,18 +12,11 @@
     </main-header>
     <!-- 지역 선택 -->
     <q-separator class="q-mt-md q-mb-md"></q-separator>
-    <div align="center">
-      <q-btn-toggle
-        v-model="model"
-        toggle-color="teal-4"
-        flat
-        :options="region"
-      />
-    </div>
+    <responsive-button-group></responsive-button-group>
     <q-separator class="q-mt-md q-mb-md"></q-separator>
     <!-- 지역별 관광지 사진 -->
-    <div class="row q-gutter-lg">
-      <div class="col" v-for="(item, index) in attractions" :key="index">
+    <div class="row q-gutter-lg justify-center">
+      <div class="card" v-for="(item, index) in attractions" :key="index">
         <card-contents
           link="/"
           :imageUrl="item.imageUrl"
@@ -45,37 +38,15 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 import MainHeader from 'components/main/MainHeader.vue'
+import ResponsiveButtonGroup from 'src/components/main/ResponsiveButtonGroup.vue'
 import CardContents from 'components/main/CardContents.vue'
 
 export default {
   components: {
     MainHeader,
-    CardContents
-  },
-  setup() {
-    return {
-      region: [
-        { label: '서울', value: 'seoul' },
-        { label: '인천', value: 'incheon' },
-        { label: '대전', value: 'daejeon' },
-        { label: '대구', value: 'daegu' },
-        { label: '광주', value: 'gwangju' },
-        { label: '부산', value: 'busan' },
-        { label: '울산', value: 'ulsan' },
-        { label: '경기', value: 'gyeongi' },
-        { label: '강원', value: 'gangwon' },
-        { label: '충북', value: 'choongbuk' },
-        { label: '충남', value: 'choongnam' },
-        { label: '경북', value: 'gyeongbuk' },
-        { label: '경남', value: 'gyeongnam' },
-        { label: '전북', value: 'jeonbuk' },
-        { label: '전남', value: 'jeonnam' },
-        { label: '제주', value: 'jeju' }
-      ],
-      model: ref('seoul') // 초기값 지정
-    }
+    CardContents,
+    ResponsiveButtonGroup
   },
   data() {
     return {
@@ -109,5 +80,18 @@ export default {
 .container {
   width: 60%;
   margin: auto;
+}
+.card {
+  width: 22%;
+}
+@media (max-width: 1300px) {
+  .card {
+    width: 45%;
+  }
+}
+@media (max-width: 800px) {
+  .card {
+    width: 90%;
+  }
 }
 </style>
