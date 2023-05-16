@@ -15,7 +15,7 @@
           <!---->
           <!-- 로그인 & 마이페이지 버튼2 -->
           <q-avatar class = "q-mr-md" size="30px">
-          <q-img src="../../public/icons/favicon-16x16.png">
+            <q-btn icon="person_outline" size="18px" padding="3px" > </q-btn>
             <q-menu touch-position>
               <q-list dense style="min-width: 100px">
                   <q-item clickable v-close-popup>
@@ -26,7 +26,6 @@
                   </q-item>
               </q-list>
             </q-menu>
-          </q-img>
         </q-avatar>
       </div>
 
