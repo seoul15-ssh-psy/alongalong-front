@@ -14,7 +14,7 @@
           </div>
           <!---->
           <!-- 로그인 & 마이페이지 버튼2 -->
-          <q-avatar class = "q-mr-md" size="30px">
+          <q-avatar class = "q-mr-md" size="35px">
             <q-btn icon="person_outline" size="18px" padding="3px" > </q-btn>
             <q-menu touch-position>
               <q-list dense style="min-width: 100px">
@@ -33,9 +33,9 @@
       <div class="lt-sm full-width q-pb-sm">
         <div class="row justify-center items-center"> 
           <img id="logoImg2 " class="" src="../../public/icons/mainIcon2.png" >
-          <q-avatar class = "absolute-right q-mr-sm q-mt-xs" size="25px">
+          <q-avatar class = "absolute-right q-mt-sm" size="60px">
             <!-- 로그인 & 마이페이지 버튼 -->
-            <q-img src="../../public/icons/favicon-16x16.png">
+            <q-btn icon="person_outline" size="25px"> </q-btn>
               <q-menu touch-position>
               <q-list dense style="min-width: 100px">
                   <q-item clickable v-close-popup>
@@ -46,7 +46,6 @@
                   </q-item>
               </q-list>
             </q-menu>
-            </q-img>
           </q-avatar>
         </div>
         <div class="row full-width justify-around">
