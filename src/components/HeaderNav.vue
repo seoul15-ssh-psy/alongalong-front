@@ -12,7 +12,7 @@
               <a class="q-ml-md ">자유게시판</a>
             </div>
           </div>
-        
+          <!---->
           <!-- 로그인 & 마이페이지 버튼2 -->
           <q-avatar class = "q-mr-sm" size="30px">
           <q-img src="../../public/icons/favicon-16x16.png">
