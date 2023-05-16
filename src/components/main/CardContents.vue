@@ -1,7 +1,7 @@
 <template>
   <q-card class="my-card" flat bordered>
     <a :href="link">
-      <q-img :src="imageUrl" :ratio="ratio">
+      <q-img :src="imageUrl" :ratio="ratio" draggable="false">
         <q-checkbox
           class="favorite absolute-top-right transparent"
           style="padding: 0"
@@ -10,8 +10,9 @@
           unchecked-icon="favorite_border"
           color="red"
           keep-color
-          size="60px"
-          indeterminate-icon="help" /></q-img
+          size="50px"
+          indeterminate-icon="help"
+        /> </q-img
     ></a>
 
     <q-card-section align="center">
