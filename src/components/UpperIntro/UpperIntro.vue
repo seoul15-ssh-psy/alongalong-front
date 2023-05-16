@@ -1,6 +1,6 @@
 <template>
     
-    <div class=" gt-xs" id="upperParent1">
+    <div class=" gt-xs" id="upperParent1" :style="{paddingBottom:upperParentPB+'px'}">
         <!-- 배경 색깔 + 텍스트-->
         <div class="moveArea1" :style="[{backgroundColor:bgColor },{paddingLeft:upperColorPL+'px'},{paddingBottom:upperColorPB+'px'}]" id="upperColor">
             <p class="upperText1 moveArea2" :style="{fontSize:upperText1Size+'px'}" v-html="slideText" ></p>
@@ -11,7 +11,9 @@
                 <q-linear-progress :value="progress" size="3.5px" color="black" class="q-mt-sm vertical-middle" instant-feedback="true" animation-speed="500"/>
             </div>
             <div class="row">
-                <p v-text:="(i+1) +' / '+max" class="vertical-middle" :style="[{paddingLeft:'15px'},{paddingRight:upperBarPR+'px'}]"/>
+
+                <p v-text:="(i+1) " class="verticalMiddle" :style="[{paddingLeft:'20px'},{paddingRight:'4px'},{fontWeight:'700'}]"/>
+                <p v-text:="' / '+max" class="verticalMiddle" :style="[{paddingRight:upperBarPR+'px'}]"/>
                 <q-btn v-on:click="imgListLeft" icon="arrow_back" class="upperImgBtn" size="13px" padding="3px" flat > </q-btn>
                 <q-btn v-on:click="imgListToggle" :icon="toggleIcon" class="upperImgBtn" size="13px" padding="3px" flat ></q-btn>
                 <q-btn v-on:click="imgListRight" icon="arrow_forward" class="upperImgBtn" size="13px" padding="3px" flat ></q-btn>
@@ -40,7 +42,7 @@
         
     </div>
 
-    <div class="lt-sm" :style="{backgroundColor:bgColor}"  id="upperParent2">
+    <div class="lt-sm" :style="[{backgroundColor:bgColor},{marginBottom:upperParentPB+'px'}]"  id="upperParent2">
         <div id="imgArea">
             <q-carousel
             v-model="slide"
@@ -94,7 +96,8 @@ export default {
             upperColorPL:100,
             upperColorPB: 100,
             upperBarPR: 100,
-            toggleIcon:"play_circle_outline",
+            toggleIcon: "pause_circle_outline",
+            upperParentPB: 100,
         };
     },
     created(){ 
@@ -104,8 +107,8 @@ export default {
         this.imgWidth = screenWidth / 3 + 150;
         this.upperColorPL = screenWidth * screenWidth / 6000 - 100;
         this.upperColorPB = (screenWidth / 10) - 50;
-        this.upperBarPR = (screenWidth / 10) - 70;
-
+        this.upperBarPR = (screenWidth / 10) - 90;
+        this.upperParentPB = (screenWidth / 12) + 30;
     },
    
     mounted() {
@@ -158,8 +161,8 @@ export default {
             this.imgWidth = screenWidth / 3 + 150;
             this.upperColorPL = screenWidth * screenWidth * screenWidth / 10000000;
             this.upperColorPB = (screenWidth / 10) - 50;
-            this.upperBarPR = (screenWidth / 10) - 70;
-            console.log(this.upperColorPL);
+            this.upperBarPR = (screenWidth / 10) - 90;
+            this.upperParentPB = (screenWidth / 12) + 30;
         },
         imgListLeft: function (event) { 
             this.goLeft = true;
@@ -183,7 +186,6 @@ export default {
 <style scoped>
 #upperParent1{
     height:60% !important;
-    padding-bottom:50px;
 }
 #upperParent2{
     height:60% !important;
