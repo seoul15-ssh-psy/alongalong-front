@@ -1,6 +1,6 @@
 <template>
     
-    <div class=" gt-xs" id="upperParent1">
+    <div class=" gt-xs" id="upperParent1" :style="{paddingBottom:upperParentPB+'px'}">
         <!-- 배경 색깔 + 텍스트-->
         <div class="moveArea1" :style="[{backgroundColor:bgColor },{paddingLeft:upperColorPL+'px'},{paddingBottom:upperColorPB+'px'}]" id="upperColor">
             <p class="upperText1 moveArea2" :style="{fontSize:upperText1Size+'px'}" v-html="slideText" ></p>
@@ -43,7 +43,7 @@
         <img src="../../../public/icons/logo.png" class="logoTextImg" :style="{right:imgWidth-70+'px'}">
     </div>
 
-    <div class="lt-sm" :style="{backgroundColor:bgColor}"  id="upperParent2">
+    <div class="lt-sm" :style="[{backgroundColor:bgColor},{marginBottom:upperParentPB+'px'}]"  id="upperParent2">
         <div id="imgArea">
             <q-carousel
             v-model="slide"
@@ -102,9 +102,6 @@ export default {
             upperColorPB: 100,
             upperBarPR: 100,
             toggleIcon: "pause_circle_outline",
-            upperParentPB: 100,
-            upperImgBtnSize: 13,
-            upperBarTextSize: 13,
         };
     },
     created(){ 
@@ -210,7 +207,6 @@ export default {
 <style scoped>
 #upperParent1{
     height:60% !important;
-    padding-bottom:50px;
 }
 #upperParent2{
     height:60% !important;
