@@ -116,6 +116,15 @@ export default {
         this.upperColorPB = (screenWidth / 10) - 50;
         this.upperBarPR = (screenWidth / 10) - 90;
         this.upperParentPB = (screenWidth / 12) + 30;
+        if (screenWidth > 700) {
+            this.upperImgBtnSize = 16;
+            this.upperBarTextSize = 20;
+
+        } else { 
+            this.upperImgBtnSize = 13;
+            this.upperBarTextSize = 15;
+
+        }
     },
    
     mounted() {
