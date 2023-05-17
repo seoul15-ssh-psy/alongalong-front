@@ -1,9 +1,9 @@
 <template>
   <div class="q-mx-xs" >
       <!--큰 메뉴-->
-      <div class="gt-xs full-width row justify-between items-center fixed-top background q-pl-lg" id="headNavBigMenu" :style="[{backgroundColor:headerNavColor},{boxShadow:headerNavShadow}]">
+      <div class="gt-xs full-width row justify-between items-center fixed-top background q-pl-lg" id="headNavBigMenu" :style="[{backgroundColor:headerNavColor},{boxShadow:headerNavShadow},{paddingLeft:headerNavLogoPad+'px'}]">
           
-        <q-img id="logoImg" src="../../public/icons/mainIcon1.png" class="q-ml-lg"></q-img>
+        <q-img id="logoImg" src="../../public/icons/mainIcon1.png"></q-img>
           <div class="row ">
             <div class="col-12 q-ml-md">
               <a class="headerNavMenu" :style="[{fontSize:headerNavMenuSize+'px'}]">지역별 여행지</a>
@@ -65,7 +65,7 @@ export default {
     return {
       headerNavMenuSize : 18,
       headerNavMenuPad: 0,
-      headerNavMenuPad: 0,
+      headerNavLogoPad: 0,
       headerNavLogoSize : 10,
       headerNavColor: "",
       headerNavShadow:"",
@@ -96,8 +96,11 @@ export default {
       const screenWidth = window.innerWidth;
       if (screenWidth>700) { 
         this.headerNavMenuSize = 18;
+        this.headerNavLogoPad = 50;
       } else {
         this.headerNavMenuSize = 15;
+        this.headerNavLogoPad = 20;
+
       }
       this.headerNavMenuPad = screenWidth / 30;
     }
