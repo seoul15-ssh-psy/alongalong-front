@@ -37,3 +37,10 @@ yarn-error.log*
 src/pages/IndexPage.vue
 
 src/boot/key.js
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
