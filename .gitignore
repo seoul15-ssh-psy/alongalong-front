@@ -44,3 +44,6 @@ src/boot/key.js
 .env.test.local
 .env.production.local
 .env.local
+
+src/App.vue
+src/layouts/MainLayout.vue
