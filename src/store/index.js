@@ -1,5 +1,8 @@
 import { store } from 'quasar/wrappers'
 import { createStore } from 'vuex'
+import boardStore from "../store/modules/boardStore";
+import memberStore from "../store/modules/memberStore";
+import createPersistedState from "vuex-persistedstate";
 
 // import example from './module-example'
 
@@ -15,9 +18,15 @@ import { createStore } from 'vuex'
 export default store(function (/* { ssrContext } */) {
   const Store = createStore({
     modules: {
-      // example
+      boardStore,
+      memberStore,
     },
-
+    plugins: [
+      createPersistedState({
+        // 브라우저 종료시 제거하기 위해 localStorage가 아닌 sessionStorage로 변경. (default: localStorage)
+        storage: sessionStorage,
+      }),
+    ],
     // enable strict mode (adds overhead!)
     // for dev mode and --debug builds only
     strict: process.env.DEBUGGING
