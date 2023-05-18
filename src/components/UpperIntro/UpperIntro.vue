@@ -43,7 +43,7 @@
         <img src="../../../public/icons/logo.png" class="logoTextImg" :style="{right:imgWidth-70+'px'}">
     </div>
 
-    <div class="lt-sm" :style="[{backgroundColor:bgColor},{marginBottom:upperParentPB+'px'}]"  id="upperParent2">
+    <div class="lt-sm" :style="[{backgroundColor:bgColor},{marginBottom:upperParentPB+'px'},{marginTop:'85px'}]"  id="upperParent2">
         <div id="imgArea">
             <q-carousel
             v-model="slide"
@@ -63,11 +63,11 @@
                     <img src="../../../public/attraction/upperIntro/skyrim(3).jpg" class="img2 rounded-borders">
                 </q-carousel-slide>
             </q-carousel>
+            <q-linear-progress :value="progress" size="3.5px" color="black" class="q-mt-sm" instant-feedback="true" animation-speed="500"/>
             <div class="row">
-                <q-linear-progress :value="progress" size="3.5px" color="black" class="q-mt-sm" instant-feedback="true" animation-speed="500"/>
-                <q-btn v-on:click="imgListToggle" :icon="toggleIcon" class="upperImgBtn" :size="upperImgBtnSize+'px'" padding="3px" flat ></q-btn>
+                <p class="upperText2 col-11" v-html="slideText"></p>
+                <q-btn v-on:click="imgListToggle" :icon="toggleIcon" class="upperImgBtn col-1 q-mb-xl" :size="upperImgBtnSize+'px'" padding="3px" flat ></q-btn>
             </div>
-            <p class="upperText2" v-html="slideText"></p>
         </div>
     </div>
 
