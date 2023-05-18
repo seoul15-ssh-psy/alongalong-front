@@ -8,14 +8,15 @@
     :breakpoint="300"
     bordered
     class="shadow-3"
+    :style="{ height: windowHeight - 85 + 'px' }"
   >
     <!-- contents -->
     <div class="q-mini-drawer-hide">
       <div class="text-h5 text-bold q-mx-lg q-my-xl">
-        서울특별시 관악구
+        {{ address }}
         <q-separator class="q-mt-xs" color="grey-6" size="2px" />
       </div>
-      <div class="row justify-center">
+      <div class="row justify-center q-mb-xl">
         <div class="flex q-gutter-lg">
           <icon-button
             v-for="(item, index) in iconButtons"
@@ -26,7 +27,7 @@
           />
         </div>
       </div>
-      <q-separator class="q-my-lg" />
+
       <div class="row"><map-list></map-list></div>
     </div>
 
@@ -106,6 +107,12 @@ export default {
           title: '숙소'
         }
       ]
+    }
+  },
+  props: {
+    address: {
+      type: String,
+      default: '서울특별시 관악구'
     }
   }
 }

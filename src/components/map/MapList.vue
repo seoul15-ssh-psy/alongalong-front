@@ -1,7 +1,7 @@
 <template>
   <div class="items-stretch" style="width: 100%">
     <q-scroll-area
-      style="height: 70vh; overflow-y: hidden"
+      :style="{ height: windowHeight - 360 + 'px' }"
       :bar-style="{
         borderRadius: '5px',
         background: 'grey',
@@ -33,6 +33,22 @@ export default {
   },
   setup() {
     return {}
+  },
+  data() {
+    return {
+      windowHeight: window.innerHeight
+    }
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
+  },
+  methods: {
+    handleResize(event) {
+      this.windowHeight = window.innerHeight
+    }
   }
 }
 </script>
