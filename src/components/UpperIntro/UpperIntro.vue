@@ -8,14 +8,14 @@
         <!-- 하단 숫자 01/05 & 재생, 앞으로 가기, 뒤로 가기-->
         <div class="row " id="upperBar" :style="{paddingLeft:upperColorPL+'px'}" >
             <div class="col-2 row">
-                <q-linear-progress :value="progress" size="3.5px" color="black" class="q-mt-sm verticalMiddle" instant-feedback="true" animation-speed="500"/>
+                <q-linear-progress :value="progress" size="4px" color="black" class="q-mt-sm verticalMiddle" instant-feedback="true" animation-speed="500"/>
             </div>
             <div class="row">
-                <p v-text:="(i+1) " class="verticalMiddle" :style="[{paddingLeft:'20px'},{paddingRight:'4px'},{fontWeight:'700'}]"/>
-                <p v-text:="' / '+max" class="verticalMiddle" :style="[{paddingRight:upperBarPR+'px'}]"/>
-                <q-btn v-on:click="imgListLeft" icon="arrow_back" class="upperImgBtn" size="13px" padding="3px" flat > </q-btn>
-                <q-btn v-on:click="imgListToggle" :icon="toggleIcon" class="upperImgBtn" size="13px" padding="3px" flat ></q-btn>
-                <q-btn v-on:click="imgListRight" icon="arrow_forward" class="upperImgBtn" size="13px" padding="3px" flat ></q-btn>
+                <p v-text:="(i+1) " class="verticalMiddle" :style="[{paddingLeft:'20px'},{paddingRight:'4px'},{fontWeight:'700'},{fontSize:upperBarTextSize+'px'}]"/>
+                <p v-text:="' / '+max" class="verticalMiddle" :style="[{paddingRight:upperBarPR+'px'},{fontSize:upperBarTextSize+'px'},{color:'gray'}]"/>
+                <q-btn v-on:click="imgListLeft" icon="arrow_back" class="upperImgBtn" :size="upperImgBtnSize+'px'" padding="3px" flat > </q-btn>
+                <q-btn v-on:click="imgListToggle" :icon="toggleIcon" class="upperImgBtn" :size="upperImgBtnSize+'px'" padding="3px" flat ></q-btn>
+                <q-btn v-on:click="imgListRight" icon="arrow_forward" class="upperImgBtn" :size="upperImgBtnSize+'px'" padding="3px" flat ></q-btn>
             </div>
         </div>
         <img src="../../../public/attraction/upperIntro/transparent.png" class="shadowImg rounded-borders moveArea2 imgShadow" :style="{width:imgWidth+'px'}">
@@ -63,7 +63,10 @@
                     <img src="../../../public/attraction/upperIntro/skyrim(3).jpg" class="img2 rounded-borders">
                 </q-carousel-slide>
             </q-carousel>
-            <q-linear-progress :value="progress" size="3.5px" color="black" class="q-mt-sm" instant-feedback="true" animation-speed="500"/>
+            <div class="row">
+                <q-linear-progress :value="progress" size="3.5px" color="black" class="q-mt-sm" instant-feedback="true" animation-speed="500"/>
+                <q-btn v-on:click="imgListToggle" :icon="toggleIcon" class="upperImgBtn" :size="upperImgBtnSize+'px'" padding="3px" flat ></q-btn>
+            </div>
             <p class="upperText2" v-html="slideText"></p>
         </div>
     </div>
@@ -95,11 +98,10 @@ export default {
             goRight: false,
             bgColor: '#FFDAE188',
             imgWidth:100,
-            upperColorPL:100,
+            upperColorPL:0,
             upperColorPB: 100,
             upperBarPR: 100,
             toggleIcon: "pause_circle_outline",
-            upperParentPB: 100,
         };
     },
     created(){ 
@@ -111,6 +113,15 @@ export default {
         this.upperColorPB = (screenWidth / 10) - 50;
         this.upperBarPR = (screenWidth / 10) - 90;
         this.upperParentPB = (screenWidth / 12) + 30;
+        if (screenWidth > 700) {
+            this.upperImgBtnSize = 16;
+            this.upperBarTextSize = 20;
+
+        } else { 
+            this.upperImgBtnSize = 13;
+            this.upperBarTextSize = 15;
+
+        }
     },
    
     mounted() {
@@ -163,6 +174,16 @@ export default {
             this.upperColorPB = (screenWidth / 10) - 50;
             this.upperBarPR = (screenWidth / 10) - 90;
             this.upperParentPB = (screenWidth / 12) + 30;
+
+            if (screenWidth > 700) {
+                this.upperImgBtnSize = 16;
+                this.upperBarTextSize = 20;
+
+            } else { 
+                this.upperImgBtnSize = 13;
+                this.upperBarTextSize = 15;
+
+            }
         },
         imgListLeft: function (event) { 
             this.goLeft = true;
@@ -196,7 +217,6 @@ export default {
 }
 #upperBar{
     padding-top: 2%;
-    padding-left:15%;
     height: 10px;
 }
 .img{
