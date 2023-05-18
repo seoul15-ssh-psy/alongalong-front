@@ -11,6 +11,7 @@
 const ESLintPlugin = require('eslint-webpack-plugin')
 
 const { configure } = require('quasar/wrappers')
+require('dotenv').config()
 
 module.exports = configure(function (ctx) {
   return {
@@ -71,6 +72,12 @@ module.exports = configure(function (ctx) {
         chain
           .plugin('eslint-webpack-plugin')
           .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
+      },
+
+      //  환경변수 설정 추가
+      env: {
+        KAKAO_API: process.env.VUE_APP_KAKAO_API,
+        LOCATION_BASED_SEARCH_API: process.env.VUE_APP_LOCATION_BASED_URL
       }
     },
 
