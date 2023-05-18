@@ -1,15 +1,15 @@
 <template>
   <div class="q-mx-xs" >
       <!--큰 메뉴-->
-      <div class="gt-xs full-width row justify-between items-center fixed-top background q-pl-lg" id="headNavBigMenu" :style="[{backgroundColor:headerNavColor},{boxShadow:headerNavShadow},{paddingLeft:headerNavLogoPad+'px'}]">
+      <div class="gt-xs full-width row justify-between items-center fixed-top q-pl-lg" id="headNavBigMenu" :style="[{zIndex:'5'},{backgroundColor:headerNavColor},{boxShadow:headerNavShadow},{paddingLeft:headerNavLogoPad+'px'}]">
           
-        <q-img  id="logoImg" src="../../../public/icons/mainIcon1.png" @click="$router.push('/')" class="clickable"></q-img>
+        <q-img  id="logoImg" src="../../../public/icons/mainIcon1.png" @click="routerPush('main')" class="clickable"></q-img>
           <div class="row ">
             <div class="col-12 q-ml-md">
-              <a class="headerNavMenu clickable" :style="[{fontSize:headerNavMenuSize+'px'}]">지역별 여행지</a>
-              <a class="headerNavMenu clickable" :style="[{paddingLeft:headerNavMenuPad+'px'},{fontSize:headerNavMenuSize+'px'}]">핫플 게시판</a>
-              <a class="headerNavMenu clickable" :style="[{paddingLeft:headerNavMenuPad+'px'},{fontSize:headerNavMenuSize+'px'}]">나의 여행계획</a>
-              <a class="headerNavMenu clickable" @click="$router.push('/board')" :style="[{paddingLeft:headerNavMenuPad+'px'},{fontSize:headerNavMenuSize+'px'}]">자유게시판</a>
+              <a class="headerNavMenu clickable" @click="routerPush('map')" :style="[{fontSize:headerNavMenuSize+'px'},{color:linkSelected[1]}]">지역별 여행지</a>
+              <a class="headerNavMenu clickable" @click="routerPush('hotPlace')" :style="[{paddingLeft:headerNavMenuPad+'px'},{fontSize:headerNavMenuSize+'px'},{color:linkSelected[2]}]">핫플 게시판</a>
+              <a class="headerNavMenu clickable" @click="routerPush('myPlan')" :style="[{paddingLeft:headerNavMenuPad+'px'},{fontSize:headerNavMenuSize+'px'},{color:linkSelected[3]}]">나의 여행계획</a>
+              <a class="headerNavMenu clickable" @click="routerPush('boardList')" :style="[{paddingLeft:headerNavMenuPad+'px'},{fontSize:headerNavMenuSize+'px'},{color:linkSelected[4]}]">자유게시판</a>
             </div>
           </div>
           <!---->
@@ -30,12 +30,12 @@
       </div>
 
       <!--작은 메뉴-->
-      <div class="lt-sm full-width q-pb-sm">
+      <div class="lt-sm full-width q-pb-sm  fixed-top" :style="[{zIndex:'5'},{backgroundColor:'white'}]">
         <div class="row justify-center items-center"> 
-          <img id="logoImg2 " class="" src="../../../public/icons/mainIcon2.png" >
-          <q-avatar class = "absolute-right q-mt-sm" size="60px">
+          <img id="logoImg2" src="../../../public/icons/mainIcon2.png" @click="routerPush('main')" class="clickable">
+          <q-avatar class = "absolute-right q-mt-xs q-mr-sm" size="40px">
             <!-- 로그인 & 마이페이지 버튼 -->
-            <q-btn icon="person_outline" size="25px"> </q-btn>
+            <q-btn icon="person_outline" size="17px"> </q-btn>
               <q-menu touch-position>
               <q-list dense style="min-width: 100px">
                 <q-item clickable v-close-popup>
@@ -49,10 +49,10 @@
           </q-avatar>
         </div>
         <div class="row full-width justify-around">
-              <a class="headerNavMenu2" >지역별 여행지</a>
-              <a class="headerNavMenu2">핫플 게시판</a>
-              <a class="headerNavMenu2">나의 여행계획</a>
-              <a class="headerNavMenu2">자유게시판</a>
+              <a class="headerNavMenu2 clickable" @click="routerPush('map')" :style="{color:linkSelected[1]}">지역별 여행지</a>
+              <a class="headerNavMenu2 clickable" @click="routerPush('hotPlace')" :style="{color:linkSelected[2]}">핫플 게시판</a>
+              <a class="headerNavMenu2 clickable" @click="routerPush('myPlan')" :style="{color:linkSelected[3]}">나의 여행계획</a>
+              <a class="headerNavMenu2 clickable" @click="routerPush('boardList')" :style="{color:linkSelected[4]}">자유게시판</a>
             </div>
       </div>
   </div>
@@ -62,6 +62,7 @@
 
 import { mapState, mapGetters, mapActions } from "vuex";
 const memberStore = "memberStore";
+var recentlySelected = 0;
 
 export default {
   data() {
@@ -71,7 +72,8 @@ export default {
       headerNavLogoPad: 0,
       headerNavLogoSize : 10,
       headerNavColor: "",
-      headerNavShadow:"",
+      headerNavShadow: "",//홈, 지도, 핫플, 여행계획, 자유게시판
+      linkSelected: ["gray", "gray", "gray", "gray", "gray"],
     }
   },
   mounted() { 
@@ -127,9 +129,36 @@ export default {
       sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
       if (this.$route.path != "/") this.$router.push({ name: "main" });
     },
+
+    routerPush(goTo) { 
+      console.log(goTo);
+      if (goTo == "main") {
+        this.$router.push('/')
+      } else if (goTo == "map") {
+        this.linkSelected[recentlySelected] = "gray";
+        recentlySelected = 1;
+        this.linkSelected[recentlySelected] = "black";
+
+      } else if (goTo == "hotPlace") {
+        this.linkSelected[recentlySelected] = "gray";
+        recentlySelected = 2;
+        this.linkSelected[recentlySelected] = "black";
+
+      } else if (goTo == "myPlan") {
+        this.linkSelected[recentlySelected] = "gray";
+        recentlySelected = 3;
+        this.linkSelected[recentlySelected] = "black";
+
+      } else if (goTo == "boardList") {
+        this.linkSelected[recentlySelected] = "gray";
+        recentlySelected = 4;
+        this.linkSelected[recentlySelected] = "black";
+        this.$router.push('/board')
+      } 
+    },
+
   }
 
-  
 }
 </script>
 
@@ -140,13 +169,12 @@ export default {
     height: auto;
   }
 
-#logoImg2 {
-  width: 140px;
-  height: 50px;
-}
+  #logoImg2 {
+    width: auto;
+    height: 46px;
+  }
   
   .headerNavMenu{
-    color: gray;
     padding-top: 20px;
     padding-bottom:20px;
   }
@@ -156,17 +184,18 @@ export default {
   }
 
   .headerNavMenu2{
-    color: gray;
     padding-top: 5px;
     padding-bottom:5px;
   }
 
 
   #headNavBigMenu{
-    z-index: 5;
     padding-top: 10px;
     padding-bottom: 10px;
+    height: 85px;
   }
 
+  *:focus{
+    outline:1000cap;  }
 
 </style>
