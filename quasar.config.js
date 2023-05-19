@@ -71,12 +71,15 @@ module.exports = configure(function (ctx) {
       chainWebpack(chain) {
         chain
           .plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
+          .use(ESLintPlugin, [
+            { extensions: ['js', 'vue', 'vue-geolocation-api'] }
+          ])
       },
 
       //  환경변수 설정 추가
       env: {
         KAKAO_API: process.env.VUE_APP_KAKAO_API,
+        KAKAO_APP_KEY: process.env.VUE_APP_KAKAO_APP_KEY,
         LOCATION_BASED_SEARCH_API: process.env.VUE_APP_LOCATION_BASED_URL
       }
     },
