@@ -34,7 +34,9 @@ const routes = [
     redirect: "/board/list",
     children: [
       { name:"boardlist",path: 'list', component: () => import('../components/board/BoardList') }
-      , {name:"boardview",path:'view/:articleno',component:() => import('../components/board/BoardView')}
+      , { name: "boardview", path: 'view/:articleno', component: () => import('../components/board/BoardView') }
+      , { name: "boardwrite", path: 'write', component: () => import('../components/board/BoardWrite') }
+      , {name:"boardmodify",path:'modify/:articleno',component:() => import('../components/board/BoardModify')}
     ]
   },
 

@@ -16,6 +16,7 @@
 					<td>{{article.hit}}</td>
 				</tr>
 		</table>
+    <button @click="moveWrite()">글쓰기</button>
   </div>
 </template>
 
@@ -59,10 +60,12 @@ export default {
   },
   methods: {
     moveWrite() {
-      this.$router.push({ name: "boardwrite" });
+      this.$router.push({
+        name: "boardwrite",
+        params: {articleno : this.article.articleno}
+});
     },
     viewArticle(article) {
-      console.log(article.articleno);
       this.$router.push({
         name: "boardview",
         params: { articleno: article.articleno },

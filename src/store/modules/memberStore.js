@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 import routes from '../../router';
-import { login, findById, tokenRegeneration, logout } from '../../api/member';
+import { login, findById, tokenRegeneration, logout, register } from '../../api/member';
 
 const memberStore = {
   namespaced: true,
@@ -9,6 +9,9 @@ const memberStore = {
     isLoginError: false,
     userInfo: null,
     isValidToken: false,
+    registerSuccess: false,
+    registerError: false,
+    isAdmin: false,
   },
   getters: {
     checkUserInfo: function (state) {
@@ -17,7 +20,11 @@ const memberStore = {
     checkToken: function (state) {
       return state.isValidToken;
     },
+    getIsLogin: function (state) {
+      return state.isLogin;
+     }
   },
+
   mutations: {
     SET_IS_LOGIN: (state, isLogin) => {
       state.isLogin = isLogin;
@@ -31,6 +38,12 @@ const memberStore = {
     SET_USER_INFO: (state, userInfo) => {
       state.isLogin = true;
       state.userInfo = userInfo;
+    },
+    SET_REGISTER_SUCCESS: (state, registerSuccess) => { 
+      state.registerSuccess = registerSuccess;
+    },
+    SET_REGISTER_ERROR: (state, registerError) => { 
+      state.registerError = registerError;
     },
   },
   actions: {
@@ -108,9 +121,9 @@ const memberStore = {
                   console.log('리프레시 토큰 제거 실패');
                 }
                 alert('RefreshToken 기간 만료!!! 다시 로그인해 주세요.');
-                commit('SET_IS_LOGIN', false);
                 commit('SET_USER_INFO', null);
                 commit('SET_IS_VALID_TOKEN', false);
+                commit('SET_IS_LOGIN', false);
                 routes.push({ name: 'login' });
               },
               (error) => {
@@ -123,19 +136,44 @@ const memberStore = {
         }
       );
     },
-    async userLogout({ commit }, userid) {
+    async userLogout({ commit }, userid ) {
       await logout(
         userid,
         ({ data }) => {
           if (data.message === 'success') {
-            commit('SET_IS_LOGIN', false);
             commit('SET_USER_INFO', null);
             commit('SET_IS_VALID_TOKEN', false);
+            commit('SET_IS_LOGIN', false);
           } else {
             console.log('유저 정보 없음!!!!');
           }
         },
         (error) => {
+          console.log(error);
+        }
+      );
+    },
+
+    async userRegister({ commit }, user) {
+      await register(
+      user,
+        ({ data }) => {
+          if (data.message === 'success') {
+            commit('SET_REGISTER_SUCCESS', true);
+            commit('SET_REGISTER_ERROR', false);
+            console.log("successed" + this.registerError);
+
+          } else {
+            commit('SET_REGISTER_SUCCESS', false);
+            commit('SET_REGISTER_ERROR', true);
+            console.log("failed" + this.registerError);
+
+          }
+        },
+        (error) => {
+          commit('SET_REGISTER_SUCCESS', false);
+          commit('SET_REGISTER_ERROR', true);
+          console.log("failed" + this.registerError);
           console.log(error);
         }
       );

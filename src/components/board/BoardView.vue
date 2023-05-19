@@ -25,8 +25,15 @@
 			<td>내용</td>
 			<td><textarea rows="10" cols="50" name="content" v-model="article.content"></textarea></td>
 		</tr>
+	  
 	</table>
-</div>
+  <div id="buttons">
+			<button type="submit" @click="moveModifyArticle">수정하기</button>
+			<button type="submit" onclick="alerts();">삭제하기</button>
+		  <button>목록보기</button>
+      <button>글쓰기</button>
+  </div>
+  </div>
 </template>
 
 <script>
@@ -52,6 +59,7 @@ export default {
   },
   created() {
     let param = this.$route.params.articleno;
+    
     getArticle(
       param,
       ({ data }) => {
@@ -63,12 +71,11 @@ export default {
     );
   },
   methods: {
-    moveModifyArticle() {
-      this.$router.replace({
+	  moveModifyArticle() {
+      this.$router.push({
         name: "boardmodify",
-        params: { articleno: this.article.articleno },
+        params: { articleno: this.article.articleno  },
       });
-      //   this.$router.push({ path: `/board/modify/${this.article.articleno}` });
     },
     deleteArticle() {
       if (confirm("정말로 삭제?")) {
@@ -90,4 +97,96 @@ export default {
 };
 </script>
 
-<style></style>
+<style scope>
+* {
+	text-align: center;
+	margin: auto;
+	font-family: 'Raleway', sans-serif;
+}
+
+h1 {
+	margin: 50px auto;
+}
+
+button {
+	border: 2px solid grey;
+	padding: 5px 8px;
+	border-radius: 3px;
+	color: black;
+	font-weight: bold;
+	text-decoration: none;
+	margin: 0;
+	border-radius: 3px;
+}
+
+button:hover {
+	background-color: black;
+	color: white;
+}
+
+a {
+	color: black;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+p {
+	margin: 30px 0px;
+}
+
+table {
+	background-color: whitesmoke;
+	margin: 15px auto;
+	border: 1px solid black;
+	border-collapse: collapse;
+	font-size: 16px;
+}
+
+td {
+	width: 400px;
+}
+
+tr {
+	height: 40px;
+	border: 2px solid black;
+}
+
+td:nth-child(1) {
+	background-color: #606060;
+	color: whitesmoke;
+	font-weight: bold;
+	border-right: 2px solid black;
+	width: 35%;
+}
+
+input {
+	width: 100%;
+	outline: none;
+	background-color: whitesmoke;
+	border: none;
+	text-align: left;
+	padding-left: 12px;
+}
+
+textarea {
+	background-color: whitesmoke;
+	outline: none;
+	border: none;
+	font-size: 16px;
+}
+
+#buttons {
+	display: flex;
+	justify-content: center;
+}
+
+#buttons form, #buttons a {
+	margin: 3px;
+}
+
+.login {
+	margin-top: 25px;
+	margin-right: 10px;
+	text-align: right;
+}
+</style>
