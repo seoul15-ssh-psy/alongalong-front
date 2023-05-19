@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 import routes from '../../router';
-import { login, findById, tokenRegeneration, logout } from '../../api/member';
+import { login, findById, tokenRegeneration, logout,register } from '../../api/member';
 
 const memberStore = {
   namespaced: true,
@@ -9,6 +9,8 @@ const memberStore = {
     isLoginError: false,
     userInfo: null,
     isValidToken: false,
+    registerSuccess: false,
+    registerError: false,
   },
   getters: {
     checkUserInfo: function (state) {
@@ -31,6 +33,12 @@ const memberStore = {
     SET_USER_INFO: (state, userInfo) => {
       state.isLogin = true;
       state.userInfo = userInfo;
+    },
+    SET_REGISTER_SUCCESS: (state, registerSuccess) => { 
+      state.registerSuccess = registerSuccess;
+    },
+    SET_REGISTER_ERROR: (state, registerError) => { 
+      state.registerError = registerError;
     },
   },
   actions: {
@@ -136,6 +144,31 @@ const memberStore = {
           }
         },
         (error) => {
+          console.log(error);
+        }
+      );
+    },
+
+    async userRegister({ commit }, user) {
+      await register(
+      user,
+        ({ data }) => {
+          if (data.message === 'success') {
+            commit('SET_REGISTER_SUCCESS', true);
+            commit('SET_REGISTER_ERROR', false);
+            console.log("successed" + this.registerError);
+
+          } else {
+            commit('SET_REGISTER_SUCCESS', false);
+            commit('SET_REGISTER_ERROR', true);
+            console.log("failed" + this.registerError);
+
+          }
+        },
+        (error) => {
+          commit('SET_REGISTER_SUCCESS', false);
+          commit('SET_REGISTER_ERROR', true);
+          console.log("failed" + this.registerError);
           console.log(error);
         }
       );
