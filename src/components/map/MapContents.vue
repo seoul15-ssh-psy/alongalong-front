@@ -4,11 +4,15 @@
 
 <script>
 export default {
-  setup() {
+  props() {
     return {
-      myLocation: {
-        latitude: 37.471077623795,
-        longitude: 126.93920205178
+      myLocation: Object
+    }
+  },
+  computed() {
+    return {
+      getMyLocation: function () {
+        return
       }
     }
   },
@@ -38,10 +42,7 @@ export default {
     loadMap() {
       const container = document.getElementById('map')
       const options = {
-        center: new window.kakao.maps.LatLng(
-          this.myLocation.latitude,
-          this.myLocation.longitude
-        ),
+        center: new window.kakao.maps.LatLng(this.myLocation.longitude),
         level: 3
       }
       this.map = new window.kakao.maps.Map(container, options)
