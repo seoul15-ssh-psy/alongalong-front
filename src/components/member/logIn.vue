@@ -74,9 +74,11 @@ export default {
       await this.userConfirm(this.user);
       let token = sessionStorage.getItem("access-token");
       // console.log("1. confirm() token >> " + token);
+      console.log(this.isLogin)
       if (this.isLogin) {
         await this.getUserInfo(token);
         // console.log("4. confirm() userInfo :: ", this.userInfo);
+        console.log("after"+this.isLogin)
         this.$parent.hideLogInModal();
       }
     },

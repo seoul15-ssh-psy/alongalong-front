@@ -38,14 +38,17 @@
             <q-btn icon="person_outline" size="17px"> </q-btn>
               <q-menu touch-position>
               <q-list dense style="min-width: 100px">
-                <q-item clickable v-close-popup v-if="!logIn">
+                <q-item clickable v-close-popup v-if="!getIsLogin ">
                   <q-item-section @click="showLogInModal" >로그인</q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup v-if="logIn">
-                  <q-item-section @click="Logout" >로그아웃</q-item-section>
-                </q-item>
-                <q-item clickable v-close-popup>
+                <q-item clickable v-close-popup v-if="!getIsLogin ">
                   <q-item-section @click="showRegisterModal">회원가입</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup v-if="getIsLogin ">
+                  <q-item-section @click="onClickLogout" >로그아웃</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup v-if="getIsLogin ">
+                  <q-item-section @click="showLogInModal" >마이페이지</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -100,10 +103,11 @@ export default {
   created(){ 
     this.handleScroll();
     this.resize();
+    console.log(this.getIsLogin);  
   },
   computed: { 
     ...mapState(memberStore, ["isLogin", "userInfo"]),
-    ...mapGetters(["checkUserInfo"]),
+    ...mapGetters(memberStore, ["checkUserInfo","getIsLogin"]),
   },
   methods: { 
     handleScroll() { 
@@ -119,7 +123,7 @@ export default {
     resize() { 
       const screenWidth = window.innerWidth;
       if (screenWidth>700) { 
-        this.headerNavMenuSize = 18;
+        this.headerNavMenuSize = 18; 
         this.headerNavLogoPad = 50;
       } else {
         this.headerNavMenuSize = 15;
@@ -134,6 +138,7 @@ export default {
     },
     hideLogInModal() { 
       this.isShowLogInModal = false; 
+      console.log("creat" + this.getIsLogin);
     },
 
     showRegisterModal() { 
@@ -158,6 +163,7 @@ export default {
       sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
       sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
       if (this.$route.path != "/") this.$router.push({ name: "main" });
+      console.log("돼쓰까요"+this.getIsLogin);  
     },
 
     routerPush(goTo) { 
