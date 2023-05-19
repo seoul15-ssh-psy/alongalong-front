@@ -18,12 +18,18 @@
             <q-btn icon="person_outline" size="18px" padding="3px" > </q-btn>
             <q-menu touch-position>
               <q-list dense style="min-width: 100px">
-                  <q-item clickable v-close-popup>
-                      <q-item-section>로그인</q-item-section>
+                  <q-item clickable v-close-popup v-if="!getIsLogin ">
+                      <q-item-section @click="showLogInModal">로그인</q-item-section>
                   </q-item>
-                  <q-item clickable v-close-popup>
-                      <q-item-section>회원가입</q-item-section>
+                  <q-item clickable v-close-popup v-if="!getIsLogin ">
+                      <q-item-section @click="showRegisterModal">회원가입</q-item-section>
                   </q-item>
+                  <q-item clickable v-close-popup v-if="getIsLogin ">
+                  <q-item-section @click="onClickLogout" >로그아웃</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup v-if="getIsLogin ">
+                  <q-item-section @click="showLogInModal" >마이페이지</q-item-section>
+                </q-item>
               </q-list>
             </q-menu>
         </q-avatar>
@@ -169,6 +175,7 @@ export default {
     routerPush(goTo) { 
       console.log(goTo);
       if (goTo == "main") {
+        this.linkSelected[recentlySelected] = "gray";
         this.$router.push('/')
       } else if (goTo == "map") {
         this.linkSelected[recentlySelected] = "gray";
