@@ -12,6 +12,7 @@
   >
     <!-- contents -->
     <div class="q-mini-drawer-hide">
+      <!-- 카카오 API 이용하여 현재 위치 정보 가져오기  -->
       <div class="text-h5 text-bold q-mx-lg q-my-xl">
         {{ address }}
         <q-separator class="q-mt-xs" color="grey-6" size="2px" />
@@ -107,12 +108,6 @@ export default {
           title: '숙소'
         }
       ]
-    }
-  },
-  props: {
-    address: {
-      type: String,
-      default: '서울특별시 관악구'
     }
   }
 }
