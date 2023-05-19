@@ -61,8 +61,7 @@ export default {
   methods: {
     moveWrite() {
       this.$router.push({
-        name: "boardwrite",
-        params: {articleno : this.article.articleno}
+        name: "boardwrite"
 });
     },
     viewArticle(article) {

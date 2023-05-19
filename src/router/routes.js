@@ -36,7 +36,8 @@ const routes = [
       { name:"boardlist",path: 'list', component: () => import('../components/board/BoardList') }
       , { name: "boardview", path: 'view/:articleno', component: () => import('../components/board/BoardView') }
       , { name: "boardwrite", path: 'write', component: () => import('../components/board/BoardWrite') }
-      , {name:"boardmodify",path:'modify/:articleno',component:() => import('../components/board/BoardModify')}
+      , { name: "boardmodify", path: 'modify/:articleno', component: () => import('../components/board/BoardModify') }
+      , { name: "boarddelete", path: 'delete/:articleno', component: () => import('../components/board/BoardDelete') }
     ]
   },
 
