@@ -168,8 +168,7 @@ export default {
       this.userLogout(this.userInfo.userid);
       sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
       sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
-      if (this.$route.path != "/") this.$router.push({ name: "main" });
-      console.log("돼쓰까요"+this.getIsLogin);  
+      if (this.$route.path != "/") this.routerPush("main");
     },
 
     routerPush(goTo) { 
