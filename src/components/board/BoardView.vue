@@ -28,10 +28,9 @@
 	  
 	</table>
   <div id="buttons">
-			<button type="submit" @click="moveModifyArticle">수정하기</button>
-			<button type="submit" @click="deleteArticle">삭제하기</button>
-		  <button>목록보기</button>
-      <button>글쓰기</button>
+			<button type="submit" @click="moveModifyArticle" v-if="checkSameUser()">수정하기</button>
+			<button type="submit" @click="deleteArticle" v-if="checkSameUser()">삭제하기</button>
+		  <button @click="goBoardList">목록보기</button>
   </div>
   </div>
 </template>
@@ -86,6 +85,11 @@ export default {
           params: { articleno: this.article.articleno },
         });
       }
+	  },
+	  goBoardList() {
+        this.$router.push({
+          name: "boardlist",
+        });
     },
     moveList() {
       this.$router.push({ name: "boardlist" });
@@ -115,7 +119,14 @@ export default {
 		else { 
 			return Math.floor(time / 31557600000) + "년 전";
 		}
-    },
+	  },
+	  checkSameUser() { 
+		  if (this.article.userid == this.userInfo.userid) {
+			  return true;
+		  } else { 
+			  return false;
+		  }
+	  }
   },
   // filters: {
   //   dateFormat(regtime) {
