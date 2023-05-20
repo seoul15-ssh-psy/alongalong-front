@@ -29,7 +29,7 @@
 	</table>
   <div id="buttons">
 			<button type="submit" @click="moveModifyArticle">수정하기</button>
-			<button type="submit" onclick="alerts();">삭제하기</button>
+			<button type="submit" @click="deleteArticle">삭제하기</button>
 		  <button>목록보기</button>
       <button>글쓰기</button>
   </div>
