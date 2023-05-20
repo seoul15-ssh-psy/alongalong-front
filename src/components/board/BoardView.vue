@@ -27,10 +27,10 @@
 		</tr>
 	  
 	</table>
-  <div id="buttons">
+    <div id="buttons">
 			<button type="submit" @click="moveModifyArticle" v-if="checkSameUser()">수정하기</button>
 			<button type="submit" @click="deleteArticle" v-if="checkSameUser()">삭제하기</button>
-		  <button @click="goBoardList">목록보기</button>
+		    <button @click="moveList">목록보기</button>
   </div>
   </div>
 </template>
@@ -73,28 +73,23 @@ export default {
   
   methods: {
 	  moveModifyArticle() {
-      this.$router.push({
-        name: "boardmodify",
-        params: { articleno: this.article.articleno  },
-      });
-    },
-    deleteArticle() {
-      if (confirm("정말로 삭제?")) {
-        this.$router.push({
-          name: "boarddelete",
-          params: { articleno: this.article.articleno },
-        });
-      }
+		this.$router.push({
+			name: "boardmodify",
+			params: { articleno: this.article.articleno  },
+		});
+      },
+      deleteArticle() {
+		if (confirm("정말로 삭제?")) {
+			this.$router.push({
+			name: "boarddelete",
+			params: { articleno: this.article.articleno },
+			});
+		}
 	  },
-	  goBoardList() {
-        this.$router.push({
-          name: "boardlist",
-        });
-    },
-    moveList() {
-      this.$router.push({ name: "boardlist" });
+      moveList() {
+        this.$router.push({ name: "boardlist" });
 	  },
-	convertTime(regtime) { 
+	  convertTime(regtime) { 
 		let time = new Date() - new Date(regtime);
 		//59분전
 		if (time < 3599999) {
