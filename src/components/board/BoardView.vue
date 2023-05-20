@@ -116,7 +116,7 @@ export default {
 		}
 	  },
 	  checkSameUser() { 
-		  if (this.article.userid == this.userInfo.userid) {
+		  if (this.userInfo!=null && this.article.userid == this.userInfo.userid) {
 			  return true;
 		  } else { 
 			  return false;
