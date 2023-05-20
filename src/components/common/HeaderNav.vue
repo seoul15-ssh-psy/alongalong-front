@@ -18,12 +18,18 @@
             <q-btn icon="person_outline" size="18px" padding="3px" > </q-btn>
             <q-menu touch-position>
               <q-list dense style="min-width: 100px">
-                  <q-item clickable v-close-popup>
-                      <q-item-section>로그인</q-item-section>
+                  <q-item clickable v-close-popup v-if="!getIsLogin ">
+                      <q-item-section @click="showLogInModal">로그인</q-item-section>
                   </q-item>
-                  <q-item clickable v-close-popup>
-                      <q-item-section>회원가입</q-item-section>
+                  <q-item clickable v-close-popup v-if="!getIsLogin ">
+                      <q-item-section @click="showRegisterModal">회원가입</q-item-section>
                   </q-item>
+                  <q-item clickable v-close-popup v-if="getIsLogin ">
+                  <q-item-section @click="onClickLogout" >로그아웃</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup v-if="getIsLogin ">
+                  <q-item-section @click="showLogInModal" >마이페이지</q-item-section>
+                </q-item>
               </q-list>
             </q-menu>
         </q-avatar>
@@ -38,11 +44,17 @@
             <q-btn icon="person_outline" size="17px"> </q-btn>
               <q-menu touch-position>
               <q-list dense style="min-width: 100px">
-                <q-item clickable v-close-popup>
-                  <q-item-section>로그인</q-item-section>
+                <q-item clickable v-close-popup v-if="!getIsLogin ">
+                  <q-item-section @click="showLogInModal" >로그인</q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup>
-                  <q-item-section>회원가입</q-item-section>
+                <q-item clickable v-close-popup v-if="!getIsLogin ">
+                  <q-item-section @click="showRegisterModal">회원가입</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup v-if="getIsLogin ">
+                  <q-item-section @click="onClickLogout" >로그아웃</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup v-if="getIsLogin ">
+                  <q-item-section @click="showLogInModal" >마이페이지</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -55,16 +67,27 @@
               <a class="headerNavMenu2 clickable" @click="routerPush('boardList')" :style="{color:linkSelected[4]}">자유게시판</a>
             </div>
       </div>
+      <log-in id="logInModal" @close="hideLogInModal" v-if="isShowLogInModal"></log-in>
+      <register-D id="logInModal" @close="hideRegisterModal" v-if="isShowRegisterModal"></register-D>
+
   </div>
 </template>
 
 <script>
 
 import { mapState, mapGetters, mapActions } from "vuex";
+import logIn from "src/components/member/logIn.vue";
+import registerD from "src/components/member/register.vue";
+
+
 const memberStore = "memberStore";
 var recentlySelected = 0;
 
 export default {
+  components:{ 
+    logIn, registerD
+  }
+  ,
   data() {
     return {
       headerNavMenuSize : 18,
@@ -74,6 +97,8 @@ export default {
       headerNavColor: "",
       headerNavShadow: "",//홈, 지도, 핫플, 여행계획, 자유게시판
       linkSelected: ["gray", "gray", "gray", "gray", "gray"],
+      isShowLogInModal: false,
+      isShowRegisterModal: false,
     }
   },
   mounted() { 
@@ -84,10 +109,11 @@ export default {
   created(){ 
     this.handleScroll();
     this.resize();
+    console.log(this.getIsLogin);  
   },
   computed: { 
     ...mapState(memberStore, ["isLogin", "userInfo"]),
-    ...mapGetters(["checkUserInfo"]),
+    ...mapGetters(memberStore, ["checkUserInfo","getIsLogin"]),
   },
   methods: { 
     handleScroll() { 
@@ -103,7 +129,7 @@ export default {
     resize() { 
       const screenWidth = window.innerWidth;
       if (screenWidth>700) { 
-        this.headerNavMenuSize = 18;
+        this.headerNavMenuSize = 18; 
         this.headerNavLogoPad = 50;
       } else {
         this.headerNavMenuSize = 15;
@@ -111,6 +137,21 @@ export default {
 
       }
       this.headerNavMenuPad = screenWidth / 30;
+    },
+
+    showLogInModal() { 
+    this.isShowLogInModal = true; 
+    },
+    hideLogInModal() { 
+      this.isShowLogInModal = false; 
+      console.log("creat" + this.getIsLogin);
+    },
+
+    showRegisterModal() { 
+    this.isShowRegisterModal = true; 
+    },
+    hideRegisterModal() { 
+      this.isShowRegisterModal = false; 
     },
 
     ...mapActions(memberStore, ["userLogout"]),
@@ -128,11 +169,13 @@ export default {
       sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
       sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
       if (this.$route.path != "/") this.$router.push({ name: "main" });
+      console.log("돼쓰까요"+this.getIsLogin);  
     },
 
     routerPush(goTo) { 
       console.log(goTo);
       if (goTo == "main") {
+        this.linkSelected[recentlySelected] = "gray";
         this.$router.push('/')
       } else if (goTo == "map") {
         this.linkSelected[recentlySelected] = "gray";
@@ -198,4 +241,16 @@ export default {
   *:focus{
     outline:1000cap;  }
 
+  #logInModal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 배경색 */
+    z-index: 9999; /* 모달을 최상위로 배치 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 </style>
