@@ -1,6 +1,11 @@
+import Vue from "vue";
+import VueRouter from "vue-router";
+import store from "../store";
+
 // https://v3.router.vuejs.org/kr/guide/advanced/navigation-guards.html
 const onlyAuthUser = async (to, from, next) => {
-  const checkUserInfo = store.getters["memberStore/checkUserInfo"];
+
+  const checkUserInfo = store.getters["checkUserInfo"];
   const checkToken = store.getters["memberStore/checkToken"];
   let token = sessionStorage.getItem("access-token");
   console.log("로그인 처리 전", checkUserInfo, token);
@@ -11,8 +16,6 @@ const onlyAuthUser = async (to, from, next) => {
   }
   if (!checkToken || checkUserInfo === null) {
     alert("로그인이 필요한 페이지입니다..");
-    // next({ name: "login" });
-    router.push({ name: "login" });
   } else {
     console.log("로그인 했다!!!!!!!!!!!!!.");
     next();
@@ -35,7 +38,7 @@ const routes = [
     children: [
       { name:"boardlist",path: 'list', component: () => import('../components/board/BoardList') }
       , { name: "boardview", path: 'view/:articleno', component: () => import('../components/board/BoardView') }
-      , { name: "boardwrite", path: 'write', component: () => import('../components/board/BoardWrite') }
+      , { name: "boardwrite", path: 'write', beforeEnter: onlyAuthUser, component: () => import('../components/board/BoardWrite') }
       , { name: "boardmodify", path: 'modify/:articleno', component: () => import('../components/board/BoardModify') }
       , { name: "boarddelete", path: 'delete/:articleno', component: () => import('../components/board/BoardDelete') }
     ]

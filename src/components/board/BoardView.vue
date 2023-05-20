@@ -1,6 +1,6 @@
 <template>
-  <div :style="{paddingTop:'100px'}"> 
-  <table>
+  <div :style="{paddingTop:'100px'}" id="tables"> 
+  <table >
 		<tr>
 			<td>번호</td>
 			<td>{{article.articleno}}</td>
@@ -137,17 +137,17 @@ export default {
 </script>
 
 <style scope>
-* {
+#tables * {
 	text-align: center;
 	margin: auto;
 	font-family: 'Raleway', sans-serif;
 }
 
-h1 {
+#tables h1 {
 	margin: 50px auto;
 }
 
-button {
+#tables button {
 	border: 2px solid grey;
 	padding: 5px 8px;
 	border-radius: 3px;
@@ -158,22 +158,22 @@ button {
 	border-radius: 3px;
 }
 
-button:hover {
+#tables button:hover {
 	background-color: black;
 	color: white;
 }
 
-a {
+#tables a {
 	color: black;
 	font-weight: bold;
 	text-decoration: none;
 }
 
-p {
+#tables p {
 	margin: 30px 0px;
 }
 
-table {
+#tables table {
 	background-color: whitesmoke;
 	margin: 15px auto;
 	border: 1px solid black;
@@ -181,16 +181,16 @@ table {
 	font-size: 16px;
 }
 
-td {
+#tables td {
 	width: 400px;
 }
 
-tr {
+#tables tr {
 	height: 40px;
 	border: 2px solid black;
 }
 
-td:nth-child(1) {
+#tables td:nth-child(1) {
 	background-color: #606060;
 	color: whitesmoke;
 	font-weight: bold;
@@ -198,7 +198,7 @@ td:nth-child(1) {
 	width: 35%;
 }
 
-input {
+#tables input {
 	width: 100%;
 	outline: none;
 	background-color: whitesmoke;
@@ -207,7 +207,7 @@ input {
 	padding-left: 12px;
 }
 
-textarea {
+#tables #tables textarea {
 	background-color: whitesmoke;
 	outline: none;
 	border: none;
@@ -223,7 +223,7 @@ textarea {
 	margin: 3px;
 }
 
-.login {
+#tables .login {
 	margin-top: 25px;
 	margin-right: 10px;
 	text-align: right;
