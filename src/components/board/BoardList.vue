@@ -39,6 +39,7 @@ export default {
         { key: "regtime", label: "작성일", tdClass: "tdClass" },
         { key: "hit", label: "조회수", tdClass: "tdClass" },
       ],
+      registTimes: [],
     };
   },
   created() {
@@ -52,23 +53,57 @@ export default {
       param,
       ({ data }) => {
         this.articles = data;
+        var j = 0;
+        for (j = 0; j < this.articles.length; j++) { 
+          this.articles[j].regtime = this.convertTime(this.articles[j].regtime);
+        }
       },
       (error) => {
         console.log(error);
       }
+      
     );
   },
   methods: {
     moveWrite() {
       this.$router.push({
         name: "boardwrite"
-  });
-  },
+      });
+    },
     viewArticle(article) {
       this.$router.push({
         name: "boardview",
         params: { articleno: article.articleno },
       });
+    },
+    convertTime(regtime) { 
+		let time = new Date() - new Date(regtime);
+		//59분전
+    if (time < 60000) { 
+      return "최근";
+    }
+		else if (time < 3599999) {
+			return Math.floor(time / 60000) + " 분 전";
+		}
+		//23시간 전
+		else if (time < 82800000) {
+			return Math.floor(time / 3600000) + "시간 전";
+		}
+		//6일 전
+		else if (time < 604799999) {
+			return Math.floor(time / 86400000) + "일 전";
+		}
+		//? 주 전
+		else if (time < 2629799999) {
+			return Math.floor(time / 604800016) + "주 전";
+		}
+		//1년 전
+		else if (time < 31557599999) {
+			return Math.floor(time / 2629800000) + "개월 전";
+		}
+		else { 
+			return Math.floor(time / 31557600000) + "년 전";
+		}
     },
   },
 };

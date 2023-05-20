@@ -63,13 +63,15 @@ export default {
     getArticle(
       param,
       ({ data }) => {
-        this.article = data;
+		  this.article = data;
+		  this.article.regtime = this.convertTime(this.article.regtime);
       },
       (error) => {
         console.log(error);
       }
     );
-  },
+	},
+  
   methods: {
 	  moveModifyArticle() {
       this.$router.push({
@@ -87,6 +89,32 @@ export default {
     },
     moveList() {
       this.$router.push({ name: "boardlist" });
+	  },
+	convertTime(regtime) { 
+		let time = new Date() - new Date(regtime);
+		//59분전
+		if (time < 3599999) {
+			return Math.floor(time / 60000) + " 분 전";
+		}
+		//23시간 전
+		else if (time < 82800000) {
+			return Math.floor(time / 3600000) + "시간 전";
+		}
+		//6일 전
+		else if (time < 604799999) {
+			return Math.floor(time / 86400000) + "일 전";
+		}
+		//? 주 전
+		else if (time < 2629799999) {
+			return Math.floor(time / 604800016) + "주 전";
+		}
+		//1년 전
+		else if (time < 31557599999) {
+			return Math.floor(time / 2629800000) + "개월 전";
+		}
+		else { 
+			return Math.floor(time / 31557600000) + "년 전";
+		}
     },
   },
   // filters: {
