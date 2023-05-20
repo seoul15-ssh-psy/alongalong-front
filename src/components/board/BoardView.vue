@@ -79,7 +79,7 @@ export default {
     },
     deleteArticle() {
       if (confirm("정말로 삭제?")) {
-        this.$router.replace({
+        this.$router.push({
           name: "boarddelete",
           params: { articleno: this.article.articleno },
         });

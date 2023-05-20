@@ -62,8 +62,8 @@ export default {
     moveWrite() {
       this.$router.push({
         name: "boardwrite"
-});
-    },
+  });
+  },
     viewArticle(article) {
       this.$router.push({
         name: "boardview",

@@ -10,7 +10,7 @@
                   <td><input type="text" name="userId" v-bind:value="userid" readonly="readonly" /></td>
                 -->
           <td>
-            <input type="text" name="userId" v-model="article.userid" rquired />
+            <input type="text" name="userId" v-model="userInfo.userid" rquired />
           </td>
         </tr>
         <tr>
@@ -68,23 +68,13 @@ export default {
     };
   },
 
-  computed: {
-    ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
+  created() { 
+    this.article.userid = this.userInfo.userid;
   },
 
-  created: {
+  computed: {
+    ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
     ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
-    async userInfo() { 
-      let token = sessionStorage.getItem("access-token");
-
-      if (this.isLogin) {
-        await this.getUserInfo(token);
-        console.log(this.userInfo);
-      } else { 
-        
-      }
-    }
-    
   },
 
   methods: {
