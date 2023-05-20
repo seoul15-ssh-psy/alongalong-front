@@ -10,7 +10,7 @@
 			</tr>
 				<tr v-for="article in articles" v-bind:key="article">
 					<td>{{article.articleno}}</td>
-          <td @click="viewArticle(article)">{{article.subject}}</td>
+          			<td @click="viewArticle(article)" class="row">{{article.subject}}<p v-if="article.isNew" :style="{color:'red'}">new!!</p></td>
 					<td>{{article.userid}}</td>
 					<td>{{article.regtime}}</td>
 					<td>{{article.hit}}</td>
@@ -61,8 +61,9 @@ export default {
       ({ data }) => {
         this.articles = data;
         var j = 0;
-        for (j = 0; j < this.articles.length; j++) { 
-          this.articles[j].regtime = this.convertTime(this.articles[j].regtime);
+		  for (j = 0; j < this.articles.length; j++) { 
+			this.articles[j].isNew = this.checkIsNew(this.articles[j].regtime);
+			this.articles[j].regtime = this.convertTime(this.articles[j].regtime);
         }
       },
       (error) => {
@@ -119,6 +120,14 @@ export default {
 				return Math.floor(time / 31557600000) + "년 전";
 			}
 		},
+		checkIsNew(regtime) { 
+			let time = new Date() - new Date(regtime);
+			if (time < 86400000) {
+				return true;
+			} else { 
+				return false;
+			}
+		}
 		
   	},
 };
