@@ -1,5 +1,5 @@
 <template>
-  <div class="items-stretch" style="width: 100%">
+  <div style="width: 100%">
     <q-scroll-area
       :style="{ height: windowHeight - 280 + 'px' }"
       :bar-style="{
@@ -14,25 +14,33 @@
         opacity: 1
       }"
     >
-      <attraction-card
-        v-for="(item, index) in this.attractionInfoList"
-        :key="index"
-        :imageUrl="item.firstimage"
-        :title="item.title"
-        :category="item.cat1"
-        :distance="0.1"
-      ></attraction-card>
+      <template v-for="(item, index) in this.attractionInfoList" :key="index">
+        <attraction-card
+          v-if="item.contenttypeid != 38"
+          :imageUrl="item.firstimage"
+          :title="item.title"
+          :category="contentType[item.contenttypeid]"
+          :distance="0.1"
+        ></attraction-card>
+      </template>
     </q-scroll-area>
   </div>
 </template>
 <script>
+import { contentTypeId } from '../../../public/common/global.js'
 import Mixins from 'src/api/mixins'
 import AttractionCard from './AttractionCard.vue'
+
 export default {
   components: {
     AttractionCard
   },
   mixins: [Mixins],
-  inject: ['attractionInfoList']
+  inject: ['attractionInfoList'],
+  data() {
+    return {
+      contentType: contentTypeId
+    }
+  }
 }
 </script>
