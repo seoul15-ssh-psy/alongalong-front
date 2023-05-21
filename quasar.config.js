@@ -80,7 +80,7 @@ module.exports = configure(function (ctx) {
       env: {
         KAKAO_API: process.env.VUE_APP_KAKAO_API,
         KAKAO_APP_KEY: process.env.VUE_APP_KAKAO_APP_KEY,
-        LOCATION_BASED_SEARCH_API: process.env.VUE_APP_LOCATION_BASED_URL
+        ATTRACTION_SERVICE_KEY: process.env.VUE_APP_ATTRACTION_SERVICE_KEY
       }
     },
 
