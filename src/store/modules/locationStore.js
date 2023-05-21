@@ -1,4 +1,5 @@
 import { getLocationBasedList } from 'src/api/location'
+import { location2Region } from 'src/api/map'
 
 const locationStore = {
   namespaced: true,
@@ -43,6 +44,17 @@ const locationStore = {
         )
       }
     },
+    async callLocation2Region({ commit }, locationInfo) {
+      await location2Region(
+        locationInfo,
+        result => {
+          commit('SET_CURRENT_REGION', result.data.documents[0])
+        },
+        error => {
+          console.warn(error)
+        }
+      )
+    },
     async callLocationBasedList({ commit }, locationInfo) {
       await getLocationBasedList(
         locationInfo,
@@ -51,7 +63,7 @@ const locationStore = {
           commit('SET_ATTRACTION_INFO_LIST', list)
         },
         error => {
-          console.log(error)
+          console.warn(error)
         }
       )
     }

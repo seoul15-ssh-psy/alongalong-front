@@ -11,7 +11,7 @@ function apiInstance() {
   return instance
 }
 
-function attractionApiInstance(latitude, longitude) {
+function attractionApiInstance() {
   const instance = axios.create({
     baseURL: 'https://apis.data.go.kr/B551011/KorService1'
   })
@@ -25,6 +25,7 @@ function kakaoMapApiInstance() {
       Authorization: `KakaoAK ${process.env.KAKAO_APP_KEY}`
     }
   })
+  return instance
 }
 
 export { apiInstance, attractionApiInstance, kakaoMapApiInstance }
