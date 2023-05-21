@@ -14,7 +14,11 @@
     <div class="q-mini-drawer-hide">
       <!-- 카카오 API 이용하여 현재 위치 정보 가져오기  -->
       <div class="text-h5 text-bold q-mx-lg q-my-xl">
-        {{ address }}
+        {{
+          this.currentRegion.region_1depth_name +
+          ' ' +
+          this.currentRegion.region_2depth_name
+        }}
         <q-separator class="q-mt-xs" color="grey-6" size="2px" />
       </div>
       <div class="row justify-center q-mb-xl">
@@ -65,6 +69,7 @@ import { ref } from 'vue'
 import IconButton from './IconButton.vue'
 import AttractionCard from './AttractionCard.vue'
 import MapList from './MapList.vue'
+import axios from 'axios'
 
 export default {
   components: {
@@ -72,6 +77,7 @@ export default {
     MapList,
     AttractionCard
   },
+  inject: ['currentLocation', 'currentRegion', 'iconButtons'],
   setup() {
     const miniState = ref(false)
 
@@ -84,30 +90,7 @@ export default {
           miniState.value = false
           e.stopPropagation()
         }
-      },
-
-      iconButtons: [
-        {
-          iconName: 'o_map',
-          bgColor: 'bg-green-3',
-          title: '관광지'
-        },
-        {
-          iconName: 'o_restaurant',
-          bgColor: 'bg-orange-3',
-          title: '음식점'
-        },
-        {
-          iconName: 'o_local_cafe',
-          bgColor: 'bg-pink-3',
-          title: '카페'
-        },
-        {
-          iconName: 'o_hotel',
-          bgColor: 'bg-purple-3',
-          title: '숙소'
-        }
-      ]
+      }
     }
   }
 }

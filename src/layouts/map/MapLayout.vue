@@ -11,16 +11,18 @@
       <map-drawer></map-drawer>
       <!-- 카카오맵 -->
       <div :style="{ height: this.windowHeight + 'px' }">
-        <map-contents v-bind="myLocation"></map-contents>
+        <map-contents></map-contents>
       </div>
     </q-layout>
   </div>
 </template>
 <script>
-import axios from 'axios'
+import { mapState, mapActions } from 'vuex'
 import Mixins from '../../api/mixins.js'
 import MapDrawer from 'components/map/MapDrawer.vue'
 import MapContents from 'components/map/MapContents.vue'
+
+const locationStore = 'locationStore'
 
 export default {
   components: {
@@ -28,47 +30,62 @@ export default {
     MapContents
   },
   mixins: [Mixins],
-  methods: {
-    async getCurrentPosition() {
-      if (!navigator.geolocation) {
-        console.warn('위치 정보를 찾을 수 없습니다.')
-      } else {
-        navigator.geolocation.getCurrentPosition(
-          this.getPositionValue,
-          this.getlocationError
-        )
-      }
-    },
-    getPositionValue(val) {
-      this.myLocation.latitude = val.coords.latitude
-      this.myLocation.longitude = val.coords.longitude
-      this.getCurrentRegion()
-    },
-    getlocationError() {
-      console.warn('위치 정보를 찾을 수 없습니다.')
-    },
-    async getCurrentRegion() {
-      axios({
-        method: 'GET',
-        url: 'https://dapi.kakao.com/v2/local/geo/coord2regioncode.json',
-        params: {
-          x: this.myLocation.longitude,
-          y: this.myLocation.latitude
-        },
-        headers: {
-          Authorization: 'KakaoAK ' + process.env.KAKAO_APP_KEY
-        }
-      }).then(result => {
-        this.myRegion = result.data.documents[0]
-        console.log(this.myRegion)
-      })
-    }
-  },
   data() {
     return {
-      myLocation: {},
-      myRegion: {}
+      isReady: false,
+      locationInfo: {},
+      iconButtons: [
+        {
+          iconName: 'o_map',
+          bgColor: 'bg-green-3',
+          title: '관광지'
+        },
+        {
+          iconName: 'o_restaurant',
+          bgColor: 'bg-orange-3',
+          title: '음식점'
+        },
+        {
+          iconName: 'o_local_cafe',
+          bgColor: 'bg-pink-3',
+          title: '카페'
+        },
+        {
+          iconName: 'o_hotel',
+          bgColor: 'bg-purple-3',
+          title: '숙소'
+        }
+      ]
     }
+  },
+  computed: {
+    ...mapState(locationStore, [
+      'currentLocation',
+      'currentRegion',
+      'attractionInfoList'
+    ])
+  },
+  methods: {
+    ...mapActions(locationStore, [
+      'callCurrentLocation',
+      'callLocation2Region',
+      'callLocationBasedList'
+    ])
+  },
+  provide() {
+    return {
+      currentLocation: this.currentLocation,
+      currentRegion: this.currentRegion,
+      iconButtons: this.iconButtons,
+      attractionInfoList: this.attractionInfoList
+    }
+  },
+  created() {
+    // data initialization
+    this.callCurrentLocation().then(() => {
+      this.callLocation2Region(this.currentLocation)
+      this.callLocationBasedList(this.currentLocation)
+    })
   }
 }
 </script>

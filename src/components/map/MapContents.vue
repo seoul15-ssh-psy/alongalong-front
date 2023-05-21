@@ -3,34 +3,21 @@
 </template>
 
 <script>
+import Mixins from 'src/api/mixins'
 export default {
-  props() {
-    return {
-      myLocation: Object
-    }
-  },
-  computed() {
-    return {
-      getMyLocation: function () {
-        return
-      }
-    }
-  },
+  inject: ['currentLocation'],
+  mixins: [Mixins],
   data() {
     return {
       map: null
     }
   },
   mounted() {
-    window.addEventListener('resize', this.handleResize)
     if (window.kakao && window.kakao.maps) {
       this.loadMap()
     } else {
       this.loadScript()
     }
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.handleResize)
   },
   methods: {
     loadScript() {
@@ -42,13 +29,16 @@ export default {
     loadMap() {
       const container = document.getElementById('map')
       const options = {
-        center: new window.kakao.maps.LatLng(this.myLocation.longitude),
+        center: new window.kakao.maps.LatLng(
+          this.currentLocation.latitude,
+          this.currentLocation.longitude
+        ),
         level: 3
       }
       this.map = new window.kakao.maps.Map(container, options)
-    },
-    handleResize(event) {
-      map.relayout()
+      kakao.maps.event.addListener(this.map, 'dragend', () =>
+        console.log(this.map.getCenter())
+      )
     }
   }
 }
