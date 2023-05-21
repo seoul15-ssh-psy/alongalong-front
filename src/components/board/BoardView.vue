@@ -31,13 +31,14 @@
 			<button type="submit" @click="moveModifyArticle" v-if="checkSameUser()">수정하기</button>
 			<button type="submit" @click="deleteArticle" v-if="checkSameUser()">삭제하기</button>
 		    <button @click="moveList">목록보기</button>
-  </div>
+  	</div>
+	
   </div>
 </template>
 
 <script>
 // import moment from "moment";
-import { getArticle } from "../../api/board";
+import { getArticle, downloadFile } from "../../api/board";
 import { mapState } from "vuex";
 
 const memberStore = "memberStore";
@@ -46,7 +47,9 @@ export default {
   name: "BoardDetail",
   data() {
     return {
-      article: {},
+		article: {},
+		file: {},
+		src:"",
     };
   },
   computed: {
@@ -64,12 +67,31 @@ export default {
       ({ data }) => {
 		  this.article = data;
 		  this.article.regtime = this.convertTime(this.article.regtime);
+		  
+		  downloadFile(
+			this.article.articleno,
+			  ({ data }) => {
+				  console.log(typeof(data));
+				  let a = data;
+				  let reader = new FileReader();
+				  reader.onload = () => { 
+					  this.file = reader.result;
+				  }
+				  reader.readAsDataURL(a);
+				  console.log(data);
+			},
+			(error) => {
+				console.log(error);
+			  }
+			
+		);
       },
       (error) => {
         console.log(error);
       }
-    );
-	},
+	  );
+	
+  },
   
   methods: {
 	  moveModifyArticle() {

@@ -10,7 +10,12 @@
 			</tr>
 				<tr v-for="article in articles" v-bind:key="article">
 					<td>{{article.articleno}}</td>
-          			<td @click="viewArticle(article)" class="row">{{article.subject}}<p v-if="article.isNew" :style="{color:'red'}">new!!</p></td>
+          			<td @click="viewArticle(article)">
+						<div class="articleContent">
+							<p>{{article.subject}}</p>
+							<p v-if="article.isNew" :style="[{color:'red'}]">new!!</p>
+						</div>
+					</td>
 					<td>{{article.userid}}</td>
 					<td>{{article.regtime}}</td>
 					<td>{{article.hit}}</td>
@@ -177,7 +182,7 @@ export default {
 
 #tables td {
 	width: 120px;
-  text-align: center;
+  	text-align: center;
 	margin: auto;
 }
 
@@ -215,6 +220,11 @@ export default {
 
 #trash:hover {
 	color: red;
+}
+.articleContent{
+	display: flex;
+	flex-direction: row;
+	align-items:center;
 }
 
 </style>

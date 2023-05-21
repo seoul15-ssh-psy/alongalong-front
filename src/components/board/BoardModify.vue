@@ -19,12 +19,10 @@
                 <td>내용</td>
                 <td><textarea rows="10" cols="50" name="content" v-model="article.content"></textarea></td>
             </tr>
+            
         </table>
         <button type="submit">글쓰기</button>
     </form>
-    <p>
-        <a href="./boardlist"><button>목록보기</button></a>
-    </p>
   </div>
 </template>
 

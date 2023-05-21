@@ -34,19 +34,19 @@
               v-model="article.content"
             ></textarea>
           </td>
+          <td>
+            <input type="file"  @change="onFileChange" name="file">
+          </td>
         </tr>
       </table>
       <button type="submit">글쓰기</button>
     </form>
-    <p>
-      <a href="./boardlist"><button>목록보기</button></a>
-    </p>
   </div>
 </template>
 
 <script>
 
-import { writeArticle } from "../../api/board";
+import { writeArticle, uploadFile } from "../../api/board";
 import { useQuasar } from 'quasar'
 import { computed } from 'vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
@@ -64,6 +64,7 @@ export default {
         subject: "",
         content: "",
       },
+      file:null,
       isUserid: false,
     };
   },
@@ -78,6 +79,11 @@ export default {
   },
 
   methods: {
+    onFileChange(event) { 
+      this.file = event.target.files[0];
+      console.log(this.file);
+    }
+    ,
     onSubmit(event) {
       event.preventDefault();
       let err = true;
@@ -86,7 +92,10 @@ export default {
       err && !this.article.content && ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
 
       if (!err) alert(msg);
-      else this.registArticle();
+      else {
+        
+        this.registArticle();
+      };
     },
     onReset(event) {
       event.preventDefault();
@@ -95,6 +104,25 @@ export default {
       this.article.content = "";
       this.moveList();
     },
+
+    registFile() { 
+      uploadFile(
+        this.file,
+        ({ data }) => {
+          let msg = "등록 처리시 문제가 발생했습니다.";
+          if (data === "success") {
+            msg = "등록이 완료되었습니다.";
+            return "success";
+          }
+          alert(msg);
+        },
+        (error) => {
+          console.log(error);
+          return "fail";
+        }
+      );
+    },
+            
     registArticle() {
       let param = {
         userid: this.article.userid,
@@ -102,7 +130,7 @@ export default {
         content: this.article.content,
       };
       writeArticle(
-        param,
+        param,this.file,
         ({ data }) => {
           let msg = "등록 처리시 문제가 발생했습니다.";
           if (data === "success") {
