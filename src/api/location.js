@@ -30,4 +30,21 @@ async function getLocationBasedList(locationInfo, success, fail) {
     .catch(fail)
 }
 
-export { getLocationBasedList }
+async function getAttractionCategory(category, success, fail) {
+  return await api({
+    method: 'GET',
+    url: `/categoryCode1?serviceKey=${serviceKey}`,
+    params: {
+      MobileOS: 'ETC',
+      MobileApp: 'AlongAlong',
+      cat1: category.cat1,
+      cat2: category.cat2,
+      cat3: category.cat3,
+      _type: 'json'
+    }
+  })
+    .then(success)
+    .catch(fail)
+}
+
+export { getLocationBasedList, getAttractionCategory }

@@ -1,4 +1,4 @@
-import { getLocationBasedList } from 'src/api/location'
+import { getLocationBasedList, getAttractionCategory } from 'src/api/location'
 import { location2Region } from 'src/api/map'
 
 const locationStore = {
@@ -61,6 +61,19 @@ const locationStore = {
         result => {
           const list = result.data.response.body.items.item
           commit('SET_ATTRACTION_INFO_LIST', list)
+        },
+        error => {
+          console.warn(error)
+        }
+      )
+    },
+    async callAttractionCategory({ commit }, category) {
+      //console.log(category)
+      await getAttractionCategory(
+        category,
+        result => {
+          console.log(result)
+          return result.data.response.body.items.item[0].name
         },
         error => {
           console.warn(error)
