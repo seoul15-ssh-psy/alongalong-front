@@ -17,7 +17,7 @@ const locationBasedList = async (count, isList, locationInfo) => {
       arrange: 'O',
       mapX: locationInfo.longitude,
       mapY: locationInfo.latitude,
-      radius: 2000
+      radius: 750
     }
   })
 }
