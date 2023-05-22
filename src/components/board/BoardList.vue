@@ -1,5 +1,5 @@
 <template>
-  <div :style="{paddingTop:'100px'}" id="tables">
+  <div :style="{paddingTop:'100px'}" id="tableList">
     <table>
 			<tr>
 				<td>번호</td>
@@ -139,18 +139,18 @@ export default {
 </script>
 
 <style scope>
-#tables .tdClass {
+#tableList .tdClass {
   width: 50px;
   text-align: center;
 }
-#tables .tdSubject {
+#tableList .tdSubject {
   width: 300px;
   text-align: left;
   
 }
 
 
-#tables button {
+#tableList button {
 	border: 2px solid grey;
 	padding: 3px 8px;
 	border-radius: 3px;
@@ -162,53 +162,53 @@ export default {
 	border-radius: 3px;
 }
 
-#tables button:hover {
+#tableList button:hover {
 	background-color: black;
 	color: white;
 }
 
-#tables a {
+#tableList a {
 	text-decoration: none;
 	margin: 3px;
 	color: black;
 }
 
-#tables table {
+#tableList table {
 	background-color: whitesmoke;
 	margin: 15px auto;
 	border: 1px solid grey;
 	border-collapse: collapse;
 }
 
-#tables td {
+#tableList td {
 	width: 120px;
   	text-align: center;
 	margin: auto;
 }
 
-#tables tr {
+#tableList tr {
 	height: 40px;
 }
 
-#tables tr:nth-child(1) {
+#tableList tr:nth-child(1) {
 	background-color: black;
 	color: white;
 	font-weight: bold;
 }
 
-#tables tr:hover {
+#tableList tr:hover {
 	background-color: white;
 	font-weight: bold;
 	color: black;
 	cursor: pointer;
 }
 
-#tables tr:nth-child(1):hover {
+#tableList tr:nth-child(1):hover {
 	background-color: black;
 	color: white;
 }
 
-#tables .login {
+#tableList .login {
 	margin-top: 25px;
 	margin-right: 10px;
 	text-align: right;

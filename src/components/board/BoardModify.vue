@@ -1,5 +1,5 @@
 <template>
-  <div :style="{paddingTop:'100px'}" id = "tables">
+  <div :style="{paddingTop:'100px'}" id = "tableModify">
     <P>Board 작성칸입니다</P>
 
     <form action="./boardwrite" method="post" @submit="onSubmit">
@@ -112,11 +112,11 @@ export default {
 
 <style scope>
 
-#tables h1 {
+#tableModify h1 {
     margin: 50px auto;
 }
 
-#tables button {
+#tableModify button {
     border: 2px solid grey;
     padding: 5px 8px;
     border-radius: 3px;
@@ -127,45 +127,45 @@ export default {
     border-radius: 3px;
 }
 
-#tables button:hover {
+#tableModify button:hover {
     background-color: black;
     color: white;
 }
 
-#tables a {
+#tableModify a {
     color: black;
     font-weight: bold;
     text-decoration: none;
 }
 
-#tables p {
+#tableModify p {
     margin: 30px 0px;
 }
 
-#tables table {
+#tableModify table {
     background-color: whitesmoke;
     margin: 15px auto;
     border: 1px solid black;
     border-collapse: collapse;
 }
 
-#tables td {
+#tableModify td {
     width: 120px;
 }
 
-#tables tr {
+#tableModify tr {
     height: 40px;
     border: 2px solid black;
 }
 
-#tables td:nth-child(1) {
+#tableModify td:nth-child(1) {
     background-color: #606060;
     color: whitesmoke;
     font-weight: bold;
     border-right: 2px solid black;
 }
 
-#tables input {
+#tableModify input {
     width: 100%;
     outline: none;
     background-color: whitesmoke;
@@ -174,7 +174,7 @@ export default {
     padding-left: 12px;
 }
 
-#tables textarea {
+#tableModify textarea {
     background-color: whitesmoke;
     outline: none;
     border: none;
@@ -183,7 +183,7 @@ export default {
     padding-top: 3px;
 }
 
-#tables .login {
+#tableModify .login {
     margin-top: 25px;
     margin-right : 10px;
     text-align : right;
