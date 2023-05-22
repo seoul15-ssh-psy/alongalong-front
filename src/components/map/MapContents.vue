@@ -3,14 +3,28 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 import Mixins from 'src/api/mixins'
 
+const locationStore = 'locationStore'
+
 export default {
-  inject: ['currentLocation', 'attractionInfoList'],
   mixins: [Mixins],
   data() {
     return {
-      map: null
+      map: null,
+      markers: []
+    }
+  },
+  computed: {
+    ...mapState(locationStore, [
+      'currentLocation',
+      'currentRegion',
+      'attractionInfoList'
+    ]),
+    refreshMap() {
+      console.log(this.attractionInfoList)
+      return this.attractionInfoList
     }
   },
   mounted() {
@@ -21,6 +35,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('locationStore', ['SET_CURRENT_LOCATION']),
     loadScript() {
       const script = document.createElement('script')
       script.src = `${process.env.KAKAO_API}`
@@ -28,6 +43,7 @@ export default {
       document.head.appendChild(script)
     },
     loadMap() {
+      console.log('loadMap')
       const container = document.getElementById('map')
       const options = {
         center: new window.kakao.maps.LatLng(
@@ -38,9 +54,13 @@ export default {
       }
       this.map = new window.kakao.maps.Map(container, options)
       this.createMarkers()
-      kakao.maps.event.addListener(this.map, 'dragend', () =>
-        console.log(this.map.getCenter())
-      )
+      kakao.maps.event.addListener(this.map, 'dragend', () => {
+        //console.log(this.map.getCenter())
+        this.SET_CURRENT_LOCATION({
+          latitude: this.map.getCenter().Ma,
+          longitude: this.map.getCenter().La
+        })
+      })
     },
     createMarkers() {
       this.attractionInfoList.forEach(attraction => {
@@ -87,7 +107,13 @@ export default {
 
           // 마커가 지도 위에 표시되도록 설정합니다
           marker.setMap(this.map)
+          this.markers.push(marker)
         }
+      })
+    },
+    removeMarkers() {
+      this.markers.forEach(marker => {
+        marker.setMap(null)
       })
     }
   }

@@ -3,7 +3,7 @@
     v-model="drawer"
     show-if-above
     :mini="!drawer || miniState"
-    :width="450"
+    :width="420"
     :mini-width="0"
     :breakpoint="300"
     bordered
@@ -13,7 +13,7 @@
     <!-- contents -->
     <div class="q-mini-drawer-hide">
       <!-- 카카오 API 이용하여 현재 위치 정보 가져오기  -->
-      <div class="text-h5 text-bold q-mx-lg q-my-xl">
+      <div class="text-h5 text-bold q-mx-xl q-my-xl">
         {{
           this.currentRegion.region_1depth_name +
           ' ' +
@@ -32,12 +32,8 @@
           />
         </div>
       </div>
-
       <div class="row"><map-list></map-list></div>
-    </div>
 
-    <!-- drawer buttons -->
-    <div class="flex absolute-right items-center">
       <div class="q-mini-drawer-only">
         <q-btn
           dense
@@ -57,10 +53,15 @@
           icon="arrow_back_ios"
           size="20px"
           @click="miniState = true"
-          style="right: -100%"
+          style="right: -830%"
         />
       </div>
     </div>
+
+    <!-- drawer buttons
+    <div class="flex absolute-right items-center">
+
+    </div> -->
   </q-drawer>
 </template>
 
@@ -69,7 +70,9 @@ import { ref } from 'vue'
 import IconButton from './IconButton.vue'
 import AttractionCard from './AttractionCard.vue'
 import MapList from './MapList.vue'
-import axios from 'axios'
+import { mapState } from 'vuex'
+
+const locationStore = 'locationStore'
 
 export default {
   components: {
@@ -77,7 +80,7 @@ export default {
     MapList,
     AttractionCard
   },
-  inject: ['currentLocation', 'currentRegion', 'iconButtons'],
+  inject: ['iconButtons'],
   setup() {
     const miniState = ref(false)
 
@@ -92,6 +95,13 @@ export default {
         }
       }
     }
+  },
+  computed: {
+    ...mapState(locationStore, [
+      'currentLocation',
+      'currentRegion',
+      'attractionInfoList'
+    ])
   }
 }
 </script>

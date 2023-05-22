@@ -27,20 +27,29 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 import { contentTypeId } from '../../../public/common/global.js'
 import Mixins from 'src/api/mixins'
 import AttractionCard from './AttractionCard.vue'
+
+const locationStore = 'locationStore'
 
 export default {
   components: {
     AttractionCard
   },
   mixins: [Mixins],
-  inject: ['attractionInfoList'],
   data() {
     return {
       contentType: contentTypeId
     }
+  },
+  computed: {
+    ...mapState(locationStore, [
+      'currentLocation',
+      'currentRegion',
+      'attractionInfoList'
+    ])
   }
 }
 </script>
