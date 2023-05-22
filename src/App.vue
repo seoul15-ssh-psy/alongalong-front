@@ -1,7 +1,7 @@
 <template>
   <header-nav ref="headerNav"></header-nav>
   <div id="router">
-    <router-view @showLogInModal="showOpenLogInModal"></router-view>
+    <router-view :key="$route.fullPath" @showLogInModal="showOpenLogInModal"></router-view>
   </div>
   <footer-div></footer-div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ paddingTop: '100px' }" id = "tableWrite">
+  <div :style="{ paddingTop: '100px' }" id="tableWrite">
     <P>Board 작성칸입니다</P>
 
     <form action="./boardwrite" method="post" @submit="onSubmit">
@@ -10,7 +10,12 @@
                   <td><input type="text" name="userId" v-bind:value="userid" readonly="readonly" /></td>
                 -->
           <td>
-            <input type="text" name="userId" v-model="userInfo.userid" rquired />
+            <input
+              type="text"
+              name="userId"
+              v-model="userInfo.userid"
+              rquired
+            />
           </td>
         </tr>
         <tr>
@@ -35,7 +40,7 @@
             ></textarea>
           </td>
           <td>
-            <input type="file"  @change="onFileChange" name="file">
+            <input type="file" @change="onFileChange" name="file" />
           </td>
         </tr>
       </table>
@@ -45,109 +50,111 @@
 </template>
 
 <script>
-
-import { writeArticle, uploadFile } from "../../api/board";
+import { writeArticle, uploadFile } from '../../api/board'
 import { useQuasar } from 'quasar'
 import { computed } from 'vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions } from 'vuex'
 
-const memberStore = "memberStore";
+const memberStore = 'memberStore'
 
 export default {
-  name: "BoardWrite",
+  name: 'BoardWrite',
   data() {
     return {
       article: {
         articleno: 0,
-        userid: "",
-        subject: "",
-        content: "",
+        userid: '',
+        subject: '',
+        content: ''
       },
-      file:null,
-      isUserid: false,
-    };
+      file: null,
+      isUserid: false
+    }
   },
 
-  created() { 
-    this.article.userid = this.userInfo.userid;
+  created() {
+    this.article.userid = this.userInfo.userid
   },
 
   computed: {
-    ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
-    ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
+    ...mapState(memberStore, ['isLogin', 'isLoginError', 'userInfo']),
+    ...mapActions(memberStore, ['userConfirm', 'getUserInfo'])
   },
 
   methods: {
-    onFileChange(event) { 
-      this.file = event.target.files[0];
-      console.log(this.file);
-    }
-    ,
+    onFileChange(event) {
+      this.file = event.target.files[0]
+      console.log(this.file)
+    },
     onSubmit(event) {
-      event.preventDefault();
-      let err = true;
-      let msg = "";
-      !this.article.subject && ((msg = "제목 입력해주세요"), (err = false), this.$refs.subject.focus());
-      err && !this.article.content && ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
+      event.preventDefault()
+      let err = true
+      let msg = ''
+      !this.article.subject &&
+        ((msg = '제목 입력해주세요'), (err = false), this.$refs.subject.focus())
+      err &&
+        !this.article.content &&
+        ((msg = '내용 입력해주세요'), (err = false), this.$refs.content.focus())
 
-      if (!err) alert(msg);
+      if (!err) alert(msg)
       else {
-        this.registArticle();
-      };
+        this.registArticle()
+      }
     },
     onReset(event) {
-      event.preventDefault();
-      this.article.articleno = 0;
-      this.article.subject = "";
-      this.article.content = "";
-      this.moveList();
+      event.preventDefault()
+      this.article.articleno = 0
+      this.article.subject = ''
+      this.article.content = ''
+      this.moveList()
     },
 
-    registFile() { 
+    registFile() {
       uploadFile(
         this.file,
         ({ data }) => {
-          let msg = "등록 처리시 문제가 발생했습니다.";
-          if (data === "success") {
-            msg = "등록이 완료되었습니다.";
-            return "success";
+          let msg = '등록 처리시 문제가 발생했습니다.'
+          if (data === 'success') {
+            msg = '등록이 완료되었습니다.'
+            return 'success'
           }
-          alert(msg);
+          alert(msg)
         },
-        (error) => {
-          console.log(error);
-          return "fail";
+        error => {
+          console.log(error)
+          return 'fail'
         }
-      );
+      )
     },
-            
+
     registArticle() {
       let param = {
         userid: this.article.userid,
         subject: this.article.subject,
-        content: this.article.content,
-      };
+        content: this.article.content
+      }
       writeArticle(
-        param,this.file,
+        param,
+        this.file,
         ({ data }) => {
-          let msg = "등록 처리시 문제가 발생했습니다.";
-          if (data === "success") {
-            msg = "등록이 완료되었습니다.";
+          let msg = '등록 처리시 문제가 발생했습니다.'
+          if (data === 'success') {
+            msg = '등록이 완료되었습니다.'
           }
-          alert(msg);
-          this.moveList();
+          alert(msg)
+          this.moveList()
         },
-        (error) => {
-          console.log(error);
+        error => {
+          console.log(error)
         }
-      );
+      )
     },
     moveList() {
-      this.$router.replace({ name: "boardlist" });
-    },
-  },
-};
+      this.$router.replace({ name: 'boardlist' })
+    }
+  }
+}
 </script>
 
 <style scope>

@@ -170,7 +170,7 @@ export default {
     outline: none;
     background-color: whitesmoke;
     border: none;
-    text-align: left;
+    text-align:ㄹ left;
     padding-left: 12px;
 }
 

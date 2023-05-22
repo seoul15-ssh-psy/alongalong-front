@@ -195,7 +195,7 @@ export default {
         this.linkSelected[recentlySelected] = "gray";
         recentlySelected = 4;
         this.linkSelected[recentlySelected] = "black";
-        this.$router.push('/board')
+        this.$router.push({ name: 'boardlist', query: { pgno: 1}});
       } 
     },
 
