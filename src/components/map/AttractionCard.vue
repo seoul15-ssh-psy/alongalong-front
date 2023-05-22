@@ -24,7 +24,7 @@
         <a href="#" @click="showDetailModal()" class="subtitle1"
           ><div class="text-subtitle1 text-bold">{{ attraction.title }}</div></a
         >
-        <div class="subtitle2 text-subtitle2 q-ml-xs">
+        <div class="subtitle2 text-subtitle2 text-grey q-ml-xs">
           {{ this.contentType[attraction.contenttypeid] }}
         </div>
       </div>
@@ -45,7 +45,9 @@
 
 <script>
 import { contentTypeId } from '../../../public/common/global.js'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
+
+const locationStore = 'locationStore'
 
 export default {
   props: {
@@ -60,13 +62,20 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('locationStore', [
+    ...mapMutations(locationStore, [
       'SET_IS_DETAIL_MODAL_VISIBLE',
+      'SET_IS_DETAIL_MODAL_UPDATED',
       'SET_MODAL_CONTENTS'
     ]),
-    showDetailModal() {
+    ...mapActions(locationStore, ['callClosestSubwayStation']),
+    async showDetailModal() {
       this.SET_IS_DETAIL_MODAL_VISIBLE(true)
       this.SET_MODAL_CONTENTS(this.attraction)
+      await this.callClosestSubwayStation({
+        longitude: this.attraction.mapx,
+        latitude: this.attraction.mapy
+      })
+      this.SET_IS_DETAIL_MODAL_UPDATED(true)
     }
   }
 }
