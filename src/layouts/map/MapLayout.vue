@@ -87,6 +87,7 @@ export default {
       'SET_CURRENT_REGION',
       'SET_ATTRACTION_INFO_LIST',
       'SET_IS_DETAIL_MODAL_VISIBLE',
+      'SET_IS_DETAIL_MODAL_UPDATED',
       'SET_MODAL_CONTENTS'
     ]),
     ...mapActions(locationStore, [
@@ -99,7 +100,9 @@ export default {
       this.SET_CURRENT_REGION({})
       this.SET_ATTRACTION_INFO_LIST([])
       this.SET_IS_DETAIL_MODAL_VISIBLE(false)
+      this.SET_IS_DETAIL_MODAL_UPDATED(false)
       this.SET_MODAL_CONTENTS({})
+
       await this.callCurrentLocation()
       await this.refresh()
     },

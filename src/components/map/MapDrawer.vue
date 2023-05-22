@@ -142,9 +142,13 @@ export default {
     ])
   },
   methods: {
-    ...mapMutations(locationStore, ['SET_IS_DETAIL_MODAL_VISIBLE']),
+    ...mapMutations(locationStore, [
+      'SET_IS_DETAIL_MODAL_VISIBLE',
+      'SET_IS_DETAIL_MODAL_UPDATED'
+    ]),
     closeDetailModal() {
       this.SET_IS_DETAIL_MODAL_VISIBLE(false)
+      this.SET_IS_DETAIL_MODAL_UPDATED(false)
     }
   }
 }

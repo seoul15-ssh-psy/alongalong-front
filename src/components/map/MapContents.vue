@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import Mixins from 'src/api/mixins'
 
 const locationStore = 'locationStore'
@@ -21,11 +21,22 @@ export default {
     ...mapState(locationStore, [
       'currentLocation',
       'currentRegion',
-      'attractionInfoList'
+      'attractionInfoList',
+      'isDetailModalUpdated',
+      'modalContents'
     ]),
     refreshMap() {
-      console.log(this.attractionInfoList)
       return this.attractionInfoList
+    }
+  },
+  watch: {
+    isDetailModalUpdated(status) {
+      if (status == true) {
+        this.highlightMarker()
+      } else {
+        this.remove()
+        this.createMarkers()
+      }
     }
   },
   mounted() {
@@ -39,8 +50,10 @@ export default {
     ...mapMutations('locationStore', [
       'SET_CURRENT_LOCATION',
       'SET_IS_DETAIL_MODAL_VISIBLE',
+      'SET_IS_DETAIL_MODAL_UPDATED',
       'SET_MODAL_CONTENTS'
     ]),
+    ...mapActions('locationStore', ['callClosestSubwayStation']),
     loadScript() {
       const script = document.createElement('script')
       script.src = `${process.env.KAKAO_API}`
@@ -67,71 +80,26 @@ export default {
         })
       })
     },
-    createMarkers() {
+    createMarkers(target = null) {
       this.attractionInfoList.forEach(attraction => {
-        if (attraction.contenttypeid != 38) {
+        if (
+          attraction.contenttypeid != 38 &&
+          attraction.contenttypeid != 15 &&
+          attraction.contenttypeid != 25
+        ) {
           //console.log(attraction)
           // 마커가 표시될 위치입니다
-          const markerPosition = new kakao.maps.LatLng(
-            attraction.mapy,
-            attraction.mapx
-          )
-
-          let imageSrc = ''
-          let imageSize = new kakao.maps.Size(40, 40)
-
-          if (attraction.cat3 == 'A05020900') {
-            imageSrc = require('../../../public/icons/cafe.png')
-          } else if (
-            attraction.contenttypeid == 12 ||
-            attraction.contenttypeid == 14 ||
-            attraction.contenttypeid == 15 ||
-            attraction.contenttypeid == 25 ||
-            attraction.contenttypeid == 28
-          ) {
-            imageSrc = require('../../../public/icons/attraction.png')
-          } else if (attraction.contenttypeid == 32) {
-            imageSrc = require('../../../public/icons/hotel.png')
+          if (target != null && attraction.contentid == target.contentid) {
+            this.create(attraction, true)
           } else {
-            imageSrc = require('../../../public/icons/restaurant.png')
+            this.create(attraction, false)
           }
-
-          //console.log(attraction.contenttypeid + ' ' + imageSrc)
-          const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)
-
-          // 마커를 생성합니다
-          const marker = new kakao.maps.Marker({
-            position: markerPosition,
-            image: markerImage
-          })
-
-          kakao.maps.event.addListener(marker, 'click', () => {
-            this.SET_IS_DETAIL_MODAL_VISIBLE(true)
-            this.SET_MODAL_CONTENTS(attraction)
-          })
-          // 마커가 지도 위에 표시되도록 설정합니다
-          marker.setMap(this.map)
-          this.markers.push(marker)
-
-          var content = `<div class ="label">
-              <span class="left"></span>
-              <span class="center bg-blue-grey-1 text-grey-9 text-bold q-pa-xs" style="border-radius: 50px; border: solid 2px; border-color: #b0bec5">${attraction.title}</span>
-              <span class="right"></span>
-              </div>`
-
-          // 커스텀 오버레이가 표시될 위치입니다
-          var position = new kakao.maps.LatLng(attraction.mapy, attraction.mapx)
-
-          // 커스텀 오버레이를 생성합니다
-          var customOverlay = new kakao.maps.CustomOverlay({
-            position: position,
-            content: content,
-            yAnchor: 3
-          })
-          customOverlay.setMap(this.map)
-          this.overlays.push(customOverlay)
         }
       })
+    },
+    create(attraction, isHighlighted) {
+      this.createMarker(attraction)
+      this.createOverlay(attraction, isHighlighted)
     },
     remove() {
       this.markers.forEach(marker => {
@@ -140,6 +108,87 @@ export default {
       this.overlays.forEach(overlay => {
         overlay.setMap(null)
       })
+    },
+    createMarker(attraction) {
+      const markerPosition = new kakao.maps.LatLng(
+        attraction.mapy,
+        attraction.mapx
+      )
+
+      let imageSrc = ''
+      let imageSize = new kakao.maps.Size(40, 40)
+
+      if (attraction.cat3 == 'A05020900') {
+        // 카페
+        imageSrc = require('../../../public/icons/cafe.png')
+      } else if (
+        // 관광지
+        attraction.contenttypeid == 12 ||
+        attraction.contenttypeid == 14 ||
+        attraction.contenttypeid == 28
+      ) {
+        imageSrc = require('../../../public/icons/attraction.png')
+      } else if (attraction.contenttypeid == 32) {
+        // 숙박
+        imageSrc = require('../../../public/icons/hotel.png')
+      } else {
+        // 음식점
+        imageSrc = require('../../../public/icons/restaurant.png')
+      }
+
+      //console.log(attraction.contenttypeid + ' ' + imageSrc)
+      const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)
+
+      // 마커를 생성합니다
+      const marker = new kakao.maps.Marker({
+        position: markerPosition,
+        image: markerImage
+      })
+
+      kakao.maps.event.addListener(marker, 'click', () =>
+        this.markerClickHandler(attraction)
+      )
+      // 마커가 지도 위에 표시되도록 설정합니다
+      marker.setMap(this.map)
+      this.markers.push(marker)
+    },
+    createOverlay(attraction, isHighlighted) {
+      var content = isHighlighted
+        ? `<div class ="label">
+              <span class="left"></span>
+              <span class="center bg-indigo-6 text-white text-bold q-px-md q-py-sm" style="border-radius: 50px; border: solid 1px; border-color: #3f51b5;">${attraction.title}</span>
+              <span class="right"></span>
+              </div>`
+        : `<div class ="label">
+              <span class="left"></span>
+              <span class="center bg-white text-grey-9 text-bold q-pa-xs" style="border-radius: 50px; border: solid 1px; border-color: #3f51b5;">${attraction.title}</span>
+              <span class="right"></span>
+              </div>`
+
+      // 커스텀 오버레이가 표시될 위치입니다
+      var position = new kakao.maps.LatLng(attraction.mapy, attraction.mapx)
+
+      // 커스텀 오버레이를 생성합니다
+      var customOverlay = new kakao.maps.CustomOverlay({
+        position: position,
+        content: content,
+        yAnchor: 3
+      })
+      customOverlay.setMap(this.map)
+      this.overlays.push(customOverlay)
+    },
+    async markerClickHandler(attraction) {
+      this.SET_IS_DETAIL_MODAL_VISIBLE(true)
+      this.SET_MODAL_CONTENTS(attraction)
+      await this.callClosestSubwayStation({
+        longitude: attraction.mapx,
+        latitude: attraction.mapy
+      })
+      this.SET_IS_DETAIL_MODAL_UPDATED(true)
+    },
+    highlightMarker() {
+      this.remove()
+      this.createMarkers(this.modalContents)
     }
   }
 }
