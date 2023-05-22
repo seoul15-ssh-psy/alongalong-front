@@ -1,5 +1,5 @@
 import { getLocationBasedList, getAttractionCategory } from 'src/api/location'
-import { location2Region } from 'src/api/map'
+import { location2Region, closestSubwayStation } from 'src/api/map'
 
 const locationStore = {
   namespaced: true,
@@ -8,14 +8,18 @@ const locationStore = {
     currentRegion: {},
     attractionInfoList: [],
     isDetailModalVisible: false,
-    modalContents: {}
+    isDetailModalUpdated: false,
+    modalContents: {},
+    subwayStation: { place_name: '신림역 2호선', distance: 1000 }
   },
   getters: {
     getCurrentLocation: state => state.currentLocation,
     getCurrentRegion: state => state.currentRegion,
     getAttractionInfoList: state => state.attractionInfoList,
     getIsDetailModalVisible: state => state.isDetailModalVisible,
-    getModalContents: state => state.modalContents
+    getIsDetailModalVisible: state => state.isDetailModalUpdated,
+    getModalContents: state => state.modalContents,
+    getSubwayStation: state => state.subwayStation
   },
   mutations: {
     SET_CURRENT_LOCATION: (state, location) => {
@@ -32,8 +36,14 @@ const locationStore = {
     SET_IS_DETAIL_MODAL_VISIBLE: (state, isVisible) => {
       state.isDetailModalVisible = isVisible
     },
+    SET_IS_DETAIL_MODAL_UPDATED: (state, status) => {
+      state.isDetailModalUpdated = status
+    },
     SET_MODAL_CONTENTS: (state, attraction) => {
       state.modalContents = attraction
+    },
+    SET_SUBWAY_STATION: (state, subwayStation) => {
+      state.subwayStation = subwayStation
     }
   },
   actions: {
@@ -100,13 +110,25 @@ const locationStore = {
         }
       )
     },
-    async callAttractionCategory({ commit }, category) {
+    async callAttractionCategory(category) {
       //console.log(category)
       await getAttractionCategory(
         category,
         result => {
           result = result.data.response.body.items.item[0].name
           return result
+        },
+        error => {
+          console.warn(error)
+        }
+      )
+    },
+    async callClosestSubwayStation({ commit }, attractionLocationInfo) {
+      await closestSubwayStation(
+        attractionLocationInfo,
+        response => {
+          const data = response.data.documents[0]
+          commit('SET_SUBWAY_STATION', data)
         },
         error => {
           console.warn(error)
