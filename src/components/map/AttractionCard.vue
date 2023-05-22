@@ -10,10 +10,10 @@
     "
   >
     <div class="col-4">
-      <a href="#"
+      <a href="#" @click="showDetailModal()"
         ><q-img
           class="q-ma-sm"
-          :src="imageUrl"
+          :src="attraction.firstimage"
           :ratio="1"
           style="border-radius: 5px"
         ></q-img
@@ -21,13 +21,17 @@
     </div>
     <div class="col-7 q-ml-md">
       <div class="row items-center">
-        <a href="#" class="subtitle1"
-          ><div class="text-subtitle1 text-bold">{{ title }}</div></a
+        <a href="#" @click="showDetailModal()" class="subtitle1"
+          ><div class="text-subtitle1 text-bold">{{ attraction.title }}</div></a
         >
-        <div class="subtitle2 text-subtitle2 q-ml-xs">{{ category }}</div>
+        <div class="subtitle2 text-subtitle2 q-ml-xs">
+          {{ this.contentType[attraction.contenttypeid] }}
+        </div>
       </div>
       <div class="row">
-        <div class="text-subtitle2">내 위치로부터 {{ distance }}km</div>
+        <div class="text-subtitle2">
+          내 위치로부터 {{ attraction.distance }}km
+        </div>
       </div>
       <div class="row">
         <q-btn flat round>
@@ -40,23 +44,29 @@
 </template>
 
 <script>
+import { contentTypeId } from '../../../public/common/global.js'
+import { mapMutations } from 'vuex'
+
 export default {
   props: {
-    imageUrl: {
-      type: String,
-      default: 'https://picsum.photos/500/300?t=' + Math.random()
-    },
-    title: {
-      type: String,
-      default: 'default title'
-    },
-    category: {
-      type: String,
-      default: 'default type'
-    },
-    distance: {
-      type: Number,
-      default: 0.1
+    attraction: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {
+      contentType: contentTypeId
+    }
+  },
+  methods: {
+    ...mapMutations('locationStore', [
+      'SET_IS_DETAIL_MODAL_VISIBLE',
+      'SET_MODAL_CONTENTS'
+    ]),
+    showDetailModal() {
+      this.SET_IS_DETAIL_MODAL_VISIBLE(true)
+      this.SET_MODAL_CONTENTS(this.attraction)
     }
   }
 }

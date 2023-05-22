@@ -38,7 +38,8 @@ export default {
   methods: {
     ...mapMutations('locationStore', [
       'SET_CURRENT_LOCATION',
-      'SET_IS_DETAIL_MODAL_VISIBLE'
+      'SET_IS_DETAIL_MODAL_VISIBLE',
+      'SET_MODAL_CONTENTS'
     ]),
     loadScript() {
       const script = document.createElement('script')
@@ -104,9 +105,10 @@ export default {
             image: markerImage
           })
 
-          kakao.maps.event.addListener(marker, 'click', () =>
+          kakao.maps.event.addListener(marker, 'click', () => {
             this.SET_IS_DETAIL_MODAL_VISIBLE(true)
-          )
+            this.SET_MODAL_CONTENTS(attraction)
+          })
           // 마커가 지도 위에 표시되도록 설정합니다
           marker.setMap(this.map)
           this.markers.push(marker)

@@ -10,13 +10,19 @@
       <!-- 지도 검색 drawer -->
       <map-drawer></map-drawer>
       <q-btn
-        class="fixed z-max q-mt-md"
-        style="width: 200px; height: 50px; left: 50%; border-radius: 100px"
-        color="indigo-3"
-        @click="refreshMap()"
+        class="absolute q-mt-md"
+        style="
+          width: 200px;
+          height: 40px;
+          left: 50%;
+          border-radius: 100px;
+          z-index: 3;
+        "
+        color="white"
+        @click="refresh()"
       >
-        <q-icon name="refresh" color="white"></q-icon>
-        <div class="text-bold q-ml-xs" style="font-size: 1.3em">
+        <q-icon name="refresh" color="black"></q-icon>
+        <div class="text-black text-bold q-ml-xs" style="font-size: 1.3em">
           현 지도에서 검색
         </div>
       </q-btn>
@@ -28,7 +34,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import Mixins from '../../api/mixins.js'
 import MapDrawer from 'components/map/MapDrawer.vue'
 import MapContents from 'components/map/MapContents.vue'
@@ -76,21 +82,31 @@ export default {
     ])
   },
   methods: {
+    ...mapMutations(locationStore, [
+      'SET_CURRENT_LOCATION',
+      'SET_CURRENT_REGION',
+      'SET_ATTRACTION_INFO_LIST',
+      'SET_IS_DETAIL_MODAL_VISIBLE',
+      'SET_MODAL_CONTENTS'
+    ]),
     ...mapActions(locationStore, [
       'callCurrentLocation',
       'callLocation2Region',
       'callLocationBasedList'
     ]),
     async initialization() {
+      this.SET_CURRENT_LOCATION({})
+      this.SET_CURRENT_REGION({})
+      this.SET_ATTRACTION_INFO_LIST([])
+      this.SET_IS_DETAIL_MODAL_VISIBLE(false)
+      this.SET_MODAL_CONTENTS({})
       await this.callCurrentLocation()
-      this.callLocation2Region(this.currentLocation)
-      await this.callLocationBasedList(this.currentLocation)
-      this.$refs.map.createMarkers()
+      await this.refresh()
     },
-    async refreshMap() {
+    async refresh() {
       this.callLocation2Region(this.currentLocation)
       await this.callLocationBasedList(this.currentLocation)
-      this.$refs.map.removeMarkers()
+      this.$refs.map.remove()
       this.$refs.map.createMarkers()
     }
   },

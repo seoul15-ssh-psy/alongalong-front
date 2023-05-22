@@ -17,10 +17,7 @@
       <template v-for="(item, index) in this.attractionInfoList" :key="index">
         <attraction-card
           v-if="item.contenttypeid != 38"
-          :imageUrl="item.firstimage"
-          :title="item.title"
-          :category="contentType[item.contenttypeid]"
-          :distance="0.1"
+          v-bind:attraction="item"
         ></attraction-card>
       </template>
     </q-scroll-area>
@@ -28,7 +25,6 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { contentTypeId } from '../../../public/common/global.js'
 import Mixins from 'src/api/mixins'
 import AttractionCard from './AttractionCard.vue'
 
@@ -39,17 +35,8 @@ export default {
     AttractionCard
   },
   mixins: [Mixins],
-  data() {
-    return {
-      contentType: contentTypeId
-    }
-  },
   computed: {
-    ...mapState(locationStore, [
-      'currentLocation',
-      'currentRegion',
-      'attractionInfoList'
-    ])
+    ...mapState(locationStore, ['attractionInfoList'])
   }
 }
 </script>

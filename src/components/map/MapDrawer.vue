@@ -3,7 +3,7 @@
     v-model="drawer"
     show-if-above
     :mini="!drawer || miniState"
-    :width="420"
+    :width="400"
     :mini-width="0"
     :breakpoint="300"
     bordered
@@ -33,35 +33,69 @@
         </div>
       </div>
       <div class="row"><map-list></map-list></div>
-
-      <div class="q-mini-drawer-only">
-        <q-btn
-          dense
-          flat
-          unelevated
-          icon="arrow_forward_ios"
-          size="20px"
-          @click="miniState = false"
-          style="right: -100%"
-        />
-      </div>
-      <div class="q-mini-drawer-hide">
-        <q-btn
-          dense
-          flat
-          unelevated
-          icon="arrow_back_ios"
-          size="20px"
-          @click="miniState = true"
-          style="right: -830%"
-        />
-      </div>
     </div>
 
-    <!-- drawer buttons
-    <div class="flex absolute-right items-center">
+    <!-- 상세정보 drawer -->
+    <div
+      class="attraction-detail flex absolute-right"
+      :style="
+        this.isDetailModalVisible
+          ? 'width: 95%;'
+          : 'widht: 0%;' + ' z-index: 4;'
+      "
+    >
+      <div
+        v-if="this.isDetailModalVisible"
+        style="width: 100%; height: 100%; background-color: white"
+      >
+        <!-- 여행지 상세 정보 -->
+        <attraction-detail :attraction="this.modalContents"></attraction-detail>
+      </div>
+      <div
+        v-if="this.isDetailModalVisible"
+        class="flex absolute-top-right bg-grey-4 flat q-ma-xs"
+        style="border-radius: 10px; opacity: 0.6; z-index: 4"
+      >
+        <q-btn
+          flat
+          style="width: 37px; height: 23px; z-index: 5"
+          @click="closeDetailModal()"
+          ><q-icon name="close" size="22px"
+        /></q-btn>
+      </div>
+      <!-- drawer 여닫는 Buttons -->
+      <div class="flex absolute-right items-center">
+        <div class="q-mini-drawer-only">
+          <q-btn
+            dense
+            flat
+            unelevated
+            icon="arrow_forward_ios"
+            size="20px"
+            @click="miniState = false"
+            style="left: 100%"
+          />
+        </div>
+        <div class="q-mini-drawer-hide">
+          <q-btn
+            dense
+            flat
+            unelevated
+            icon="arrow_back_ios"
+            size="20px"
+            @click="
+              () => {
+                miniState = true
+                closeDetailModal()
+              }
+            "
+            style="left: 100%"
+          />
+        </div>
+      </div>
 
-    </div> -->
+      <!-- drawer buttons -->
+    </div>
   </q-drawer>
 </template>
 
@@ -69,8 +103,9 @@
 import { ref } from 'vue'
 import IconButton from './IconButton.vue'
 import AttractionCard from './AttractionCard.vue'
+import AttractionDetail from './AttractionDetail.vue'
 import MapList from './MapList.vue'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 const locationStore = 'locationStore'
 
@@ -78,7 +113,8 @@ export default {
   components: {
     IconButton,
     MapList,
-    AttractionCard
+    AttractionCard,
+    AttractionDetail
   },
   inject: ['iconButtons'],
   setup() {
@@ -98,12 +134,28 @@ export default {
   },
   computed: {
     ...mapState(locationStore, [
+      'isDetailModalVisible',
+      'modalContents',
       'currentLocation',
       'currentRegion',
       'attractionInfoList'
     ])
+  },
+  methods: {
+    ...mapMutations(locationStore, ['SET_IS_DETAIL_MODAL_VISIBLE']),
+    closeDetailModal() {
+      this.SET_IS_DETAIL_MODAL_VISIBLE(false)
+    }
   }
 }
 </script>
 
-<style></style>
+<style lang="scss">
+.attraction-detail {
+  height: 100%;
+  left: 100%;
+  border: solid 1px;
+  border-color: $grey-2;
+  background-color: white;
+}
+</style>
