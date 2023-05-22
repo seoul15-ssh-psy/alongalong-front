@@ -16,7 +16,11 @@
     >
       <template v-for="(item, index) in this.attractionInfoList" :key="index">
         <attraction-card
-          v-if="item.contenttypeid != 38"
+          v-if="
+            item.contenttypeid != 38 &&
+            item.contenttypeid != 15 &&
+            item.contenttypeid != 25
+          "
           v-bind:attraction="item"
         ></attraction-card>
       </template>
