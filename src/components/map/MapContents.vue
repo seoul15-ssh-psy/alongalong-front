@@ -22,6 +22,7 @@ export default {
       'currentLocation',
       'currentRegion',
       'attractionInfoList',
+      'isDetailModalVisible',
       'isDetailModalUpdated',
       'modalContents'
     ]),
@@ -178,6 +179,13 @@ export default {
       this.overlays.push(customOverlay)
     },
     async markerClickHandler(attraction) {
+      if (this.isDetailModalVisible) {
+        this.SET_IS_DETAIL_MODAL_VISIBLE(false)
+        this.SET_IS_DETAIL_MODAL_UPDATED(false)
+      }
+      this.map.setCenter(
+        new kakao.maps.LatLng(attraction.mapy, Number(attraction.mapx) - 0.002)
+      )
       this.SET_IS_DETAIL_MODAL_VISIBLE(true)
       this.SET_MODAL_CONTENTS(attraction)
       await this.callClosestSubwayStation({
