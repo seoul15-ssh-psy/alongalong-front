@@ -35,7 +35,7 @@
 </template>
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
-import Mixins from '../../api/mixins.js'
+import Mixins from '../../api/common/mixins'
 import MapDrawer from 'components/map/MapDrawer.vue'
 import MapContents from 'components/map/MapContents.vue'
 

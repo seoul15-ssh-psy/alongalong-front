@@ -29,7 +29,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import Mixins from 'src/api/mixins'
+import Mixins from '../../api/common/mixins'
 import AttractionCard from './AttractionCard.vue'
 
 const locationStore = 'locationStore'
