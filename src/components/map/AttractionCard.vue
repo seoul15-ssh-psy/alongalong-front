@@ -69,6 +69,10 @@ export default {
     ]),
     ...mapActions(locationStore, ['callClosestSubwayStation']),
     async showDetailModal() {
+      if (this.isDetailModalVisible) {
+        this.SET_IS_DETAIL_MODAL_VISIBLE(false)
+        this.SET_IS_DETAIL_MODAL_UPDATED(false)
+      }
       this.SET_IS_DETAIL_MODAL_VISIBLE(true)
       this.SET_MODAL_CONTENTS(this.attraction)
       await this.callClosestSubwayStation({

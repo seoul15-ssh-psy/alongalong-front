@@ -38,11 +38,7 @@
     <!-- 상세정보 drawer -->
     <div
       class="attraction-detail flex absolute-right"
-      :style="
-        this.isDetailModalVisible
-          ? 'width: 95%;'
-          : 'widht: 0%;' + ' z-index: 4;'
-      "
+      :style="{ width: this.visibility + '%' }"
     >
       <div
         v-if="this.isDetailModalVisible"
@@ -132,6 +128,11 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      visibility: 0
+    }
+  },
   computed: {
     ...mapState(locationStore, [
       'isDetailModalVisible',
@@ -140,6 +141,16 @@ export default {
       'currentRegion',
       'attractionInfoList'
     ])
+  },
+  watch: {
+    isDetailModalVisible() {
+      if (this.isDetailModalVisible == true) {
+        this.miniState = false
+        this.visibility = 95
+      } else {
+        this.visibility = 0
+      }
+    }
   },
   methods: {
     ...mapMutations(locationStore, [

@@ -4,7 +4,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
-import Mixins from 'src/api/mixins'
+import Mixins from '../../api/common/mixins'
 
 const locationStore = 'locationStore'
 
@@ -24,7 +24,8 @@ export default {
       'attractionInfoList',
       'isDetailModalVisible',
       'isDetailModalUpdated',
-      'modalContents'
+      'modalContents',
+      'modalContentsDetail'
     ]),
     refreshMap() {
       return this.attractionInfoList
@@ -34,6 +35,7 @@ export default {
     isDetailModalUpdated(status) {
       if (status == true) {
         this.highlightMarker()
+        this.callAttractionDetail(this.modalContents)
       } else {
         this.remove()
         this.createMarkers()
@@ -54,7 +56,10 @@ export default {
       'SET_IS_DETAIL_MODAL_UPDATED',
       'SET_MODAL_CONTENTS'
     ]),
-    ...mapActions('locationStore', ['callClosestSubwayStation']),
+    ...mapActions('locationStore', [
+      'callClosestSubwayStation',
+      'callAttractionDetail'
+    ]),
     loadScript() {
       const script = document.createElement('script')
       script.src = `${process.env.KAKAO_API}`
@@ -88,7 +93,6 @@ export default {
           attraction.contenttypeid != 15 &&
           attraction.contenttypeid != 25
         ) {
-          //console.log(attraction)
           // 마커가 표시될 위치입니다
           if (target != null && attraction.contentid == target.contentid) {
             this.create(attraction, true)
