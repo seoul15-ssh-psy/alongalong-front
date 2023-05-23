@@ -1,4 +1,8 @@
-import { getLocationBasedList, getAttractionCategory } from 'src/api/location'
+import {
+  getLocationBasedList,
+  getAttractionCategory,
+  getAttractionDetail
+} from 'src/api/location'
 import { location2Region, closestSubwayStation } from 'src/api/map'
 
 const locationStore = {
@@ -10,6 +14,7 @@ const locationStore = {
     isDetailModalVisible: false,
     isDetailModalUpdated: false,
     modalContents: {},
+    modalContentsDetail: {},
     subwayStation: { place_name: '신림역 2호선', distance: 1000 }
   },
   getters: {
@@ -19,6 +24,7 @@ const locationStore = {
     getIsDetailModalVisible: state => state.isDetailModalVisible,
     getIsDetailModalVisible: state => state.isDetailModalUpdated,
     getModalContents: state => state.modalContents,
+    getModalContentsDetail: state => state.modalContentsDetail,
     getSubwayStation: state => state.subwayStation
   },
   mutations: {
@@ -41,6 +47,9 @@ const locationStore = {
     },
     SET_MODAL_CONTENTS: (state, attraction) => {
       state.modalContents = attraction
+    },
+    SET_MODAL_CONTENTS_DETAIL: (state, attractionDetail) => {
+      state.modalContentsDetail = attractionDetail
     },
     SET_SUBWAY_STATION: (state, subwayStation) => {
       state.subwayStation = subwayStation
@@ -72,7 +81,6 @@ const locationStore = {
       await location2Region(
         locationInfo,
         result => {
-          console.log('callLocation2Region')
           commit('SET_CURRENT_REGION', result.data.documents[0])
         },
         error => {
@@ -84,7 +92,6 @@ const locationStore = {
       await getLocationBasedList(
         locationInfo,
         result => {
-          console.log('callLocationBasedList')
           const list = result.data.response.body.items.item
           const sortedByDistance = list.sort((a, b) => {
             a.distance =
@@ -104,6 +111,19 @@ const locationStore = {
             return a.distance - b.distance
           })
           commit('SET_ATTRACTION_INFO_LIST', sortedByDistance)
+        },
+        error => {
+          console.warn(error)
+        }
+      )
+    },
+    async callAttractionDetail({ commit, state }, attraction) {
+      //console.log(attraction)
+      await getAttractionDetail(
+        attraction,
+        result => {
+          const data = result.data.response.body.items.item[0]
+          commit('SET_MODAL_CONTENTS_DETAIL', data)
         },
         error => {
           console.warn(error)
