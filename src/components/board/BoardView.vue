@@ -117,19 +117,24 @@ export default {
     moveModifyArticle() {
       this.$router.push({
         name: 'boardmodify',
-        params: { articleno: this.article.articleno }
+        params: { articleno: this.article.articleno },
+        query: {pgno:this.$route.query.pgno}
       })
     },
     deleteArticle() {
       if (confirm('정말로 삭제?')) {
         this.$router.push({
           name: 'boarddelete',
-          params: { articleno: this.article.articleno }
+          params: { articleno: this.article.articleno },
+          query: {pgno: this.$route.query.pgno} 
         })
       }
     },
     moveList() {
-      this.$router.push({ name: 'boardlist' })
+      this.$router.push({
+        name: 'boardlist',
+        query: { pgno: this.$route.query.pgno }
+      })
     },
     convertTime(regtime) {
       let time = new Date() - new Date(regtime)

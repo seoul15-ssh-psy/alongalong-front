@@ -151,7 +151,10 @@ export default {
       )
     },
     moveList() {
-      this.$router.replace({ name: 'boardlist' })
+      this.$router.replace({
+        name: 'boardlist',
+        query: { pgno: this.$route.query.pgno }
+      })
     }
   }
 }

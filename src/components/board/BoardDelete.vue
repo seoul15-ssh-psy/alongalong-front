@@ -23,7 +23,7 @@ export default {
         }
         alert(msg);
         // 현재 route를 /list로 변경.
-        this.$router.push({ name: "boardlist" });
+        this.$router.push({ name: "boardlist" ,query:{pgno: 1}});
       },
       (error) => {
         console.log(error);

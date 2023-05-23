@@ -23,7 +23,7 @@
     </table>
     <button @click="moveWrite()">글쓰기</button>
     <div class="q-pa-lg flex flex-center">
-      <q-pagination v-model="pg" :min="from" :max="to" @click="movePage()" />
+      <q-pagination v-model="pg" :min="from" :max="to" ref="hello" />
     </div>
   </div>
   <button @click="what">ㅇㅈㅇㅈㅇ</button>
@@ -32,12 +32,9 @@
 
 <script>
 import { listArticle, getTotalCount } from '../../api/board'
-import { useQuasar } from 'quasar'
-import { computed } from 'vue'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { mapMutations } from 'vuex'
+import { ref} from 'vue'
 import memberStore from 'src/store/modules/memberStore'
-
 
 export default {
   name: 'BoardList',
@@ -53,25 +50,37 @@ export default {
       ],
       registTimes: [],
       pg: this.$route.query.pgno,
-      spp: 10,
+      spp: 3,
       key: null,
       word: null,
       totalCount: 0,
       totalPage: 0,
-      from: 0,
-      to: 0,
-      pages: []
+      from: this.$route.query.pgno - ((this.$route.query.pgno-1) % 5),
+      to: (Number(this.$route.query.pgno) + (5 - ((this.$route.query.pgno-1) % 5))-1),
+      pages: [],
     }
   },
+  watch : {
+    pg(newpg) { 
+      this.$router.push({
+			  name: 'boardlist',
+			  query: { pgno: this.pg }
+		  });
+    },
+  },
   mounted() {
+    this.$refs.hello.set(this.pg);
+  },
+	
+  created() {
     let param = {
-      pg: this.$route.query.pgno,
+      pg: this.pg,
       spp: this.spp,
       key: this.key,
       word: this.word,
       totalCount: this.totalCount,
-      from: this.from,
-      to: this.to
+      from: this.pg - ((this.pg-1) % 5),
+      to: (Number(this.pg) + (5 - ((this.pg-1) % 5))-1),
     }
 
     listArticle(
@@ -91,18 +100,17 @@ export default {
 	
     getTotalCount(
       param,
-		({ data }) => {
-			setTimeout(1000);
+      ({ data }) => {
+      
         this.totalCount = data.totalCount
-        console.log('값: ' + this.totalCount)
-        this.totalPage = Math.ceil(this.totalCount / 10)
+        this.totalPage = Math.ceil(this.totalCount / this.spp)
 
-        this.from = this.pg - (this.pg % 5) + 1
-        this.to = this.pg + (5 - (this.pg % 5))
+        this.from = this.pg - ((this.pg-1) % 5)
+        this.to = (Number(this.pg) + (5 - ((this.pg-1) % 5)))-1
+  
         if (this.to > this.totalPage) {
           this.to = this.totalPage
         }
-        console.log(this.from + '~' + this.to + ' , ' + this.totalPage)
         let j = 0
         for (let i = this.from; i <= this.to; i++) {
           this.pages[j++] = i
@@ -113,32 +121,28 @@ export default {
       }
     )
   },
-	
-  created() {},
   
   methods: {
+
     ...mapMutations(memberStore, ['OPEN_LOGIN_MODAL', 'CLOSE_LOGIN_MODAL']),
-	  movePage() { 
-		  this.$router.push({
-			  name: 'boardlist',
-			  query: { pgno: this.pg }
-		  });
-		  
-	  },
+    
     moveWrite() {
       this.$router
         .push({
           name: 'boardwrite'
+          , query: {pgno: this.pg}
         })
         .then(() => {})
         .catch(() => {
           this.$emit('showLogInModal')
         })
     },
+
     viewArticle(article) {
       this.$router.push({
         name: 'boardview',
-        params: { articleno: article.articleno }
+        params: { articleno: article.articleno },
+        query: {pgno: this.pg}
       })
     },
     convertTime(regtime) {
@@ -177,7 +181,7 @@ export default {
       }
 	  },
 	  what() { 
-		  console.log(this.pg);
+      console.log("현재 페이지는: " + this.pg);
 	  }
 	
   }

@@ -46,7 +46,6 @@ function downloadFile(articleno,success,fail) {
 }
 
 function getTotalCount(param, success, fail) { 
-  console.log("여기 들어왔어요 1");
   api.get(`/board/getTotalCount`, {params:param}).then(success).catch(fail);
 }
 
