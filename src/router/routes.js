@@ -24,8 +24,10 @@ const onlyAuthUser = async (to, from, next) => {
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/map/MapLayout.vue'),
-    children: [{ path: '', component: () => import('pages/TestPageSSH.vue') }]
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/TestPageSSH.vue') }
+    ]
   },
 
   {
@@ -73,7 +75,6 @@ const routes = [
       }
     ]
   },
-
   // Always leave this as last one,
   // but you can also remove it
   {
