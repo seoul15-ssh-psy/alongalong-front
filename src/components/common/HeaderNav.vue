@@ -36,7 +36,7 @@
       </div>
 
       <!--작은 메뉴-->
-      <div class="lt-sm full-width q-pb-sm  fixed-top" :style="[{zIndex:'5'},{backgroundColor:'white'}]">
+      <div class="lt-sm full-width q-pb-sm fixed-top" :style="[{zIndex:'5'},{backgroundColor:'white'},{boxShadow:headerNavShadow}]">
         <div class="row justify-center items-center"> 
           <img id="logoImg2" src="../../../public/icons/mainIcon2.png" @click="routerPush('main')" class="clickable">
           <q-avatar class = "absolute-right q-mt-xs q-mr-sm" size="40px">
@@ -134,7 +134,6 @@ export default {
       } else {
         this.headerNavMenuSize = 15;
         this.headerNavLogoPad = 20;
-
       }
       this.headerNavMenuPad = screenWidth / 30;
     },
@@ -155,16 +154,9 @@ export default {
     },
 
     ...mapActions(memberStore, ["userLogout"]),
-    // ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
+
     onClickLogout() {
-      // this.SET_IS_LOGIN(false);
-      // this.SET_USER_INFO(null);
-      // sessionStorage.removeItem("access-token");
-      // if (this.$route.path != "/") this.$router.push({ name: "main" });
       console.log(this.userInfo.userid);
-      //vuex actions에서 userLogout 실행(Backend에 저장 된 리프레시 토큰 없애기
-      //+ satate에 isLogin, userInfo 정보 변경)
-      // this.$store.dispatch("userLogout", this.userInfo.userid);
       this.userLogout(this.userInfo.userid);
       sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
       sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
@@ -223,8 +215,8 @@ export default {
     padding-bottom:20px;
   }
 
-  .headerNavMenu:hover,.headerNavMenu2:hover{
-    color: black;
+  .headerNavMenu:hover, .headerNavMenu2:hover{
+    color: black !important;
   }
 
   .headerNavMenu2{
@@ -240,7 +232,8 @@ export default {
   }
 
   *:focus{
-    outline:1000cap;  }
+    outline:1000cap;  
+  }
 
   #logInModal{
     position: fixed;
