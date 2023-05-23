@@ -13,7 +13,11 @@
       <!-- 관광지 타입, 관광지 명 -->
       <div class="row q-ma-md">
         <div class="text-subtitle1 text-grey">
-          {{ this.contentType[attraction.contenttypeid] }}
+          {{
+            this.contentType[attraction.contenttypeid] +
+            '/' +
+            this.modalContentsCategory
+          }}
         </div>
         <div
           class="text-h5 text-bold text-black"
@@ -85,10 +89,15 @@ export default {
     }
   },
   computed: {
-    ...mapState(locationStore, ['subwayStation', 'modalContentsDetail'])
+    ...mapState(locationStore, [
+      'subwayStation',
+      'modalContentsDetail',
+      'modalContentsCategory'
+    ])
   },
   watch: {
     modalContentsDetail(attractionDetail) {
+      console.log(attractionDetail)
       if (attractionDetail.contenttypeid == 39) {
         this.detailContents = [
           ['운영시간', [attractionDetail.opentimefood]],
@@ -104,8 +113,23 @@ export default {
           ],
           ['메뉴', [attractionDetail.treatmenu]]
         ]
+      } else if (attractionDetail.contenttypeid == 32) {
+        this.detailContents = [
+          ['체크인', [attractionDetail.checkintime]],
+          ['체크아웃', [attractionDetail.checkouttime]],
+          ['편의시설', [attractionDetail.subfacility]],
+          ['식당', [attractionDetail.foodplace]],
+          [
+            '정보',
+            [
+              '취사: ' + attractionDetail.chkcooking,
+              '주차: ' + attractionDetail.infocenterlodging
+            ]
+          ],
+          ['예약사이트', [attractionDetail.reservationurl]],
+          ['예약 문의', [attractionDetail.reservationlodging]]
+        ]
       }
-      console.log(this.detailContents)
     }
   },
   methods: {
