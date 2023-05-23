@@ -3,6 +3,7 @@
     <div class=" gt-xs" id="upperParent1" :style="{paddingBottom:upperParentPB+'px'}">
         <!-- 배경 색깔 + 텍스트-->
         <div class="moveArea1" :style="[{backgroundColor:bgColor },{paddingLeft:upperColorPL+'px'},{paddingBottom:upperColorPB+'px'}]" id="upperColor">
+            <q-chip square class="q-mb-sm" color = "black" text-color="white" size="md"><div id="chip" v-text="chipText"></div></q-chip>
             <p class="upperText1 moveArea2" :style="{fontSize:upperText1Size+'px'}" v-html="slideText" ></p>
         </div>
         <!-- 하단 숫자 01/05 & 재생, 앞으로 가기, 뒤로 가기-->
@@ -29,14 +30,8 @@
             :style="{width:imgWidth+'px'}"
             class="transparent moveArea2"
             >
-            <q-carousel-slide name="imgList1" class="transparent padding-0" >
-                <img src="../../../public/attraction/upperIntro/skyrim(1).jpg" class="img rounded-borders">
-            </q-carousel-slide>
-            <q-carousel-slide name="imgList2" class="transparent  padding-0">
-                <img src="../../../public/attraction/upperIntro/skyrim(2).jpg" class="img rounded-borders">
-            </q-carousel-slide>
-            <q-carousel-slide name="imgList3" class="transparent  padding-0">
-                <img src="../../../public/attraction/upperIntro/skyrim(3).jpg" class="img rounded-borders">
+            <q-carousel-slide v-for="img in imgList" v-bind:key="img" :name="img" class="padding-0">
+                <img :src="require('../../../public/attraction/upperIntro/'+img+'.jpg')" class="img2 rounded-borders">
             </q-carousel-slide>
         </q-carousel>
         <!--빙글빙글 돌아가는 텍스트 이미지-->
@@ -53,20 +48,17 @@
             id = "upperImgList2"
             class="transparent"
             >
-                <q-carousel-slide name="imgList1" class=" padding-0">
-                    <img src="../../../public/attraction/upperIntro/skyrim(1).jpg" class="img2 rounded-borders">
-                </q-carousel-slide>
-                <q-carousel-slide name="imgList2" class="transparent padding-0">
-                    <img src="../../../public/attraction/upperIntro/skyrim(2).jpg" class="img2 rounded-borders">
-                </q-carousel-slide>
-                <q-carousel-slide name="imgList3" class="transparent padding-0">
-                    <img src="../../../public/attraction/upperIntro/skyrim(3).jpg" class="img2 rounded-borders">
+                <q-carousel-slide v-for="img in imgList" v-bind:key="img" :name="img" class="padding-0">
+                    <img :src="require('../../../public/attraction/upperIntro/'+img+'.jpg')" class="img2 rounded-borders">
                 </q-carousel-slide>
             </q-carousel>
             <q-linear-progress :value="progress" size="3.5px" color="black" class="q-mt-sm" instant-feedback="true" animation-speed="500"/>
             <div class="row">
-                <p class="upperText2 col-11" v-html="slideText"></p>
-                <q-btn v-on:click="imgListToggle" :icon="toggleIcon" class="upperImgBtn col-1 q-mb-xl" :size="upperImgBtnSize+'px'" padding="3px" flat ></q-btn>
+                <div>        
+                    <q-chip square color = "black" text-color="white" id="chip" size="sm"><div id="chip" v-text="chipText"></div></q-chip>
+                    <p class="upperText2 col-11" v-html="slideText"></p>
+                </div>
+                <q-btn v-on:click="imgListToggle" :icon="toggleIcon" class="upperImgBtn2 col-1 q-mb-xl" :size="upperImgBtnSize+'px'" padding="3px" flat ></q-btn>
             </div>
         </div>
     </div>
@@ -78,9 +70,37 @@ import { computed } from 'vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 let toggleIconList = ["pause_circle_outline", "play_circle_outline"];
-let slideList = [ref('imgList1'), ref('imgList2'), ref('imgList3')];
-let upperTextContent = ["밤 나들이 <br>야간 개장으로 만나는 <br>고즈넉~","여기는<br> 또 어떤 느낌의 <br>여행지일까요 ㅎㅎ","여기는<br> 스카이림 <br>노드의 땅"];
-let bgColorList = ['#FFDAE177','#AFEEEE55','#E6E6FAAA'];
+let slideList = [
+    ref('cheongsan'),
+    ref('deokyoo'),
+    ref('kyeonbok'),
+    ref('oonmoon'),
+    ref('sosae'),
+    ref('yongbi'),
+    ref('expo'),
+    ref('nospam')
+];
+let upperTextContent = [
+    "아시아 최초의 슬로시티 <br> 청산도에서  <br>느림의 미학을 배워요~",
+    "눈꽃이 아름다운<br> 덕유산 설천봉에서 산책해요<br><br> ",
+    "경복궁에서 <br> 이쁜 한복입고 <br>인생샷 얻어가자!",
+    "분위기 있는 <br>운문사로 놀러가자!  <br>나무아비타불~",
+    "십장 폭포를 구경할 수 있는<br> 담양 소쇄원에서 <br>힐링하는건 어때요?",
+    "한국의 스위스!<br> 용비지에서 느끼는 <br>유럽의 향기",
+    "대전 엑스포 <br>추억의 꿈돌이도 보고 <br>엑스포 다리도 건너고",
+    "조선의 대표적인 읍성<br>해미읍성은 <br>어떤 곳일까?",
+];
+let chipTextList = [
+    "슬로시티",
+    "눈꽃맞이",
+    "인생샷",
+    "운문사",
+    "폭포 소쇄원",
+    "K-SWISS",
+    "추억의 꿈돌이",
+    "햄이..읎엉 ㅎㅎ",
+]
+let bgColorList = ['#AFCB3D60','#BEEBFD67','#FFF77FA9','#CB9FFD3A','#AFCB3D69','#9EC5D555','#C9BA9B66','#EADB8077'];
 
 export default {
 
@@ -92,16 +112,18 @@ export default {
             interval: 0,
             upperText1Size: 30,
             i: 0,
-            max: 3,
+            max: 8,
             toggleOn: true,
             goLeft: false,
             goRight: false,
-            bgColor: '#FFDAE188',
+            bgColor: '#AFCB3D70',
             imgWidth:100,
             upperColorPL:0,
             upperColorPB: 100,
             upperBarPR: 100,
             toggleIcon: "pause_circle_outline",
+            imgList: ["cheongsan", "deokyoo", "kyeonbok", "oonmoon", "sosae", "yongbi", "expo", "nospam"],
+            chipText:"슬로시티",
         };
     },
     created(){ 
@@ -137,6 +159,7 @@ export default {
                 this.slideText = upperTextContent[this.i];
                 this.bgColor = bgColorList[this.i];
                 this.goLeft = false;
+                this.chipText = chipTextList[this.i];
                 return;
             }
             if (this.goRight) { 
@@ -145,6 +168,8 @@ export default {
                 this.slide = slideList[this.i];
                 this.slideText = upperTextContent[this.i];
                 this.bgColor = bgColorList[this.i];
+                this.chipText = chipTextList[this.i];
+
                 this.goRight = false;
                 return;
             }
@@ -155,6 +180,8 @@ export default {
                 this.slide = slideList[this.i];
                 this.slideText = upperTextContent[this.i];
                 this.bgColor = bgColorList[this.i];
+                this.chipText = chipTextList[this.i];
+
                 return;
             }
         }, 100);
@@ -251,7 +278,6 @@ export default {
 .upperText2{
     font-size:1.3em;
     margin: 0;
-    margin-top: 10px;
     font-weight: 600;
 }
 .moveArea1{
@@ -298,6 +324,11 @@ export default {
     100% {
         transform: rotate(360deg);
     }
+}
+.upperImgBtn2{
+    position: absolute;
+    right:5px;
+    margin-top: 5px;
 }
 
 </style>
