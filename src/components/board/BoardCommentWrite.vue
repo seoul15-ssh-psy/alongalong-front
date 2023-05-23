@@ -50,10 +50,11 @@ export default {
       !this.writeComment.content &&
         ((msg = '내용을 입력해주세요'),
         (err = false),
-        this.$refs.content.focus())
+          this.$refs.content.focus())
       if (!err) alert(msg)
       else {
-        this.registComment()
+        this.registComment();
+
       }
     },
 
@@ -71,6 +72,8 @@ export default {
             msg = '등록이 완료되었습니다.'
           }
           alert(msg)
+          location.reload();
+
         },
         error => {
           console.log(error)

@@ -60,6 +60,7 @@
       <button @click="moveList">목록보기</button>
     </div>
     <board-comment-write v-if="isLogin" :articleno="this.$route.params.articleno"></board-comment-write>
+    <board-comment-list :articleno="this.$route.params.articleno"></board-comment-list>
   </div>
 </template>
 
