@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ paddingTop: '100px' }" id="tableView">
+  <div :style="{ paddingTop: '100px' }" id="myPage">
     <p>{{ userInfo.userid }}</p>
     <p>{{ userInfo.username }}</p>
     <p>{{ userInfo.email }}</p>
@@ -25,7 +25,7 @@ export default {
   },
   
   created() {
-    
+
   },
 
   methods: {
