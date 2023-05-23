@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { writeArticle } from '../../api/board'
+import { writeArticle , writeArticle2} from '../../api/board'
 import { useQuasar } from 'quasar'
 import { computed } from 'vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
@@ -117,21 +117,38 @@ export default {
         subject: this.article.subject,
         content: this.article.content
       }
-      writeArticle(
-        param,
-        this.file,
-        ({ data }) => {
-          let msg = '등록 처리시 문제가 발생했습니다.'
-          if (data === 'success') {
-            msg = '등록이 완료되었습니다.'
+      if (this.file != null) {
+        writeArticle(
+          param,
+          this.file,
+          ({ data }) => {
+            let msg = '등록 처리시 문제가 발생했습니다.'
+            if (data === 'success') {
+              msg = '등록이 완료되었습니다.'
+            }
+            alert(msg)
+            this.moveList()
+          },
+          error => {
+            console.log(error)
           }
-          alert(msg)
-          this.moveList()
-        },
-        error => {
-          console.log(error)
-        }
-      )
+        )
+      } else { 
+        writeArticle2(
+          param,
+          ({ data }) => {
+            let msg = '등록 처리시 문제가 발생했습니다.'
+            if (data === 'success') {
+              msg = '등록이 완료되었습니다.'
+            }
+            alert(msg)
+            this.moveList()
+          },
+          error => {
+            console.log(error)
+          }
+        )
+      }
     },
     moveList() {
       this.$router.replace({
