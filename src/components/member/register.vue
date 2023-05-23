@@ -139,23 +139,25 @@ export default {
   methods: {
     ...mapActions(memberStore, ["userRegister"]),
     async goRegister() {
-      await this.userRegister(this.user);
-      if (this.registerSuccess) {
-        alert("회원가입에 성공했습니다");
-        this.$parent.hideRegisterModal();
-      } else { 
-
+      if (this.alertMsg != "") {
+        await this.userRegister(this.user);
+        if (this.registerSuccess) {
+          alert("회원가입에 성공했습니다");
+          this.$parent.hideRegisterModal();
+        } else {
+        }
       }
     },
     hideRegisterModal() { 
       this.$parent.hideRegisterModal();
     },
     checkRegistForm() { 
-      if (this.user.userpwd != "" && this.userpwdchk != "" && this.user.userpwd != this.userpwdchk) {
+      if (this.user.userpwd != "" && this.userpwdchk != "" && this.user.userpwd != null && this.userpwdchk != null && this.user.userpwd != this.userpwdchk) {
         this.alertMsg = "비밀번호와 비밀번호 확인을 일치시켜주세요";
-      }
-      else if (this.user.email != null && !emailRegex.test(this.user.email)) {
+      } else if (this.user.email != "" && this.user.email != null && !emailRegex.test(this.user.email)) {
         this.alertMsg = "이메일 형식을 일치시켜주세요";
+      } else if(this.user.userpwd == "" || this.userpwdchk == "" || this.user.userpwd == null || this.userpwdchk == null || this.user.username == null || this.user.username == "" ||this.user.email == "" || this.user.email == null ){
+        this.alertMsg = "모든 정보를 입력해주세요";
       } else { 
         this.alertMsg = "";
       }
