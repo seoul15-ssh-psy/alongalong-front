@@ -59,10 +59,12 @@
       </button>
       <button @click="moveList">목록보기</button>
     </div>
+    <board-comment></board-comment>
   </div>
 </template>
 
 <script>
+import BoardComment from "src/components/board/BoardComment.vue"
 import { getArticle } from '../../api/board'
 import { mapState } from 'vuex'
 
@@ -71,6 +73,7 @@ const imgPrefix = ['jpg', 'png', 'JPG', 'PNG']
 
 export default {
   name: 'BoardDetail',
+  components: { BoardComment },
   data() {
     return {
       article: {},
@@ -143,7 +146,7 @@ export default {
         return Math.floor(time / 60000) + ' 분 전'
       }
       //23시간 전
-      else if (time < 82800000) {
+      else if (time < 86399999) {
         return Math.floor(time / 3600000) + '시간 전'
       }
       //6일 전

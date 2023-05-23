@@ -155,7 +155,7 @@ export default {
         return Math.floor(time / 60000) + ' 분 전'
       }
       //23시간 전
-      else if (time < 82800000) {
+      else if (time < 86399999) {
         return Math.floor(time / 3600000) + '시간 전'
       }
       //6일 전
