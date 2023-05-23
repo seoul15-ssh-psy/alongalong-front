@@ -7,21 +7,20 @@
       <p class="center" style="text-align: center; margin:0px; margin-top: 5px; font-weight: 700; font-size: 10px;">Along Along에 오신 것을 환영합니다</p>
     
     
-  <div class="row q-mt-lg" >
+  <div class="row q-mt-sm" >
     <div class="col" cols="8">
-      <div class="text-center mt-3" style="max-width: 40rem;" align="left">
+      <div class="text-center" style="max-width: 40rem;" align="left">
         <form class="text-left">
           <div class="alert alert-danger" role="alert" v-if="registerError">
             아이디 또는 비밀번호를 확인하세요.
           </div>
-
+          <p ref="alertSlot" v-text="alertMsg" style="width: 18rem; font-weight: 550; font-size: 8px; color: red;" class="center" v-if="alertMsg !=''" >
+          </p>
           <div class="form-group">
-            
             <q-input v-model="user.userid" label="ID" required @keyup.enter="register"  class="center" bg-color="grey-3" outlined
                 style="
-                margin-top: 20px; 
+                margin-top: 5px; 
                 width: 18rem;
-                
                 ">
               <template v-slot:prepend>
                 <q-icon name="person" />
@@ -43,12 +42,12 @@
                 <q-icon name="lock" />
               </template>
               <template v-slot:append>
-                <q-icon name="close" @click="user.userpwd = ''" class="cursor-pointer" />
+                <q-icon name="close" @click="user.userpwd = ''" class="cursor-pointer" ref="pwdSlot"/>
               </template>
             </q-input>
           </div>
           <div class="form-group">
-            <q-input v-model="user.userpwdchk" label="Password Check" required @keyup.enter="register"  class="center" bg-color="grey-3" outlined type="password"
+            <q-input v-model="userpwdchk" label="Password Check" required @keyup.enter="register"  class="center" bg-color="grey-3" outlined type="password"
                 style="
                 margin-top: 10px; 
                 width: 18rem;
@@ -57,7 +56,7 @@
                 <q-icon name="lock" />
               </template>
               <template v-slot:append>
-                <q-icon name="close" @click="user.userpwdchk = ''" class="cursor-pointer" />
+                <q-icon name="close" @click="userpwdchk = ''" class="cursor-pointer" />
               </template>
             </q-input>
           </div>
@@ -102,6 +101,7 @@
 import { mapState, mapActions } from "vuex";
 
 const memberStore = "memberStore";
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default {
   name: "registerD",
@@ -114,10 +114,25 @@ export default {
         username: null,
         email: null,
       },
-      userpwdchk:null,
+      userpwdchk: null,
+      alertMsg:"",
     };
   },
-  
+  watch: {
+    'user.userpwd': function(val) {
+      this.checkRegistForm();
+    },
+    userpwdchk: function (val) { 
+      this.checkRegistForm();
+    },
+    'user.email': function(val) {
+      this.checkRegistForm();
+    },'user.userid': function(val) {
+      this.checkRegistForm();
+    },'user.username': function(val) {
+      this.checkRegistForm();
+    },
+  },
   computed: {
     ...mapState(memberStore, ["registerSuccess", "registerError"]),
   },
@@ -135,6 +150,16 @@ export default {
     hideRegisterModal() { 
       this.$parent.hideRegisterModal();
     },
+    checkRegistForm() { 
+      if (this.user.userpwd != "" && this.userpwdchk != "" && this.user.userpwd != this.userpwdchk) {
+        this.alertMsg = "비밀번호와 비밀번호 확인을 일치시켜주세요";
+      }
+      else if (this.user.email != null && !emailRegex.test(this.user.email)) {
+        this.alertMsg = "이메일 형식을 일치시켜주세요";
+      } else { 
+        this.alertMsg = "";
+      }
+    }
   },
 };
 
