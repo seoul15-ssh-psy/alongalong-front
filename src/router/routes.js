@@ -75,6 +75,16 @@ const routes = [
       }
     ]
   },
+
+  {
+    path: '/myPage',
+    component: () => import('layouts/MainLayout.vue'),
+    redirect: "/myPage/view",
+    children: [
+        { name:"mypageview",path: 'view', component: () => import('../components/member/myPage') },
+    ]
+  },
+
   // Always leave this as last one,
   // but you can also remove it
   {
