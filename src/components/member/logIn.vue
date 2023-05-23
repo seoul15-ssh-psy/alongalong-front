@@ -78,7 +78,7 @@ export default {
       if (this.isLogin) {
         await this.getUserInfo(token);
         // console.log("4. confirm() userInfo :: ", this.userInfo);
-        console.log("after"+this.isLogin)
+        console.log("after" + this.isLogin);
         this.$parent.hideLogInModal();
       }
     },

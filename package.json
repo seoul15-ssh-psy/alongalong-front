@@ -18,10 +18,12 @@
     "dotenv": "^16.0.3",
     "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",
+    "mitt": "^3.0.0",
     "quasar": "^2.6.0",
     "vue": "^3.0.0",
     "vue-geolocation-api": "^0.1.21",
-    "vue-router": "^4.0.0",
+    "vue-router": "^4.2.1",
+    "vue-template-compiler": "^2.7.14",
     "vuex": "^4.1.0",
     "vuex-persistedstate": "^4.1.0"
   },
