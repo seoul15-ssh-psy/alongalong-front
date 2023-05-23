@@ -15,6 +15,7 @@ const locationStore = {
     isDetailModalUpdated: false,
     modalContents: {},
     modalContentsDetail: {},
+    modalContentsCategory: {},
     subwayStation: { place_name: '신림역 2호선', distance: 1000 }
   },
   getters: {
@@ -50,6 +51,9 @@ const locationStore = {
     },
     SET_MODAL_CONTENTS_DETAIL: (state, attractionDetail) => {
       state.modalContentsDetail = attractionDetail
+    },
+    SET_MODAL_CONTENTS_CATEGORY: (state, attractionCategory) => {
+      state.modalContentsCategory = attractionCategory
     },
     SET_SUBWAY_STATION: (state, subwayStation) => {
       state.subwayStation = subwayStation
@@ -130,13 +134,13 @@ const locationStore = {
         }
       )
     },
-    async callAttractionCategory(category) {
+    async callAttractionCategory({ commit }, category) {
       //console.log(category)
       await getAttractionCategory(
         category,
         result => {
-          result = result.data.response.body.items.item[0].name
-          return result
+          const data = result.data.response.body.items.item[0].name
+          commit('SET_MODAL_CONTENTS_CATEGORY', data)
         },
         error => {
           console.warn(error)

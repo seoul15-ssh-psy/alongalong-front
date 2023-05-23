@@ -36,6 +36,7 @@ export default {
       if (status == true) {
         this.highlightMarker()
         this.callAttractionDetail(this.modalContents)
+        this.callAttractionCategory(this.modalContents)
       } else {
         this.remove()
         this.createMarkers()
@@ -58,7 +59,8 @@ export default {
     ]),
     ...mapActions('locationStore', [
       'callClosestSubwayStation',
-      'callAttractionDetail'
+      'callAttractionDetail',
+      'callAttractionCategory'
     ]),
     loadScript() {
       const script = document.createElement('script')
