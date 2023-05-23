@@ -1,8 +1,8 @@
 <template>
   <div :style="{ paddingTop: '100px' }" id="tableWrite">
-    <P>Board 작성칸입니다</P>
+    <P>Hotplace 작성칸입니다</P>
 
-    <form action="./boardwrite" method="post" @submit="onSubmit">
+    <form action="./hotplacewrite" method="post" @submit="onSubmit">
       <table>
         <tr>
           <td>작성자</td>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { writeArticle , writeArticle2} from '../../api/board'
+import { writeArticle , writeArticle2} from '../../api/hotplace'
 import { useQuasar } from 'quasar'
 import { computed } from 'vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
@@ -59,7 +59,7 @@ import { mapState, mapActions } from 'vuex'
 const memberStore = 'memberStore'
 
 export default {
-  name: 'BoardWrite',
+  name: 'HotplaceWrite',
   data() {
     return {
       article: {
@@ -152,7 +152,7 @@ export default {
     },
     moveList() {
       this.$router.replace({
-        name: 'boardlist',
+        name: 'hotplacelist',
         query: { pgno: this.$route.query.pgno }
       })
     }

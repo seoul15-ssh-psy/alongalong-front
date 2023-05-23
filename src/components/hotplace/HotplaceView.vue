@@ -58,24 +58,24 @@
       </button>
       <button @click="moveList">목록보기</button>
     </div>
-    <board-comment-write v-if="isLogin" :articleno="this.$route.params.articleno"></board-comment-write>
-    <board-comment-list :articleno="this.$route.params.articleno"></board-comment-list>
+    <hotplace-comment-write v-if="isLogin" :articleno="this.$route.params.articleno"></hotplace-comment-write>
+    <hotplace-comment-list :articleno="this.$route.params.articleno"></hotplace-comment-list>
   </div>
 </template>
 
 <script>
-import BoardCommentWrite from "src/components/board/BoardCommentWrite.vue"
-import BoardCommentList from "src/components/board/BoardCommentList.vue"
+import HotplaceCommentWrite from "src/components/hotplace/HotplaceCommentWrite.vue"
+import HotplaceCommentList from "src/components/hotplace/HotplaceCommentList.vue"
 import { convertTime } from '../../api/common/timeCal'
-import { getArticle } from '../../api/board'
+import { getArticle } from '../../api/hotplace'
 import { mapState } from 'vuex'
 
 const memberStore = 'memberStore'
 const imgPrefix = ['jpg', 'png', 'JPG', 'PNG']
 
 export default {
-  name: 'BoardDetail',
-  components: { BoardCommentWrite , BoardCommentList},
+  name: 'HotplaceDetail',
+  components: { HotplaceCommentWrite , HotplaceCommentList},
   data() {
     return {
       article: {},
@@ -116,7 +116,7 @@ export default {
   methods: {
     moveModifyArticle() {
       this.$router.push({
-        name: 'boardmodify',
+        name: 'hotplacemodify',
         params: { articleno: this.article.articleno },
         query: {pgno:this.$route.query.pgno}
       })
@@ -124,7 +124,7 @@ export default {
     deleteArticle() {
       if (confirm('정말로 삭제?')) {
         this.$router.push({
-          name: 'boarddelete',
+          name: 'hotplacedelete',
           params: { articleno: this.article.articleno },
           query: {pgno: this.$route.query.pgno} 
         })
@@ -132,7 +132,7 @@ export default {
     },
     moveList() {
       this.$router.push({
-        name: 'boardlist',
+        name: 'hotplacelist',
         query: { pgno: this.$route.query.pgno }
       })
     },

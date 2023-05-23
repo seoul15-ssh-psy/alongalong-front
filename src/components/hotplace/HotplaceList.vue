@@ -30,13 +30,13 @@
 
 </template>
 <script>
-import { listArticle, getTotalCount } from '../../api/board'
+import { listArticle, getTotalCount } from '../../api/hotplace'
 import { mapMutations } from 'vuex'
 import { ref} from 'vue'
 import memberStore from 'src/store/modules/memberStore'
 import { convertTime } from '../../api/common/timeCal'
 export default {
-  name: 'BoardList',
+  name: 'HotplaceList',
   data() {
     return {
       articles: [],
@@ -62,7 +62,7 @@ export default {
   watch : {
     pg(newpg) { 
       this.$router.push({
-			  name: 'boardlist',
+			  name: 'hotplacelist',
 			  query: { pgno: this.pg }
 		  });
     },
@@ -129,7 +129,7 @@ export default {
     moveWrite() {
       this.$router
         .push({
-          name: 'boardwrite'
+          name: 'hotplacewrite'
           , query: {pgno: this.pg}
         })
         .then(() => {})
@@ -140,7 +140,7 @@ export default {
 
     viewArticle(article) {
       this.$router.push({
-        name: 'boardview',
+        name: 'hotplaceview',
         params: { articleno: article.articleno },
         query: {pgno: this.pg}
       })

@@ -4,12 +4,12 @@
 </template>
 
 <script>
-import { deleteArticle } from "../../api/board";
+import { deleteArticle } from "../../api/hotplace";
 import { useQuasar, QSpinnerFacebook } from 'quasar'
 import { onBeforeUnmount } from 'vue'
 
 export default {
-  name: "BoardDelete",
+  name: "HotplaceDelete",
   
   created() {
     let param = this.$route.params.articleno;
@@ -23,7 +23,7 @@ export default {
         }
         alert(msg);
         // 현재 route를 /list로 변경.
-        this.$router.push({ name: "boardlist" ,query:{pgno: 1}});
+        this.$router.push({ name: "hotplacelist" ,query:{pgno: 1}});
       },
       (error) => {
         console.log(error);

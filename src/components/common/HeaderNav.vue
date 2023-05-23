@@ -185,7 +185,7 @@ export default {
         this.linkSelected[recentlySelected] = "gray";
         recentlySelected = 2;
         this.linkSelected[recentlySelected] = "black";
-
+        this.$router.push({ name: 'hotplacelist', query: { pgno: 1}});
       } else if (goTo == "myPlan") {
         this.linkSelected[recentlySelected] = "gray";
         recentlySelected = 3;

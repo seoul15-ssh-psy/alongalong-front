@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { writeComment } from '../../api/board'
+import { writeComment } from '../../api/hotplace'
 import { useQuasar } from 'quasar'
 import { computed } from 'vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
@@ -26,7 +26,7 @@ import { mapState, mapActions } from 'vuex'
 const memberStore = 'memberStore'
 
 export default {
-  name: 'BoardCommentWrite',
+  name: 'HotplaceCommentWrite',
   props: {
     articleno: Number,
   },

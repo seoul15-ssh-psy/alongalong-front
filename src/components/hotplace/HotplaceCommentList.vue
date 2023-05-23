@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { getComments } from '../../api/board'
+import { getComments } from '../../api/hotplace'
 import { useQuasar } from 'quasar'
 import { mapState, mapActions } from 'vuex'
 import { convertTime} from "../../api/common/timeCal"
@@ -18,7 +18,7 @@ import { convertTime} from "../../api/common/timeCal"
 const memberStore = 'memberStore'
 
 export default {
-  name: 'BoardCommentList',
+  name: 'HotplaceCommentList',
   props: {
     articleno: Number,
   },

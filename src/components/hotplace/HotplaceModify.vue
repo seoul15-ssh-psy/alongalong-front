@@ -1,8 +1,8 @@
 <template>
   <div :style="{paddingTop:'100px'}" id = "tableModify">
-    <P>Board 작성칸입니다</P>
+    <P>Hotplace 작성칸입니다</P>
 
-    <form action="./boardwrite" method="post" @submit="onSubmit">
+    <form action="./hotplacewrite" method="post" @submit="onSubmit">
         <table>
             <tr>
                 <td>작성자</td>
@@ -28,13 +28,13 @@
 
 <script>
 
-import { getArticle, modifyArticle } from "../../api/board";
+import { getArticle, modifyArticle } from "../../api/hotplace";
 import { useQuasar } from 'quasar'
 import { computed } from 'vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 export default {
-  name: "BoardModify",
+  name: "HotplaceModify",
   data() {
     return {
       article: {
@@ -104,7 +104,7 @@ export default {
       );
     },
     moveList() {
-      this.$router.replace({ name: "boardlist" });
+      this.$router.replace({ name: "hotplacelist" });
     },
   },
 };
