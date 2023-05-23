@@ -37,7 +37,15 @@ const routes = [
     redirect: "/board/list",
     children: [
         { name:"boardlist",path: 'list', component: () => import('../components/board/BoardList') }
-      , { name: "boardview", path: 'view/:articleno', component: () => import('../components/board/BoardView') }
+      , {
+        name: "boardview",
+        path: 'view/:articleno',
+        component: () => import('../components/board/BoardView')
+        ,children: [
+          { name: "boardcommentwrite", path: 'commentwrite', component: () => import('../components/board/BoardCommentWrite') },
+          { name: "boardcommentList", path: 'commentlist', component: () => import('../components/board/BoardCommentList') }
+        ],
+      }
       , { name: "boardwrite", path: 'write', beforeEnter: onlyAuthUser, component: () => import('../components/board/BoardWrite') }
       , { name: "boardmodify", path: 'modify/:articleno', component: () => import('../components/board/BoardModify') }
       , { name: "boarddelete", path: 'delete/:articleno', component: () => import('../components/board/BoardDelete') }

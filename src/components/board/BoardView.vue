@@ -59,12 +59,14 @@
       </button>
       <button @click="moveList">목록보기</button>
     </div>
-    <board-comment></board-comment>
+    <board-comment-write v-if="isLogin" :articleno="this.$route.params.articleno"></board-comment-write>
   </div>
 </template>
 
 <script>
-import BoardComment from "src/components/board/BoardComment.vue"
+import BoardCommentWrite from "src/components/board/BoardCommentWrite.vue"
+import BoardCommentList from "src/components/board/BoardCommentList.vue"
+import { convertTime } from '../../api/common/timeCal'
 import { getArticle } from '../../api/board'
 import { mapState } from 'vuex'
 
@@ -73,16 +75,16 @@ const imgPrefix = ['jpg', 'png', 'JPG', 'PNG']
 
 export default {
   name: 'BoardDetail',
-  components: { BoardComment },
+  components: { BoardCommentWrite , BoardCommentList},
   data() {
     return {
       article: {},
       file: {},
-      src: ''
+      src: '',
     }
   },
   computed: {
-    ...mapState(memberStore, ['userInfo']),
+    ...mapState(memberStore, ['isLogin','userInfo']),
     message() {
       if (this.article.content)
         return this.article.content.split('\n').join('<br>')
@@ -96,18 +98,13 @@ export default {
       param,
       ({ data }) => {
         this.article = data
-        this.article.regtime = this.convertTime(this.article.regtime)
-        console.log('qjmeoqweopqwp' + this.article.originalfile.split('.')[1])
-
+        this.article.regtime = convertTime(this.article.regtime)
         if (
           this.article.originalfile.split('.')[1] != undefined &&
           imgPrefix.includes(this.article.originalfile.split('.')[1])
         ) {
           document.getElementById('fileImg').style.display = 'block'
-          console.log('나와라!')
-          console.log(this.article.originalfile.split('.')[1])
         } else {
-          console.log('사라져라!!')
         }
       },
       error => {
@@ -138,31 +135,6 @@ export default {
         name: 'boardlist',
         query: { pgno: this.$route.query.pgno }
       })
-    },
-    convertTime(regtime) {
-      let time = new Date() - new Date(regtime)
-      //59분전
-      if (time < 3599999) {
-        return Math.floor(time / 60000) + ' 분 전'
-      }
-      //23시간 전
-      else if (time < 86399999) {
-        return Math.floor(time / 3600000) + '시간 전'
-      }
-      //6일 전
-      else if (time < 604799999) {
-        return Math.floor(time / 86400000) + '일 전'
-      }
-      //? 주 전
-      else if (time < 2629799999) {
-        return Math.floor(time / 604800016) + '주 전'
-      }
-      //1년 전
-      else if (time < 31557599999) {
-        return Math.floor(time / 2629800000) + '개월 전'
-      } else {
-        return Math.floor(time / 31557600000) + '년 전'
-      }
     },
     checkSameUser() {
       if (
