@@ -28,7 +28,7 @@
                   <q-item-section @click="onClickLogout" >로그아웃</q-item-section>
                 </q-item>
                 <q-item clickable v-close-popup v-if="getIsLogin ">
-                  <q-item-section @click="showLogInModal" >마이페이지</q-item-section>
+                  <q-item-section @click="routerPush('myPage')" >마이페이지</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -54,7 +54,7 @@
                   <q-item-section @click="onClickLogout" >로그아웃</q-item-section>
                 </q-item>
                 <q-item clickable v-close-popup v-if="getIsLogin ">
-                  <q-item-section @click="showLogInModal" >마이페이지</q-item-section>
+                  <q-item-section @click="routerPush('myPage')" >마이페이지</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -164,7 +164,6 @@ export default {
     },
 
     routerPush(goTo) { 
-      console.log(goTo);
       if (goTo == "main") {
         this.linkSelected[recentlySelected] = "gray";
         this.$router.push('/')
@@ -187,8 +186,11 @@ export default {
         this.linkSelected[recentlySelected] = "gray";
         recentlySelected = 4;
         this.linkSelected[recentlySelected] = "black";
-        this.$router.push({ name: 'boardlist', query: { pgno: 1}});
-      } 
+        this.$router.push({ name: 'boardlist', query: { pgno: 1 } });
+      } else if (goTo == "myPage") { 
+        this.linkSelected[recentlySelected] = "gray";
+        this.$router.push({ name: 'mypageview'});
+      }
     },
 
   }
