@@ -2,6 +2,7 @@
   <div
     class="row items-center"
     style="
+    width: 100%
       height: 200px;
       border-style: solid;
       border-width: 1px;
@@ -9,20 +10,28 @@
     "
   >
     <div class="col-4">
-      <q-img
-        class="q-mx-sm"
-        :src="imageUrl"
-        :ratio="1"
-        style="border-radius: 5px"
-      ></q-img>
+      <a href="#" @click="showDetailModal()"
+        ><q-img
+          class="q-ma-sm"
+          :src="attraction.firstimage"
+          :ratio="1"
+          style="border-radius: 5px"
+        ></q-img
+      ></a>
     </div>
-    <div class="col-7 q-ml-lg">
+    <div class="col-7 q-ml-md">
       <div class="row items-center">
-        <div class="col text-subtitle1 text-bold">{{ title }}</div>
-        <div class="col text-subtitle2 q-ml-xs">{{ category }}</div>
+        <a href="#" @click="showDetailModal()" class="subtitle1"
+          ><div class="text-subtitle1 text-bold">{{ attraction.title }}</div></a
+        >
+        <div class="subtitle2 text-subtitle2 text-grey q-ml-xs">
+          {{ this.contentType[attraction.contenttypeid] }}
+        </div>
       </div>
       <div class="row">
-        <div class="text-subtitle2">내 위치로부터 {{ distance }}km</div>
+        <div class="text-subtitle2">
+          내 위치로부터 {{ attraction.distance }}km
+        </div>
       </div>
       <div class="row">
         <q-btn flat round>
@@ -35,26 +44,52 @@
 </template>
 
 <script>
+import { contentTypeId } from '../../../public/common/global.js'
+import { mapMutations, mapActions } from 'vuex'
+
+const locationStore = 'locationStore'
+
 export default {
   props: {
-    imageUrl: {
-      type: String,
-      default: 'https://picsum.photos/500/300?t=' + Math.random()
-    },
-    title: {
-      type: String,
-      default: 'default title'
-    },
-    category: {
-      type: String,
-      default: 'default type'
-    },
-    distance: {
-      type: Number,
-      default: 0.1
+    attraction: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {
+      contentType: contentTypeId
+    }
+  },
+  methods: {
+    ...mapMutations(locationStore, [
+      'SET_IS_DETAIL_MODAL_VISIBLE',
+      'SET_IS_DETAIL_MODAL_UPDATED',
+      'SET_MODAL_CONTENTS'
+    ]),
+    ...mapActions(locationStore, ['callClosestSubwayStation']),
+    async showDetailModal() {
+      if (this.isDetailModalVisible) {
+        this.SET_IS_DETAIL_MODAL_VISIBLE(false)
+        this.SET_IS_DETAIL_MODAL_UPDATED(false)
+      }
+      this.SET_IS_DETAIL_MODAL_VISIBLE(true)
+      this.SET_MODAL_CONTENTS(this.attraction)
+      await this.callClosestSubwayStation({
+        longitude: this.attraction.mapx,
+        latitude: this.attraction.mapy
+      })
+      this.SET_IS_DETAIL_MODAL_UPDATED(true)
     }
   }
 }
 </script>
 
-<style></style>
+<style>
+.subtitle1 {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 65%;
+  white-space: nowrap;
+}
+</style>

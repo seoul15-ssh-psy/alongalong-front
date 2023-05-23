@@ -47,3 +47,4 @@ src/boot/key.js
 
 src/App.vue
 src/layouts/MainLayout.vue
+src/router/routes.js
