@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { writeArticle, uploadFile } from '../../api/board'
+import { writeArticle } from '../../api/board'
 import { useQuasar } from 'quasar'
 import { computed } from 'vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
@@ -75,6 +75,7 @@ export default {
 
   created() {
     this.article.userid = this.userInfo.userid
+    console.log(this.userInfo.userid);
   },
 
   computed: {
@@ -108,24 +109,6 @@ export default {
       this.article.subject = ''
       this.article.content = ''
       this.moveList()
-    },
-
-    registFile() {
-      uploadFile(
-        this.file,
-        ({ data }) => {
-          let msg = '등록 처리시 문제가 발생했습니다.'
-          if (data === 'success') {
-            msg = '등록이 완료되었습니다.'
-            return 'success'
-          }
-          alert(msg)
-        },
-        error => {
-          console.log(error)
-          return 'fail'
-        }
-      )
     },
 
     registArticle() {
