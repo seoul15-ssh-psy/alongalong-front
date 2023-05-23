@@ -23,7 +23,7 @@
     </table>
     <button @click="moveWrite()">글쓰기</button>
     <div class="q-pa-lg flex flex-center">
-      <q-pagination v-model="pg" :min="from" :max="to" ref="hello" />
+      <q-pagination v-model="pg" :min="1" :max="totalPage" ref="hello" direction-links :max-pages="8" boundary-numbers/>
     </div>
   </div>
   <button @click="what">ㅇㅈㅇㅈㅇ</button>
@@ -54,7 +54,7 @@ export default {
       key: null,
       word: null,
       totalCount: 0,
-      totalPage: 0,
+      totalPage: 1000,
       from: this.$route.query.pgno - ((this.$route.query.pgno-1) % 5),
       to: (Number(this.$route.query.pgno) + (5 - ((this.$route.query.pgno-1) % 5))-1),
       pages: [],
@@ -79,6 +79,7 @@ export default {
       key: this.key,
       word: this.word,
       totalCount: this.totalCount,
+      totalPage: Math.ceil(this.totalCount / this.ssp),
       from: this.pg - ((this.pg-1) % 5),
       to: (Number(this.pg) + (5 - ((this.pg-1) % 5))-1),
     }
