@@ -49,13 +49,11 @@ export default {
       ],
       registTimes: [],
       pg: this.$route.query.pgno,
-      spp: 3,
+      spp: 10,
       key: null,
       word: null,
       totalCount: 0,
-      totalPage: 1000,
-      from: this.$route.query.pgno - ((this.$route.query.pgno-1) % 5),
-      to: (Number(this.$route.query.pgno) + (5 - ((this.$route.query.pgno-1) % 5))-1),
+      totalPage: 10000,
       pages: [],
     }
   },
@@ -79,8 +77,6 @@ export default {
       word: this.word,
       totalCount: this.totalCount,
       totalPage: Math.ceil(this.totalCount / this.ssp),
-      from: this.pg - ((this.pg-1) % 5),
-      to: (Number(this.pg) + (5 - ((this.pg-1) % 5))-1),
     }
 
     listArticle(
@@ -101,20 +97,8 @@ export default {
     getTotalCount(
       param,
       ({ data }) => {
-      
         this.totalCount = data.totalCount
         this.totalPage = Math.ceil(this.totalCount / this.spp)
-
-        this.from = this.pg - ((this.pg-1) % 5)
-        this.to = (Number(this.pg) + (5 - ((this.pg-1) % 5)))-1
-  
-        if (this.to > this.totalPage) {
-          this.to = this.totalPage
-        }
-        let j = 0
-        for (let i = this.from; i <= this.to; i++) {
-          this.pages[j++] = i
-        }
       },
       error => {
         console.log(error)
