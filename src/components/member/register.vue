@@ -4,7 +4,7 @@
     <q-btn color="black" icon="close" size="xl" flat @click="hideRegisterModal" style="position:absolute; right: 0px; top:10px;"/>
     
       <img class="center" src="../../../public/icons/mainIcon2.png" style="height:50px; width:200px; margin-top:25px;"/>
-      <p class="center" style="text-align: center; margin:0px; margin-top: 5px; font-weight: 700; font-size: 10px;">Along Along에 오신 것을 환영합니다</p>
+      <p class="center" style="text-align: center; margin:0px; margin-top: 5px; font-weight: 700; font-size: 15px;">Along Along에 오신 것을 환영합니다</p>
     
     
   <div class="row q-mt-sm" >
@@ -14,7 +14,7 @@
           <div class="alert alert-danger" role="alert" v-if="registerError">
             아이디 또는 비밀번호를 확인하세요.
           </div>
-          <p ref="alertSlot" v-text="alertMsg" style="width: 18rem; font-weight: 550; font-size: 8px; color: red;" class="center" v-if="alertMsg !=''" >
+          <p ref="alertSlot" v-text="alertMsg" style="width: 18rem; font-weight: 550; font-size: 13px; color: red;" class="center" v-if="alertMsg !=''" >
           </p>
           <div class="form-group">
             <q-input v-model="user.userid" label="ID" required @keyup.enter="register"  class="center" bg-color="grey-3" outlined
