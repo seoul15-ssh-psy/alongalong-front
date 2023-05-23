@@ -29,13 +29,12 @@
   <button @click="what">ㅇㅈㅇㅈㅇ</button>
 
 </template>
-
 <script>
 import { listArticle, getTotalCount } from '../../api/board'
 import { mapMutations } from 'vuex'
 import { ref} from 'vue'
 import memberStore from 'src/store/modules/memberStore'
-
+import { convertTime } from '../../api/common/timeCal'
 export default {
   name: 'BoardList',
   data() {
@@ -91,7 +90,7 @@ export default {
         var j = 0
         for (j = 0; j < this.articles.length; j++) {
           this.articles[j].isNew = this.checkIsNew(this.articles[j].regtime)
-          this.articles[j].regtime = this.convertTime(this.articles[j].regtime)
+          this.articles[j].regtime = convertTime(this.articles[j].regtime)
         }
       },
       error => {
@@ -145,34 +144,8 @@ export default {
         params: { articleno: article.articleno },
         query: {pgno: this.pg}
       })
-    },
-    convertTime(regtime) {
-      let time = new Date() - new Date(regtime)
-      //59분전
-      if (time < 60000) {
-        return '최근'
-      } else if (time < 3599999) {
-        return Math.floor(time / 60000) + ' 분 전'
-      }
-      //23시간 전
-      else if (time < 86399999) {
-        return Math.floor(time / 3600000) + '시간 전'
-      }
-      //6일 전
-      else if (time < 604799999) {
-        return Math.floor(time / 86400000) + '일 전'
-      }
-      //? 주 전
-      else if (time < 2629799999) {
-        return Math.floor(time / 604800016) + '주 전'
-      }
-      //1년 전
-      else if (time < 31557599999) {
-        return Math.floor(time / 2629800000) + '개월 전'
-      } else {
-        return Math.floor(time / 31557600000) + '년 전'
-      }
-    },
+    }
+    ,
     checkIsNew(regtime) {
       let time = new Date() - new Date(regtime)
       if (time < 86400000) {
