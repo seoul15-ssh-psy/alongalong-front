@@ -1,7 +1,7 @@
 <template>
-  <header-nav></header-nav>
+  <header-nav ref="headerNav"></header-nav>
   <div id="router">
-    <router-view />
+    <router-view :key="$route.fullPath" @showLogInModal="showOpenLogInModal"></router-view>
   </div>
   <footer-div></footer-div>
 </template>
@@ -14,7 +14,12 @@ import { useQuasar } from 'quasar'
 export default defineComponent({
   name: 'App',
   components: { HeaderNav, FooterDiv},
-  
+  methods: {
+    showOpenLogInModal() { 
+      console.log("일단 여기 실행했어요");
+      this.$refs.headerNav.showLogInModal();
+    }
+  }
 })
 </script>
 <style>

@@ -45,8 +45,13 @@ const memberStore = {
     SET_REGISTER_ERROR: (state, registerError) => { 
       state.registerError = registerError;
     },
+   
+    
   },
   actions: {
+
+    
+
     async userConfirm({ commit }, user) {
       await login(
         user,
