@@ -13,19 +13,19 @@
       <p class="q-pd-md">E-mail: ssh102525@gmail.com &nbsp;| &nbsp; soun997@gmail.com</p>
     </div>
   </div>
-  <div class="gt-md" style="position:absolute; bottom:30px; right:10px;">
+  <div class="gt-md footerImgDiv" style="position:absolute; bottom:30px; right:10px;">
     <a href="https://www.ssafy.com/ksp/jsp/swp/swpMain.jsp" class="q-mr-xs"><img src="../../../public/icons/ssafylogo.png" style="width:auto; height:3rem;"></a>
     <a href="https://www.data.go.kr/" class="q-mx-xs"><img src="../../../public/icons/data.png" style="width:auto; height:3rem;"></a>
     <a href="https://api.visitkorea.or.kr/#/" class="q-mx-xs"><img src="../../../public/icons/tourapi.png" style="width:auto; height:3rem;"></a>
     <a href="https://github.com/seoul15-ssh-psy" class="q-mx-xs"><img src="../../../public/icons/github.png" style="width:auto; height:3rem;"></a>
   </div>
-  <div class="gt-sm lt-lg" style="position:absolute; bottom:30px; right:10px;">
+  <div class="gt-sm lt-lg footerImgDiv" style="position:absolute; bottom:30px; right:10px;">
     <a href="https://www.ssafy.com/ksp/jsp/swp/swpMain.jsp" class="q-mr-xs"><img src="../../../public/icons/ssafylogo.png" style="width:auto; height:2.22rem;"></a>
     <a href="https://www.data.go.kr/" class="q-mx-xs"><img src="../../../public/icons/data.png" style="width:auto; height:2.22rem;"></a>
     <a href="https://api.visitkorea.or.kr/#/" class="q-mx-xs"><img src="../../../public/icons/tourapi.png" style="width:auto; height:2.22rem;"></a>
     <a href="https://github.com/seoul15-ssh-psy" class="q-mx-xs"><img src="../../../public/icons/github.png" style="width:auto; height:2.22rem;"></a>
   </div>
-  <div class="lt-md">
+  <div class="lt-md footerImgDiv">
     <a href="https://www.ssafy.com/ksp/jsp/swp/swpMain.jsp" class="q-mr-xs"><img src="../../../public/icons/ssafylogo.png" style="width:auto; height:2.22rem;"></a>
     <a href="https://www.data.go.kr/" class="q-mx-xs"><img src="../../../public/icons/data.png" style="width:auto; height:2.22rem;"></a>
     <a href="https://api.visitkorea.or.kr/#/" class="q-mx-xs"><img src="../../../public/icons/tourapi.png" style="width:auto; height:2.22rem;"></a>
@@ -58,6 +58,10 @@ export default {
 
   .text-gray a:hover{
     color: white;
+  }
+
+  .footerImgDiv img:hover{
+    filter: brightness(0.7);
   }
 
 
