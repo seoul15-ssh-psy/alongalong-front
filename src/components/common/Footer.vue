@@ -56,6 +56,11 @@ export default {
     color:lightgray;
   }
 
+  .text-gray a:link, a:visited, a:active{
+    color:lightgray;
+    text-decoration: none;
+  }
+
   .text-gray a:hover{
     color: white;
   }
