@@ -1,19 +1,27 @@
 <template>
-  <div style="margin: 0 auto; padding: 20px" id="tableComment">
-    <p class="text-subtitle1 text-bold">총 3개의 댓글이 있습니다.</p>
+  <div style="margin: 0 auto; padding: 30px" id="tableComment">
+    <p class="text-subtitle1 text-bold">
+      총 {{ commentCount }}개의 댓글이 있습니다.
+    </p>
 
     <form action="./CommentWrite" method="post" @submit="onSubmit">
       <textarea
-        :style="[{ borderRadius: 5 + 'px', borderColor: 'blue-4' }]"
-        class="full-width"
-        rows="8"
+        :style="[
+          { borderRadius: 5 + 'px', borderColor: 'blue-4', resize: 'none' }
+        ]"
+        class="full-width q-pa-sm"
+        rows="5"
         cols="50"
         name="content"
         v-model="writeComment.content"
         ref="content"
         v-if="isLogin"
       ></textarea>
-      <button class="q-my-md" type="submit">댓글쓰기</button>
+      <div class="row justify-end">
+        <button class="submit-btn bg-blue-10 q-mt-md" type="submit">
+          댓글쓰기
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -27,7 +35,8 @@ const memberStore = 'memberStore'
 export default {
   name: 'BoardCommentWrite',
   props: {
-    articleno: Number
+    articleno: Number,
+    commentCount: Number
   },
   data() {
     return {
@@ -89,4 +98,13 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.submit-btn {
+  padding: 7px 20px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 10px 5px;
+}
+</style>

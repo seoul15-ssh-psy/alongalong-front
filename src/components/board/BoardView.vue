@@ -21,13 +21,15 @@
       <div class="row q-py-sm">
         <div class="flex col-10 items-center">
           <q-icon name="person" size="30px" class="icon" />
-          <div class="text-subtitle2">{{ article.userid }}</div>
+          <div class="text-subtitle1 text-bold q-pl-sm">
+            {{ article.userid }}
+          </div>
           <q-separator vertical size="2px" color="grey-5" inset spaced />
-          <div class="text-caption">{{ article.regtime }}</div>
+          <div class="text-subtitle2 text-grey-7">{{ article.regtime }}</div>
         </div>
         <div class="flex col-2 items-center">
           <q-icon class="on-right" name="favorite" color="red" size="18px" />
-          <div class="text-subtitle2 q-px-sm">{{ 24 }}</div>
+          <div class="text-subtitle2 q-px-sm">{{ 3 }}</div>
           <q-icon
             class="on-right"
             name="o_visibility"
@@ -37,15 +39,15 @@
           <div class="text-subtitle2 q-px-sm">{{ article.hit }}</div>
         </div>
       </div>
-      <q-separator color="grey-5" />
+      <q-separator color="grey-3" />
 
       <!-- 본문 내용 -->
-      <div class="q-pa-lg" style="height: 50vh">
+      <div class="q-pa-lg" style="min-height: 50vh">
         <div v-html="article.content"></div>
-        <div id="imgDiv"></div>
+        <div id="imgDiv" class="q-my-md"></div>
       </div>
 
-      <q-separator color="grey-5" class="q-mt-xl q-mb-lg" />
+      <q-separator color="grey-3" class="q-mt-xl q-mb-lg" />
 
       <a
         v-if="article.originalfile"
@@ -71,22 +73,39 @@
           </div>
         </div></a
       >
-      <q-separator color="black" class="q-mt-lg q-mb-md" />
+      <q-separator color="black" class="q-mt-lg" />
+
+      <!-- 수정, 삭제, 목록 버튼 -->
       <div class="flex justify-end">
-        <button type="submit" @click="moveModifyArticle" v-if="checkSameUser()">
-          수정하기
+        <button
+          class="manage-btn bg-dark"
+          type="submit"
+          @click="moveModifyArticle"
+          v-if="checkSameUser()"
+        >
+          수정
         </button>
-        <button type="submit" @click="deleteArticle" v-if="checkSameUser()">
-          삭제하기
+        <button
+          class="manage-btn bg-warning"
+          type="submit"
+          @click="deleteArticle"
+          v-if="checkSameUser()"
+        >
+          삭제
         </button>
-        <button @click="moveList">목록보기</button>
+        <button class="manage-btn bg-blue-10" @click="moveList">목록</button>
       </div>
+
+      <!-- 댓글 쓰기 -->
       <board-comment-write
         v-if="isLogin"
         :articleno="this.$route.params.articleno"
+        :commentCount="this.commentList.length"
       ></board-comment-write>
+      <!-- 댓글 리스트 -->
       <board-comment-list
         :articleno="this.$route.params.articleno"
+        :commentList="this.commentList"
       ></board-comment-list>
     </div>
   </div>
@@ -95,6 +114,7 @@
 <script>
 import BoardCommentWrite from 'src/components/board/BoardCommentWrite.vue'
 import BoardCommentList from 'src/components/board/BoardCommentList.vue'
+import { getComments } from '../../api/board'
 import { convertTime } from '../../api/common/timeCal'
 import { getArticle } from '../../api/board'
 import { mapState } from 'vuex'
@@ -109,7 +129,8 @@ export default {
     return {
       article: {},
       file: {},
-      src: ''
+      src: '',
+      commentList: []
     }
   },
   computed: {
@@ -142,6 +163,24 @@ export default {
       ({ data }) => {
         this.article = data
         this.article.regtime = convertTime(this.article.regtime)
+        getComments(
+          this.article.articleno,
+          ({ data }) => {
+            console.log(data)
+            this.commentList = data
+            var j = 0
+            for (j = 0; j < this.commentList.length; j++) {
+              this.commentList[j].regtime = convertTime(
+                this.commentList[j].regtime
+              )
+            }
+            console.log(this.commentList)
+            console.log(this.commentList.length)
+          },
+          error => {
+            console.log(error)
+          }
+        )
       },
       error => {
         console.log(error)
@@ -188,7 +227,7 @@ export default {
 
 <style lang="scss">
 .container {
-  width: 50%;
+  width: 55%;
   margin: 0 auto;
   padding: 20px;
 }
@@ -217,21 +256,12 @@ export default {
   margin-bottom: 10px;
 }
 
-#imgDiv {
-  margin-bottom: 20px;
-}
-
-button {
+.manage-btn {
   padding: 10px 20px;
-  background-color: $primary;
   color: white;
   border: none;
   cursor: pointer;
-  margin-right: 10px;
-  border-radius: 10px;
-}
-
-button:hover {
-  background-color: #45a049;
+  border-radius: 5px;
+  margin: 15px 5px;
 }
 </style>
