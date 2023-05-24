@@ -77,14 +77,7 @@
 
       <!-- 수정, 삭제, 목록 버튼 -->
       <div class="flex justify-end">
-        <button
-          class="manage-btn bg-dark"
-          type="submit"
-          @click="moveModifyArticle"
-          v-if="checkSameUser()"
-        >
-          수정
-        </button>
+        <button class="manage-btn bg-blue-10" @click="moveList">목록</button>
         <button
           class="manage-btn bg-warning"
           type="submit"
@@ -93,7 +86,14 @@
         >
           삭제
         </button>
-        <button class="manage-btn bg-blue-10" @click="moveList">목록</button>
+        <button
+          class="manage-btn bg-dark"
+          type="submit"
+          @click="moveModifyArticle"
+          v-if="checkSameUser()"
+        >
+          수정
+        </button>
       </div>
 
       <!-- 댓글 쓰기 -->

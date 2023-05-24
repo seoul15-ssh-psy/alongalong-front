@@ -56,6 +56,14 @@
           <template v-slot:prepend>
             <q-icon name="attach_file" />
           </template>
+          <template v-slot:append>
+            <q-icon
+              v-if="file !== null"
+              name="close"
+              @click.stop.prevent="file = null"
+              class="cursor-pointer"
+            />
+          </template>
         </q-file>
         <q-separator color="black" class="q-mt-lg" />
       </div>
@@ -90,6 +98,11 @@ export default {
       },
       file: null,
       isUserid: false
+    }
+  },
+  watch: {
+    file: function (newVal) {
+      console.log(newVal)
     }
   },
 
