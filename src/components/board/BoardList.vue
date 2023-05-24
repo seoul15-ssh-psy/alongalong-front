@@ -1,6 +1,11 @@
 <template>
-  <div :style="{ paddingTop: '100px' }" id="tableList">
-    <table>
+  <div style="padding-top: 100px; " id="tableListDiv">
+    <div id="tableHeader">
+      <p id="upperText" style="">자유게시판</p>
+      <div id="upperTextBorder"></div>
+    </div>
+    <p id="tableCaption">게시글</p>
+    <table id="tableList">
       <tr>
         <td>번호</td>
         <td>Subject</td>
@@ -10,10 +15,10 @@
       </tr>
       <tr v-for="article in articles" v-bind:key="article">
         <td>{{ article.articleno }}</td>
-        <td @click="viewArticle(article)">
+        <td @click="viewArticle(article)" class="clickable">
           <div class="articleContent">
             <p>{{ article.subject }}</p>
-            <p v-if="article.isNew" :style="[{ color: 'red' }]">new!!</p>
+            <q-badge rounded color="red" label="new" v-if="article.isNew" class="q-ml-xs" />
           </div>
         </td>
         <td>{{ article.userid }}</td>
@@ -21,12 +26,11 @@
         <td>{{ article.hit }}</td>
       </tr>
     </table>
-    <button @click="moveWrite()">글쓰기</button>
+    <q-btn unelevated rounded  color="primary" label="글쓰기" @click="moveWrite()" style="float:right; margin-top:10px;"/>
     <div class="q-pa-lg flex flex-center">
-      <q-pagination v-model="pg" :min="1" :max="totalPage" ref="hello" direction-links :max-pages="8" boundary-numbers/>
+      <q-pagination v-model="pg" :min="1" :max="totalPage" ref="hello" direction-links :max-pages="8" boundary-numbers size="md" class="q-mt-lg"/>
     </div>
   </div>
-  <button @click="what">ㅇㅈㅇㅈㅇ</button>
 
 </template>
 <script>
@@ -49,7 +53,7 @@ export default {
       ],
       registTimes: [],
       pg: this.$route.query.pgno,
-      spp: 3,
+      spp: 15,
       key: null,
       word: null,
       totalCount: 0,
@@ -163,89 +167,127 @@ export default {
 </script>
 
 <style scope>
-#tableList .tdClass {
-  width: 50px;
-  text-align: center;
-}
-#tableList .tdSubject {
-  width: 300px;
-  text-align: left;
+
+#tableListDiv{
+  width:55%;
+  min-width:500px;
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom:200px;
 }
 
-#tableList button {
-  border: 2px solid grey;
-  padding: 3px 8px;
-  border-radius: 3px;
-  color: black;
-  font-weight: bold;
-  text-decoration: none;
-  height: 30px;
-  margin: 0;
-  border-radius: 3px;
-}
-
-#tableList button:hover {
-  background-color: black;
-  color: white;
-}
-
-#tableList a {
-  text-decoration: none;
-  margin: 3px;
-  color: black;
-}
-
-#tableList table {
-  background-color: whitesmoke;
-  margin: 15px auto;
-  border: 1px solid grey;
-  border-collapse: collapse;
-}
-
-#tableList td {
-  width: 120px;
-  text-align: center;
-  margin: auto;
-}
-
-#tableList tr {
-  height: 40px;
-}
-
-#tableList tr:nth-child(1) {
-  background-color: black;
-  color: white;
-  font-weight: bold;
-}
-
-#tableList tr:hover {
-  background-color: white;
-  font-weight: bold;
-  color: black;
-  cursor: pointer;
-}
-
-#tableList tr:nth-child(1):hover {
-  background-color: black;
-  color: white;
-}
-
-#tableList .login {
-  margin-top: 25px;
-  margin-right: 10px;
-  text-align: right;
-}
-
-#trash {
-  font-size: 30px;
-}
-
-#trash:hover {
-  color: red;
-}
 .articleContent {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
+
+#tableHeader{
+  border-width: 0.13rem 0rem 0.13rem 0rem; 
+  border-style:solid; 
+  border-color:lightgray; 
+  margin-top:110px;
+}
+
+#upperText{
+  margin-top:10px;
+  margin-bottom:10px;
+  text-align:center; 
+  font-weight:600; 
+  font-size:30px;
+}
+
+#tableCaption{
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 10px;
+  margin-top: 50px;
+}
+
+#upperTextBorder{
+  border-width: 0rem 0rem 0.23rem 0rem; 
+  border-style:solid; 
+  border-color:rgb(9, 177, 255); 
+  margin-left:auto; 
+  margin-right:auto; 
+  width:70px;
+  margin-bottom:2px;
+}
+
+#tableList{
+  border-width:0.13rem 0rem 0rem 0rem;
+  border-style:solid; 
+  border-collapse: collapse; 
+  text-align: center;
+  width:100%;
+}
+
+#tableList tr{
+  border-width:0rem 0rem 0.08rem 0rem;
+  border-style:solid; 
+  border-collapse: collapse; 
+  border-color: lightgray;
+  height: 50px;
+}
+
+#tableList tr:first-child{
+  color:black;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+#tableList tr:nth-child(n+2){
+  color:black;
+  background-color:white
+}
+
+#tableList tr:nth-child(n+2):hover{
+  background-color:rgb(245, 245, 245);
+}
+
+#tableList tr:nth-child(n+2) .articleContent:hover{
+  color:rgb(163, 163, 163);
+}
+
+#tableList tr td:first-child{
+  width:8%;
+}
+
+#tableList tr td:nth-child(2){
+  width:45%;
+}
+
+#tableList tr td:nth-child(3){
+  width:10%;
+}
+
+#tableList tr td:nth-child(4){
+  width:15%;
+}
+
+#tableList tr td:nth-child(5){
+  width:8%;
+}
+
+#tableList tr:nth-child(n+2) td:nth-child(2){
+  font-size: 16px;
+  text-overflow: ellipsis;
+}
+
+
+#tableList tr:nth-child(n+2) td:nth-child(n+3){
+  color:rgb(82, 82, 82) !important;
+}
+
+
+
+.articleContent p{
+  margin-top:auto ;
+  margin-bottom:auto ;
+}
+
+.articleContent{
+  padding-left : 10px;
+}
+
 </style>
