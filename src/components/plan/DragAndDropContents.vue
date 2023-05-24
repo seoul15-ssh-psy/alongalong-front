@@ -59,65 +59,18 @@
 
 <script>
 import { ref } from 'vue'
-import draggable from 'vuedraggable'
 import MyAttractionCard from './MyAttractionCard.vue'
 
 export default {
-  components: { MyAttractionCard, draggable },
+  components: { MyAttractionCard },
   data() {
     return {
-      attractions: [
-        {
-          imageUrl:
-            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=1e43cf40-a4b0-42de-a5aa-d2c08771f66b',
-          title: '경희궁'
-        },
-        {
-          imageUrl:
-            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=c47e282c-6ceb-4cf7-b4ea-1f0dfa4b75d9',
-          title: '마복림할머니 막내아들네'
-        },
-        {
-          imageUrl:
-            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f8e84f56-b94c-4d8e-a528-f5b1864963d9',
-          title: '창경궁'
-        },
-        {
-          imageUrl:
-            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f329dfe0-58e3-4a53-a2b3-f3f4670d6e30',
-          title: '종이잡지클럽'
-        },
-        {
-          imageUrl:
-            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=1e43cf40-a4b0-42de-a5aa-d2c08771f66b',
-          title: '경희궁'
-        },
-        {
-          imageUrl:
-            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=c47e282c-6ceb-4cf7-b4ea-1f0dfa4b75d9',
-          title: '마복림할머니 막내아들네'
-        },
-        {
-          imageUrl:
-            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f8e84f56-b94c-4d8e-a528-f5b1864963d9',
-          title: '창경궁'
-        },
-        {
-          imageUrl:
-            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f329dfe0-58e3-4a53-a2b3-f3f4670d6e30',
-          title: '종이잡지클럽'
-        }
-      ]
+      attractions: []
     }
   },
   setup() {
-    // drag and drop
-    const status1 = ref([])
-    const status2 = ref([])
-
     // add row
     const listItems = ref([])
-    const mutationInfo = ref('')
 
     let day = 1
 
