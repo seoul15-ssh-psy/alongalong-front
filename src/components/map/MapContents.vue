@@ -7,6 +7,7 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import Mixins from '../../api/common/mixins'
 
 const locationStore = 'locationStore'
+const memberStore = 'memberStore'
 
 export default {
   mixins: [Mixins],
@@ -27,6 +28,7 @@ export default {
       'modalContents',
       'modalContentsDetail'
     ]),
+    ...mapState(memberStore, ['isLogin', 'userInfo']),
     refreshMap() {
       return this.attractionInfoList
     }
@@ -49,6 +51,7 @@ export default {
     } else {
       this.loadScript()
     }
+
   },
   methods: {
     ...mapMutations('locationStore', [
@@ -60,7 +63,8 @@ export default {
     ...mapActions('locationStore', [
       'callClosestSubwayStation',
       'callAttractionDetail',
-      'callAttractionCategory'
+      'callAttractionCategory',
+      'callGetIfBookMarked'
     ]),
     loadScript() {
       const script = document.createElement('script')
@@ -185,6 +189,7 @@ export default {
       this.overlays.push(customOverlay)
     },
     async markerClickHandler(attraction) {
+
       if (this.isDetailModalVisible) {
         this.SET_IS_DETAIL_MODAL_VISIBLE(false)
         this.SET_IS_DETAIL_MODAL_UPDATED(false)
@@ -197,6 +202,10 @@ export default {
       await this.callClosestSubwayStation({
         longitude: attraction.mapx,
         latitude: attraction.mapy
+      })
+      await this.callGetIfBookMarked({
+        contentid: attraction.contentid,
+        userid: this.userInfo.userid,
       })
       this.SET_IS_DETAIL_MODAL_UPDATED(true)
     },

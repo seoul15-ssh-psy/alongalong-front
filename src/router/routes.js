@@ -24,7 +24,7 @@ const onlyAuthUser = async (to, from, next) => {
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/map/MapLayout.vue'),
     children: [
       { path: '', component: () => import('pages/TestPageSSH.vue') }
     ]

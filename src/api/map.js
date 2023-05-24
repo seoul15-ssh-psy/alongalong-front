@@ -1,6 +1,7 @@
-import { kakaoMapApiInstance } from './index.js'
+import { kakaoMapApiInstance, apiInstance } from './index.js'
 
 const api = kakaoMapApiInstance()
+const springapi =  apiInstance();
 
 async function location2Region(locationInfo, success, fail) {
   return await api({
@@ -31,4 +32,19 @@ async function closestSubwayStation(attractionLocationInfo, success, fail) {
     .catch(fail)
 }
 
-export { location2Region, closestSubwayStation }
+async function getIfBookMarked(contentid,userid, success, fail) {
+
+  return await springapi({
+    method: 'GET',
+    url: '/map/bookmarked',
+    params: {
+      contentid: contentid,
+      userid: userid,
+    }
+  })
+    .then(success)
+    .catch(fail)
+}
+
+
+export { location2Region, closestSubwayStation, getIfBookMarked, }

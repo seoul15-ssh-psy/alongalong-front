@@ -102,7 +102,7 @@ const locationStore = 'locationStore'
 export default {
   setup() {
     return {
-      val: ref(false)
+      val: ref(false),
     }
   },
   props: {
@@ -234,6 +234,13 @@ export default {
     // TODO: 북마크 체크 시 로직 구현
     setBookmark() {
       // this.attraction.contentid -> 관광지 id
+      
+      console.log(this.attraction.addr1);
+      console.log(this.attraction.contentid);
+      console.log(this.attraction.firstimage);
+      console.log(this.attraction.mapx);
+      console.log(this.attraction.mapy);
+      console.log(this.attraction.title);
     }
   }
 }

@@ -3,7 +3,7 @@ import {
   getAttractionCategory,
   getAttractionDetail
 } from 'src/api/location'
-import { location2Region, closestSubwayStation } from 'src/api/map'
+import { location2Region, closestSubwayStation, getIfBookMarked } from 'src/api/map'
 
 const locationStore = {
   namespaced: true,
@@ -16,6 +16,7 @@ const locationStore = {
     modalContents: {},
     modalContentsDetail: {},
     modalContentsCategory: {},
+    isBookMarked:false,
     subwayStation: { place_name: '신림역 2호선', distance: 1000 }
   },
   getters: {
@@ -26,7 +27,8 @@ const locationStore = {
     getIsDetailModalVisible: state => state.isDetailModalUpdated,
     getModalContents: state => state.modalContents,
     getModalContentsDetail: state => state.modalContentsDetail,
-    getSubwayStation: state => state.subwayStation
+    getSubwayStation: state => state.subwayStation,
+    getIsBookMarked: state => state.isBookMarked,
   },
   mutations: {
     SET_CURRENT_LOCATION: (state, location) => {
@@ -56,6 +58,9 @@ const locationStore = {
       state.modalContentsCategory = attractionCategory
     },
     SET_SUBWAY_STATION: (state, subwayStation) => {
+      state.subwayStation = subwayStation
+    },
+    IS_BOOK_MARKED: (state, subwayStation) => {
       state.subwayStation = subwayStation
     }
   },
@@ -158,7 +163,44 @@ const locationStore = {
           console.warn(error)
         }
       )
-    }
+    },
+    async callGetIfBookMarked({ commit }, attraction) {
+      await getIfBookMarked(
+        attraction.contentid,
+        attraction.userid,
+        response => {
+          const data = response.data.documents[0]
+          commit('IS_BOOK_MARKED', data)
+        },
+        error => {
+          console.warn(error)
+        }
+      )
+    },
+    async callSaveIntoBookMark({ commit }, attractionLocationInfo) {
+      await saveIntoBookMark(
+        attractionLocationInfo,
+        response => {
+          const data = response.data.documents[0]
+          commit('IS_BOOK_MARKED', data)
+        },
+        error => {
+          console.warn(error)
+        }
+      )
+    },
+    async callDeleteFromBookMark({ commit }, attractionLocationInfo) {
+      await deleteFromBookMark(
+        attractionLocationInfo,
+        response => {
+          const data = response.data.documents[0]
+          commit('IS_BOOK_MARKED', data)
+        },
+        error => {
+          console.warn(error)
+        }
+      )
+    },
   }
 }
 
