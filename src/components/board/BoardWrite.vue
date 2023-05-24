@@ -60,6 +60,9 @@
         <q-separator color="black" class="q-mt-lg" />
       </div>
       <div class="row justify-end">
+        <button class="submit-btn bg-dark" type="button" @click="moveList">
+          취소
+        </button>
         <button class="submit-btn bg-blue-10" type="submit">등록</button>
       </div>
     </form>
