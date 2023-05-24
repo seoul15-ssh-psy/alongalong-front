@@ -25,6 +25,16 @@
         >
           {{ this.attraction.title }}
         </div>
+        <q-checkbox
+          v-model="val"
+          checked-icon="bookmark"
+          unchecked-icon="bookmark_border"
+          color="primary"
+          keep-color
+          size="40px"
+          indeterminate-icon="help"
+          @click="setBookmark"
+        />
       </div>
       <!-- 관광지 주소 정보 -->
       <div class="row q-ma-md">
@@ -83,12 +93,18 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { contentTypeId } from '../../../public/common/global.js'
 
 const locationStore = 'locationStore'
 
 export default {
+  setup() {
+    return {
+      val: ref(false)
+    }
+  },
   props: {
     attraction: {
       type: Object,
@@ -214,6 +230,10 @@ export default {
     ...mapActions(locationStore, ['callClosestSubwayStation']),
     makeNotEmptyData(data) {
       return data ? data : this.emptyData
+    },
+    // TODO: 북마크 체크 시 로직 구현
+    setBookmark() {
+      // this.attraction.contentid -> 관광지 id
     }
   }
 }
