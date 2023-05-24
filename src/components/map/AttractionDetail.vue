@@ -97,6 +97,7 @@
 import { ref } from 'vue'
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 import { contentTypeId } from '../../../public/common/global.js'
+import { getBookMarks, getPlans, getPlanByDate } from '../../api/map'
 
 const locationStore = 'locationStore'
 const memberStore = 'memberStore'
@@ -131,6 +132,39 @@ export default {
     val() { 
       return this.isBookMarked;
     }
+  },
+  created() { 
+    getBookMarks(
+      this.userInfo.userid,
+      ({ data }) => {
+        console.log("북마크입니다~~");
+        console.log(data);
+      },
+      error => {
+        console.log(error)
+      }
+    ),
+    getPlans(
+      this.userInfo.userid,
+      ({ data }) => {
+        console.log("플랜입니다~~");
+        console.log(data);
+      },
+      error => {
+        console.log(error)
+      }
+      ),
+      getPlanByDate(
+        this.userInfo.userid,
+        1,
+      ({ data }) => {
+        console.log("플랜 by date 입니다~");
+        console.log(data);
+      },
+      error => {
+        console.log(error)
+      }
+	  )
   },
   watch: {
     

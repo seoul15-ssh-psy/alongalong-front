@@ -36,7 +36,7 @@ async function getIfBookMarked(contentid,userid, success, fail) {
 
   return await springapi({
     method: 'GET',
-    url: '/map/bookmarked',
+    url: '/map/bookmark/isbooked',
     params: {
       contentid: contentid,
       userid: userid,
@@ -50,7 +50,7 @@ async function saveIntoBookMark(attractionLocationInfo, success, fail) {
 
   return await springapi({
     method: 'POST',
-    url: '/map/bookmarked',
+    url: '/map/bookmark',
     params: {
       userid: attractionLocationInfo.userid,
       contentid: attractionLocationInfo.contentid,
@@ -67,7 +67,7 @@ async function deleteFromBookMark(attractionLocationInfo, success, fail) {
 
   return await springapi({
     method: 'DELETE',
-    url: '/map/bookmarked',
+    url: '/map/bookmark',
     params: {
       userid: attractionLocationInfo.userid,
       contentid: attractionLocationInfo.contentid,
@@ -77,4 +77,44 @@ async function deleteFromBookMark(attractionLocationInfo, success, fail) {
     .catch(fail)
 }
 
-export { location2Region, closestSubwayStation, getIfBookMarked, saveIntoBookMark, deleteFromBookMark}
+function getBookMarks(userid, success, fail) {
+  return springapi({
+    method: 'GET',
+    url: '/map/bookmark',
+    params: {
+      userid: userid,
+    }
+  })
+    .then(success)
+    .catch(fail)
+}
+
+function getPlans(userid, success, fail) {
+  return springapi({
+    method: 'GET',
+    url: '/map/plan',
+    params: {
+      userid: userid,
+    }
+  })
+    .then(success)
+    .catch(fail)
+}
+
+
+function getPlanByDate(userid,plandate, success, fail) {
+  return springapi({
+    method: 'GET',
+    url: '/map/plan/bydate',
+    params: {
+      userid: userid,
+      plandate: plandate
+    }
+  })
+    .then(success)
+    .catch(fail)
+}
+
+
+
+export { location2Region, closestSubwayStation, getIfBookMarked, saveIntoBookMark, deleteFromBookMark, getBookMarks, getPlans, getPlanByDate}

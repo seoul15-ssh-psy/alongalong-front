@@ -169,10 +169,10 @@ const locationStore = {
         attraction.contentid,
         attraction.userid,
         response => {
-          console.log("결과는??"+response.data);
-          if (response.data == "success") {
+          console.log("결과는??"+response.data.msg);
+          if (response.data.msg == "success") {
             commit('IS_BOOK_MARKED', true)
-          } else if(response.data == "fail"){ 
+          } else if(response.data.msg == "fail"){ 
             commit('IS_BOOK_MARKED', false)
           }
         },
@@ -186,9 +186,9 @@ const locationStore = {
       await saveIntoBookMark(
         attractionLocationInfo,
         response => {
-          if (response.datae = "success") {
+          if (response.data == "success") {
             commit('IS_BOOK_MARKED', true)
-          } else if(response.datae = "fail"){ 
+          } else if(response.data == "fail"){ 
             commit('IS_BOOK_MARKED', false)
           }
         },
@@ -201,9 +201,9 @@ const locationStore = {
       await deleteFromBookMark(
         attractionLocationInfo,
         response => {
-          if (response.datae = "success") {
+          if (response.data == "success") {
             commit('IS_BOOK_MARKED', false)
-          } else if(response.datae = "fail"){ 
+          } else if(response.data == "fail"){ 
             commit('IS_BOOK_MARKED', true)
           }
         },
