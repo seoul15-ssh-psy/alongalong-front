@@ -169,10 +169,10 @@ const locationStore = {
         attraction.contentid,
         attraction.userid,
         response => {
-          console.log(response.data);
-          if (response.datae = "success") {
+          console.log("결과는??"+response.data);
+          if (response.data == "success") {
             commit('IS_BOOK_MARKED', true)
-          } else if(response.datae = "fail"){ 
+          } else if(response.data == "fail"){ 
             commit('IS_BOOK_MARKED', false)
           }
         },
