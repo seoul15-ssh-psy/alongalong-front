@@ -32,11 +32,9 @@
           ></textarea>
         </td>
       </tr>
-      <img
-        :src="'http://localhost:9999/vue/file/' + article.articleno"
-        id="fileImg"
-        style="display: none"
-      />
+      <div id="imgDiv">
+
+      </div>
       <a
         v-if="article.originalfile"
         :href="
@@ -92,6 +90,21 @@ export default {
       return ''
     }
   },
+  watch: {
+    article: function (newValue) { 
+      if (
+          newValue.originalfile != null &&
+          imgPrefix.includes(newValue.originalfile.split('.')[1])
+      ) {
+        var divElement = document.getElementById('imgDiv');
+          var imgElement = document.createElement("img");
+          imgElement.src = "http://localhost:9999/vue/file/" + newValue.articleno;
+          divElement.appendChild(imgElement);
+        } else {
+          
+        }
+    }
+  },
   created() {
     let param = this.$route.params.articleno
 
@@ -100,13 +113,6 @@ export default {
       ({ data }) => {
         this.article = data
         this.article.regtime = convertTime(this.article.regtime)
-        if (
-          this.article.originalfile.split('.')[1] != undefined &&
-          imgPrefix.includes(this.article.originalfile.split('.')[1])
-        ) {
-          document.getElementById('fileImg').style.display = 'block'
-        } else {
-        }
       },
       error => {
         console.log(error)
@@ -123,7 +129,7 @@ export default {
       })
     },
     deleteArticle() {
-      if (confirm('정말로 삭제?')) {
+      if (confirm('정말로 삭제하시겠습니까?')) {
         this.$router.push({
           name: 'boarddelete',
           params: { articleno: this.article.articleno },
@@ -148,11 +154,7 @@ export default {
       }
     }
   }
-  // filters: {
-  //   dateFormat(regtime) {
-  //     return moment(new Date(regtime)).format("YY.MM.DD hh:mm:ss");
-  //   },
-  // },
+
 }
 </script>
 

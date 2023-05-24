@@ -16,63 +16,25 @@
         />
       </div>
     </div>
-    <div class="row no-wrap justify-around q-px-md q-pt-md">
+    <div class="row justify-around q-px-md q-pt-md">
       <div
-        v-mutation="handler1"
         @dragenter="onDragEnter"
         @dragleave="onDragLeave"
         @dragover="onDragOver"
         @drop="onDrop"
+        id="plan-container"
         class="drop-target rounded-borders overflow-hidden"
       >
-        <div
-          id="box1"
+        <my-attraction-card
+          v-for="(item, index) in attractions"
+          :id="`card${index}`"
+          :key="index"
+          link="/"
+          :imageUrl="item.imageUrl"
+          :title="item.title"
           draggable="true"
           @dragstart="onDragStart"
-          class="box navy"
-        />
-        <div
-          id="box2"
-          draggable="true"
-          @dragstart="onDragStart"
-          class="box red"
-        />
-        <div
-          id="box3"
-          draggable="true"
-          @dragstart="onDragStart"
-          class="box green"
-        />
-        <div
-          id="box4"
-          draggable="true"
-          @dragstart="onDragStart"
-          class="box orange"
-        />
-        <div
-          id="box5"
-          draggable="true"
-          @dragstart="onDragStart"
-          class="box navy"
-        />
-        <div
-          id="box6"
-          draggable="true"
-          @dragstart="onDragStart"
-          class="box red"
-        />
-        <div
-          id="box7"
-          draggable="true"
-          @dragstart="onDragStart"
-          class="box green"
-        />
-        <div
-          id="box8"
-          draggable="true"
-          @dragstart="onDragStart"
-          class="box orange"
-        />
+        ></my-attraction-card>
       </div>
 
       <div style="width: 45%">
@@ -81,11 +43,11 @@
             <div
               v-for="(item, index) in listItems"
               :key="index"
-              v-mutation="handler2"
               @dragenter="onDragEnter"
               @dragleave="onDragLeave"
               @dragover="onDragOver"
               @drop="onDrop"
+              id="plan-container"
               class="drop-list rounded-borders q-mb-md"
             ></div>
           </div>
@@ -97,8 +59,57 @@
 
 <script>
 import { ref } from 'vue'
+import draggable from 'vuedraggable'
+import MyAttractionCard from './MyAttractionCard.vue'
 
 export default {
+  components: { MyAttractionCard, draggable },
+  data() {
+    return {
+      attractions: [
+        {
+          imageUrl:
+            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=1e43cf40-a4b0-42de-a5aa-d2c08771f66b',
+          title: '경희궁'
+        },
+        {
+          imageUrl:
+            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=c47e282c-6ceb-4cf7-b4ea-1f0dfa4b75d9',
+          title: '마복림할머니 막내아들네'
+        },
+        {
+          imageUrl:
+            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f8e84f56-b94c-4d8e-a528-f5b1864963d9',
+          title: '창경궁'
+        },
+        {
+          imageUrl:
+            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f329dfe0-58e3-4a53-a2b3-f3f4670d6e30',
+          title: '종이잡지클럽'
+        },
+        {
+          imageUrl:
+            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=1e43cf40-a4b0-42de-a5aa-d2c08771f66b',
+          title: '경희궁'
+        },
+        {
+          imageUrl:
+            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=c47e282c-6ceb-4cf7-b4ea-1f0dfa4b75d9',
+          title: '마복림할머니 막내아들네'
+        },
+        {
+          imageUrl:
+            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f8e84f56-b94c-4d8e-a528-f5b1864963d9',
+          title: '창경궁'
+        },
+        {
+          imageUrl:
+            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f329dfe0-58e3-4a53-a2b3-f3f4670d6e30',
+          title: '종이잡지클럽'
+        }
+      ]
+    }
+  },
   setup() {
     // drag and drop
     const status1 = ref([])
@@ -117,32 +128,6 @@ export default {
       mutationInfo,
       day,
 
-      handler1(mutationRecords) {
-        status1.value = []
-        for (const index in mutationRecords) {
-          const record = mutationRecords[index]
-          const info = `type: ${record.type}, nodes added: ${
-            record.addedNodes.length > 0 ? 'true' : 'false'
-          }, nodes removed: ${
-            record.removedNodes.length > 0 ? 'true' : 'false'
-          }, oldValue: ${record.oldValue}`
-          status1.value.push(info)
-        }
-      },
-
-      handler2(mutationRecords) {
-        status2.value = []
-        for (const index in mutationRecords) {
-          const record = mutationRecords[index]
-          const info = `type: ${record.type}, nodes added: ${
-            record.addedNodes.length > 0 ? 'true' : 'false'
-          }, nodes removed: ${
-            record.removedNodes.length > 0 ? 'true' : 'false'
-          }, oldValue: ${record.oldValue}`
-          status2.value.push(info)
-        }
-      },
-
       // store the id of the draggable element
       onDragStart(e) {
         e.dataTransfer.setData('text', e.target.id)
@@ -150,6 +135,7 @@ export default {
       },
 
       onDragEnter(e) {
+        console.log(e.target)
         // don't drop on other draggables
         if (e.target.draggable !== true) {
           e.target.classList.add('drag-enter')
@@ -181,6 +167,12 @@ export default {
           return
         }
 
+        // 드래그 가능한 곳이 아니라면
+        if (e.target.id !== 'plan-container') {
+          e.target.classList.remove('drag-enter')
+          return
+        }
+
         // make the exchange
         draggedEl.parentNode.removeChild(draggedEl)
         e.target.appendChild(draggedEl)
@@ -200,45 +192,18 @@ export default {
 
 <style scoped lang="scss">
 .drop-target {
-  height: 400px;
+  height: 350px;
   width: 45%;
   background-color: gainsboro;
 }
 
 .drop-list {
-  height: 400px;
+  height: 175px;
   width: 100%;
   background-color: gainsboro;
 }
 
 .drag-enter {
   outline-style: dashed;
-}
-
-.box {
-  width: 25%;
-  height: 50%;
-  float: left;
-  cursor: pointer;
-}
-
-// .box:nth-child(3) {
-//   clear: both;
-// }
-
-.navy {
-  background-color: navy;
-}
-
-.red {
-  background-color: firebrick;
-}
-
-.green {
-  background-color: darkgreen;
-}
-
-.orange {
-  background-color: orange;
 }
 </style>
