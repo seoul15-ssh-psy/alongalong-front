@@ -1,56 +1,84 @@
 <template>
-  <div :style="{ paddingTop: '100px' }" id="tableWrite">
-    <P>Board 작성칸입니다</P>
-
+  <div class="container">
+    <div class="header"></div>
     <form action="./boardwrite" method="post" @submit="onSubmit">
-      <table>
-        <tr>
-          <td>작성자</td>
-          <!--
-                  <td><input type="text" name="userId" v-bind:value="userid" readonly="readonly" /></td>
-                -->
-          <td>
-            <input
-              type="text"
-              name="userId"
-              v-model="userInfo.userid"
-              rquired
+      <div class="text-h4 text-bold q-py-md">글 작성</div>
+      <div>
+        <q-separator color="black" />
+
+        <!-- 제목 -->
+        <div>
+          <q-input
+            class="q-pt-lg q-pb-md text-h5"
+            v-model="article.subject"
+            placeholder="제목을 입력하세요"
+            borderless
+            dense
+          />
+        </div>
+
+        <!-- 작성자 -->
+        <div class="row q-pb-md">
+          <div class="flex col-10 items-center">
+            <q-icon name="person" size="30px" class="icon" />
+            <div class="text-subtitle1 text-bold q-pl-sm">
+              {{ article.userid }}
+            </div>
+          </div>
+        </div>
+        <q-separator color="grey-3" />
+
+        <!-- 본문 내용 -->
+        <q-editor
+          class="q-mt-lg"
+          v-model="article.content"
+          toolbar-text-color="white"
+          toolbar-toggle-color="yellow-8"
+          toolbar-bg="blue-10"
+          :toolbar="[
+            ['bold', 'italic', 'underline'],
+            [
+              {
+                label: $q.lang.editor.formatting,
+                icon: $q.iconSet.editor.formatting,
+                list: 'no-icons',
+                options: ['p', 'h3', 'h4', 'h5', 'h6', 'code']
+              }
+            ]
+          ]"
+          style="min-height: 50vh"
+        >
+        </q-editor>
+
+        <q-separator color="grey-3" class="q-mt-xl q-mb-lg" />
+        <!-- 파일 업로드 -->
+        <q-file outlined v-model="file">
+          <template v-slot:prepend>
+            <q-icon name="attach_file" />
+          </template>
+          <template v-slot:append>
+            <q-icon
+              v-if="file !== null"
+              name="close"
+              @click.stop.prevent="file = null"
+              class="cursor-pointer"
             />
-          </td>
-        </tr>
-        <tr>
-          <td>제목</td>
-          <td>
-            <input
-              type="text"
-              name="subject"
-              v-model="article.subject"
-              required
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>내용</td>
-          <td>
-            <textarea
-              rows="10"
-              cols="50"
-              name="content"
-              v-model="article.content"
-            ></textarea>
-          </td>
-          <td>
-            <input type="file" @change="onFileChange" name="file" />
-          </td>
-        </tr>
-      </table>
-      <button type="submit">글쓰기</button>
+          </template>
+        </q-file>
+        <q-separator color="black" class="q-mt-lg" />
+      </div>
+      <div class="row justify-end">
+        <button class="submit-btn bg-dark" type="button" @click="moveList">
+          취소
+        </button>
+        <button class="submit-btn bg-blue-10" type="submit">등록</button>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
-import { writeArticle , writeArticle2} from '../../api/board'
+import { writeArticle, writeArticle2 } from '../../api/board'
 import { useQuasar } from 'quasar'
 import { computed } from 'vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
@@ -72,10 +100,15 @@ export default {
       isUserid: false
     }
   },
+  watch: {
+    file: function (newVal) {
+      console.log(newVal)
+    }
+  },
 
   created() {
     this.article.userid = this.userInfo.userid
-    console.log(this.userInfo.userid);
+    console.log(this.userInfo.userid)
   },
 
   computed: {
@@ -133,7 +166,7 @@ export default {
             console.log(error)
           }
         )
-      } else { 
+      } else {
         writeArticle2(
           param,
           ({ data }) => {
@@ -161,80 +194,28 @@ export default {
 </script>
 
 <style scope>
-#tableWrite h1 {
-  margin: 50px auto;
+.container {
+  width: 55%;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-#tableWrite button {
-  border: 2px solid grey;
-  padding: 5px 8px;
-  border-radius: 3px;
-  color: black;
+.header {
+  height: 85px;
+}
+
+.title {
+  font-size: 20px;
   font-weight: bold;
-  text-decoration: none;
-  margin: 0;
-  border-radius: 3px;
+  margin-bottom: 10px;
 }
 
-#tableWrite button:hover {
-  background-color: black;
+.submit-btn {
+  padding: 10px 20px;
   color: white;
-}
-
-#tableWrite a {
-  color: black;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-#tableWrite p {
-  margin: 30px 0px;
-}
-
-#tableWrite table {
-  background-color: whitesmoke;
-  margin: 15px auto;
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-
-#tableWrite td {
-  width: 120px;
-}
-
-#tableWrite tr {
-  height: 40px;
-  border: 2px solid black;
-}
-
-#tableWrite td:nth-child(1) {
-  background-color: #606060;
-  color: whitesmoke;
-  font-weight: bold;
-  border-right: 2px solid black;
-}
-
-#tableWrite input {
-  width: 100%;
-  outline: none;
-  background-color: whitesmoke;
   border: none;
-  text-align: left;
-  padding-left: 12px;
-}
-
-#tableWrite textarea {
-  background-color: whitesmoke;
-  outline: none;
-  border: none;
-  text-align: left;
-  padding-left: 12px;
-  padding-top: 3px;
-}
-
-#tableWrite .login {
-  margin-top: 25px;
-  margin-right: 10px;
-  text-align: right;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 15px 5px;
 }
 </style>

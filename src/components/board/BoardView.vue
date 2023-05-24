@@ -1,40 +1,54 @@
 <template>
-  <div :style="{ paddingTop: '100px' }" id="tableView">
-    <table>
-      <tr>
-        <td>번호</td>
-        <td>{{ article.articleno }}</td>
-      </tr>
-      <tr>
-        <td>작성자</td>
-        <td>{{ article.userid }}</td>
-      </tr>
-      <tr>
-        <td>제목</td>
-        <td>{{ article.subject }}</td>
-      </tr>
-      <tr>
-        <td>좋아요</td>
-        <td>{{ article.hit }}</td>
-      </tr>
-      <tr>
-        <td>작성일</td>
-        <td>{{ article.regtime }}</td>
-      </tr>
-      <tr>
-        <td>내용</td>
-        <td>
-          <textarea
-            rows="10"
-            cols="50"
-            name="content"
-            v-model="article.content"
-          ></textarea>
-        </td>
-      </tr>
-      <div id="imgDiv">
-
+  <div class="container">
+    <div class="header"></div>
+    <div>
+      <q-separator color="black" class="separator" />
+      <!-- 제목 -->
+      <div class="row q-pt-md">
+        <div class="col-1">
+          <div
+            class="full-width text-subtitle1 text-bold text-center text-grey-7"
+          >
+            {{ 'No. ' + article.articleno }}
+          </div>
+        </div>
+        <div class="col-11 text-h5 text-bold q-px-sm">
+          {{ article.subject }}
+        </div>
       </div>
+
+      <!-- 글 정보 (작성자, 좋아요수, 조회수) -->
+      <div class="row q-py-sm">
+        <div class="flex col-10 items-center">
+          <q-icon name="person" size="30px" class="icon" />
+          <div class="text-subtitle1 text-bold q-pl-sm">
+            {{ article.userid }}
+          </div>
+          <q-separator vertical size="2px" color="grey-5" inset spaced />
+          <div class="text-subtitle2 text-grey-7">{{ article.regtime }}</div>
+        </div>
+        <div class="flex col-2 justify-end items-center">
+          <q-icon name="favorite" color="red" size="18px" />
+          <div class="text-subtitle2 q-px-sm">{{ 3 }}</div>
+          <q-icon
+            class="q-pl-sm"
+            name="o_visibility"
+            color="black"
+            size="18px"
+          />
+          <div class="text-subtitle2 q-px-sm">{{ article.hit }}</div>
+        </div>
+      </div>
+      <q-separator color="grey-3" />
+
+      <!-- 본문 내용 -->
+      <div class="q-pa-lg" style="min-height: 50vh">
+        <div v-html="article.content"></div>
+        <div id="imgDiv" class="q-my-md"></div>
+      </div>
+
+      <q-separator color="grey-3" class="q-mt-xl q-mb-lg" />
+
       <a
         v-if="article.originalfile"
         :href="
@@ -45,26 +59,62 @@
           '/' +
           article.savefile
         "
-        ><button>다운로드</button></a
+        style="text-decoration: none; color: grey"
       >
-    </table>
-    <div id="buttons">
-      <button type="submit" @click="moveModifyArticle" v-if="checkSameUser()">
-        수정하기
-      </button>
-      <button type="submit" @click="deleteArticle" v-if="checkSameUser()">
-        삭제하기
-      </button>
-      <button @click="moveList">목록보기</button>
+        <div class="row">
+          <q-icon name="download" size="20px" color="grey-7" />
+          <div
+            class="q-ml-sm"
+            text-subtitle1
+            text-grey-5
+            style="text-decoration: underline"
+          >
+            {{ article.originalfile }}
+          </div>
+        </div></a
+      >
+      <q-separator color="black" class="q-mt-lg" />
+
+      <!-- 수정, 삭제, 목록 버튼 -->
+      <div class="flex justify-end">
+        <button class="manage-btn bg-blue-10" @click="moveList">목록</button>
+        <button
+          class="manage-btn bg-warning"
+          type="submit"
+          @click="deleteArticle"
+          v-if="checkSameUser()"
+        >
+          삭제
+        </button>
+        <button
+          class="manage-btn bg-dark"
+          type="submit"
+          @click="moveModifyArticle"
+          v-if="checkSameUser()"
+        >
+          수정
+        </button>
+      </div>
+
+      <!-- 댓글 쓰기 -->
+      <board-comment-write
+        v-if="isLogin"
+        :articleno="this.$route.params.articleno"
+        :commentCount="this.commentList.length"
+      ></board-comment-write>
+      <!-- 댓글 리스트 -->
+      <board-comment-list
+        :articleno="this.$route.params.articleno"
+        :commentList="this.commentList"
+      ></board-comment-list>
     </div>
-    <board-comment-write v-if="isLogin" :articleno="this.$route.params.articleno"></board-comment-write>
-    <board-comment-list :articleno="this.$route.params.articleno"></board-comment-list>
   </div>
 </template>
 
 <script>
-import BoardCommentWrite from "src/components/board/BoardCommentWrite.vue"
-import BoardCommentList from "src/components/board/BoardCommentList.vue"
+import BoardCommentWrite from 'src/components/board/BoardCommentWrite.vue'
+import BoardCommentList from 'src/components/board/BoardCommentList.vue'
+import { getComments } from '../../api/board'
 import { convertTime } from '../../api/common/timeCal'
 import { getArticle } from '../../api/board'
 import { mapState } from 'vuex'
@@ -74,16 +124,17 @@ const imgPrefix = ['jpg', 'png', 'JPG', 'PNG']
 
 export default {
   name: 'BoardDetail',
-  components: { BoardCommentWrite , BoardCommentList},
+  components: { BoardCommentWrite, BoardCommentList },
   data() {
     return {
       article: {},
       file: {},
       src: '',
+      commentList: []
     }
   },
   computed: {
-    ...mapState(memberStore, ['isLogin','userInfo']),
+    ...mapState(memberStore, ['isLogin', 'userInfo']),
     message() {
       if (this.article.content)
         return this.article.content.split('\n').join('<br>')
@@ -91,18 +142,17 @@ export default {
     }
   },
   watch: {
-    article: function (newValue) { 
+    article: function (newValue) {
       if (
-          newValue.originalfile != null &&
-          imgPrefix.includes(newValue.originalfile.split('.')[1])
+        newValue.originalfile != null &&
+        imgPrefix.includes(newValue.originalfile.split('.')[1])
       ) {
-        var divElement = document.getElementById('imgDiv');
-          var imgElement = document.createElement("img");
-          imgElement.src = "http://localhost:9999/vue/file/" + newValue.articleno;
-          divElement.appendChild(imgElement);
-        } else {
-          
-        }
+        var divElement = document.getElementById('imgDiv')
+        var imgElement = document.createElement('img')
+        imgElement.src = 'http://localhost:9999/vue/file/' + newValue.articleno
+        divElement.appendChild(imgElement)
+      } else {
+      }
     }
   },
   created() {
@@ -113,6 +163,24 @@ export default {
       ({ data }) => {
         this.article = data
         this.article.regtime = convertTime(this.article.regtime)
+        getComments(
+          this.article.articleno,
+          ({ data }) => {
+            console.log(data)
+            this.commentList = data
+            var j = 0
+            for (j = 0; j < this.commentList.length; j++) {
+              this.commentList[j].regtime = convertTime(
+                this.commentList[j].regtime
+              )
+            }
+            console.log(this.commentList)
+            console.log(this.commentList.length)
+          },
+          error => {
+            console.log(error)
+          }
+        )
       },
       error => {
         console.log(error)
@@ -125,7 +193,7 @@ export default {
       this.$router.push({
         name: 'boardmodify',
         params: { articleno: this.article.articleno },
-        query: {pgno:this.$route.query.pgno}
+        query: { pgno: this.$route.query.pgno }
       })
     },
     deleteArticle() {
@@ -133,7 +201,7 @@ export default {
         this.$router.push({
           name: 'boarddelete',
           params: { articleno: this.article.articleno },
-          query: {pgno: this.$route.query.pgno} 
+          query: { pgno: this.$route.query.pgno }
         })
       }
     },
@@ -154,101 +222,38 @@ export default {
       }
     }
   }
-
 }
 </script>
 
-<style scope>
-#tableView * {
-  text-align: center;
-  margin: auto;
-  font-family: 'Raleway', sans-serif;
+<style lang="scss">
+.container {
+  width: 55%;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-#tableView h1 {
-  margin: 50px auto;
+.header {
+  height: 85px;
 }
 
-#tableView button {
-  border: 2px solid grey;
-  padding: 5px 8px;
-  border-radius: 3px;
-  color: black;
+.title {
+  font-size: 20px;
   font-weight: bold;
-  text-decoration: none;
-  margin: 0;
-  border-radius: 3px;
+  margin-bottom: 10px;
 }
 
-#tableView button:hover {
-  background-color: black;
-  color: white;
-}
-
-#tableView a {
-  color: black;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-#tableView p {
-  margin: 30px 0px;
-}
-
-#tableView table {
-  background-color: whitesmoke;
-  margin: 15px auto;
-  border: 1px solid black;
-  border-collapse: collapse;
-  font-size: 16px;
-}
-
-#tableView td {
-  width: 400px;
-}
-
-#tableView tr {
-  height: 40px;
-  border: 2px solid black;
-}
-
-#tableView td:nth-child(1) {
-  background-color: #606060;
-  color: whitesmoke;
-  font-weight: bold;
-  border-right: 2px solid black;
-  width: 35%;
-}
-
-#tableView input {
-  width: 100%;
-  outline: none;
-  background-color: whitesmoke;
-  border: none;
-  text-align: left;
-  padding-left: 12px;
-}
-
-#tableView #tableView textarea {
-  background-color: whitesmoke;
-  outline: none;
-  border: none;
-  font-size: 16px;
-}
-
-#buttons {
+.row {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-#buttons form,
-#buttons a {
-  margin: 3px;
-}
-
-#tableView .login {
-  margin-top: 25px;
-  margin-right: 10px;
-  text-align: right;
+.manage-btn {
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 15px 5px;
 }
 </style>

@@ -1,19 +1,19 @@
 <template>
-  <div id="tableComment">
-    <div v-for="comment in commentList" v-bind:key="comment" class="row">
-      <p>{{ comment.userid }}</p>
-      <p>{{ comment.content }}</p>
-      <p>{{ comment.regtime }}</p>
-
+  <div style="margin: 0 auto; padding: 0px 30px" id="tableComment">
+    <q-separator color="grey-3" class="q-mb-md" />
+    <div v-for="comment in commentList" v-bind:key="comment">
+      <div class="row">
+        <p class="q-pr-md text-subtitle1 text-bold">{{ comment.userid }}</p>
+        <p class="text-subtitle2 text-grey-8">{{ comment.regtime }}</p>
+      </div>
+      <div class="row q-pb-md">{{ comment.content }}</div>
+      <q-separator color="grey-3" class="q-mb-md" />
     </div>
   </div>
 </template>
 
 <script>
-import { getComments } from '../../api/board'
-import { useQuasar } from 'quasar'
 import { mapState, mapActions } from 'vuex'
-import { convertTime} from "../../api/common/timeCal"
 
 const memberStore = 'memberStore'
 
@@ -21,44 +21,15 @@ export default {
   name: 'BoardCommentList',
   props: {
     articleno: Number,
-  },
-  data() {
-    return {
-      commentList: [],
-    }
-  },
-  created() { 
-
-    getComments(
-      this.articleno,
-      ({ data }) => {
-        this.commentList = data
-        var j = 0
-        for (j = 0; j < this.commentList.length; j++) {
-          this.commentList[j].regtime = convertTime(this.commentList[j].regtime)
-        }
-        console.log(this.commentList);
-        console.log(this.commentList.length);
-
-      },
-      error => {
-        console.log(error)
-      }
-	  )
-
+    commentList: Array
   },
 
-
-  methods: {
-    
-  },
+  methods: {},
 
   computed: {
     ...mapState(memberStore, ['isLogin', 'isLoginError', 'userInfo']),
     ...mapActions(memberStore, ['userConfirm', 'getUserInfo'])
-  },
-
-  
+  }
 }
 </script>
 
