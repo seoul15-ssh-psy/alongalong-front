@@ -203,10 +203,16 @@ export default {
         longitude: attraction.mapx,
         latitude: attraction.mapy
       })
-      await this.callGetIfBookMarked({
-        contentid: attraction.contentid,
-        userid: this.userInfo.userid,
-      })
+
+      if (this.isLogin) {
+        await this.callGetIfBookMarked({
+          contentid: attraction.contentid,
+          userid: this.userInfo.userid,
+        })
+      } else { 
+        console.log("not login");
+      }
+      
       this.SET_IS_DETAIL_MODAL_UPDATED(true)
     },
     highlightMarker() {

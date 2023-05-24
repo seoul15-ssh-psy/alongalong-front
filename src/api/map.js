@@ -46,5 +46,35 @@ async function getIfBookMarked(contentid,userid, success, fail) {
     .catch(fail)
 }
 
+async function saveIntoBookMark(attractionLocationInfo, success, fail) {
 
-export { location2Region, closestSubwayStation, getIfBookMarked, }
+  return await springapi({
+    method: 'POST',
+    url: '/map/bookmarked',
+    params: {
+      userid: attractionLocationInfo.userid,
+      contentid: attractionLocationInfo.contentid,
+      firstimage: attractionLocationInfo.firstimage,
+      address: attractionLocationInfo.address,
+      title : attractionLocationInfo.title,
+    }
+  })
+    .then(success)
+    .catch(fail)
+}
+
+async function deleteFromBookMark(attractionLocationInfo, success, fail) {
+
+  return await springapi({
+    method: 'DELETE',
+    url: '/map/bookmarked',
+    params: {
+      userid: attractionLocationInfo.userid,
+      contentid: attractionLocationInfo.contentid,
+    }
+  })
+    .then(success)
+    .catch(fail)
+}
+
+export { location2Region, closestSubwayStation, getIfBookMarked, saveIntoBookMark, deleteFromBookMark}

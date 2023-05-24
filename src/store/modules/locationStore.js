@@ -3,7 +3,7 @@ import {
   getAttractionCategory,
   getAttractionDetail
 } from 'src/api/location'
-import { location2Region, closestSubwayStation, getIfBookMarked } from 'src/api/map'
+import { location2Region, closestSubwayStation, getIfBookMarked, saveIntoBookMark, deleteFromBookMark } from 'src/api/map'
 
 const locationStore = {
   namespaced: true,
@@ -60,8 +60,8 @@ const locationStore = {
     SET_SUBWAY_STATION: (state, subwayStation) => {
       state.subwayStation = subwayStation
     },
-    IS_BOOK_MARKED: (state, subwayStation) => {
-      state.subwayStation = subwayStation
+    IS_BOOK_MARKED: (state, isBookMarked) => {
+      state.isBookMarked = isBookMarked
     }
   },
   actions: {
@@ -169,8 +169,12 @@ const locationStore = {
         attraction.contentid,
         attraction.userid,
         response => {
-          const data = response.data.documents[0]
-          commit('IS_BOOK_MARKED', data)
+          console.log(response.data);
+          if (response.datae = "success") {
+            commit('IS_BOOK_MARKED', true)
+          } else if(response.datae = "fail"){ 
+            commit('IS_BOOK_MARKED', false)
+          }
         },
         error => {
           console.warn(error)
@@ -178,11 +182,15 @@ const locationStore = {
       )
     },
     async callSaveIntoBookMark({ commit }, attractionLocationInfo) {
+      console.log(attractionLocationInfo);
       await saveIntoBookMark(
         attractionLocationInfo,
         response => {
-          const data = response.data.documents[0]
-          commit('IS_BOOK_MARKED', data)
+          if (response.datae = "success") {
+            commit('IS_BOOK_MARKED', true)
+          } else if(response.datae = "fail"){ 
+            commit('IS_BOOK_MARKED', false)
+          }
         },
         error => {
           console.warn(error)
@@ -193,8 +201,11 @@ const locationStore = {
       await deleteFromBookMark(
         attractionLocationInfo,
         response => {
-          const data = response.data.documents[0]
-          commit('IS_BOOK_MARKED', data)
+          if (response.datae = "success") {
+            commit('IS_BOOK_MARKED', false)
+          } else if(response.datae = "fail"){ 
+            commit('IS_BOOK_MARKED', true)
+          }
         },
         error => {
           console.warn(error)
