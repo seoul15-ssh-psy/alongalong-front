@@ -46,7 +46,7 @@
               </template>
             </q-input>
           </div>
-          <q-btn color="blue-8" label="SIGN IN" class="center" size="md" padding="sm" @click="confirm" style="margin-top: 30px; width: 18rem;"/>
+          <q-btn color="blue-8" label="로그인" class="center" size="md" padding="sm" @click="confirm" style="margin-top: 30px; width: 18rem;"/>
         </form>
       </div>
     </div>
