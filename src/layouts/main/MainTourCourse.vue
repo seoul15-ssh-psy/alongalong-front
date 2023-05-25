@@ -1,5 +1,14 @@
 <template>
   <div class="container">
+    <!-- header -->
+    <main-header>
+      <template v-slot:header-icon>
+        <q-icon name="o_golf_course" size="50px" color="black"></q-icon>
+      </template>
+      <template v-slot:header-title>추천 여행코스</template>
+      <template v-slot:header-text>새로운 발견을 하게 될 거에요.</template>
+    </main-header>
+    <q-separator class="q-mt-md"></q-separator>
     <q-carousel
       v-model="slide"
       transition-prev="slide-right"
@@ -61,10 +70,12 @@
 
 <script>
 import { ref } from 'vue'
+import MainHeader from 'components/main/MainHeader.vue'
 import CardContents from 'components/main/CardContents.vue'
 
 export default {
   components: {
+    MainHeader,
     CardContents
   },
   setup() {
@@ -77,23 +88,23 @@ export default {
       attractions: [
         {
           imageUrl:
-            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=1e43cf40-a4b0-42de-a5aa-d2c08771f66b',
-          title: '경희궁'
+            'http://tong.visitkorea.or.kr/cms/resource/81/1075281_image2_1.jpg',
+          title: '경복궁 북쪽마을 북촌 즐기기'
         },
         {
           imageUrl:
-            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=c47e282c-6ceb-4cf7-b4ea-1f0dfa4b75d9',
-          title: '마복림할머니 막내아들네'
+            'http://tong.visitkorea.or.kr/cms/resource/72/1782972_image2_1.jpg',
+          title: '낮이 좋아? 밤이 좋아? 서울의 주경, 야경 여행코스'
         },
         {
           imageUrl:
-            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f8e84f56-b94c-4d8e-a528-f5b1864963d9',
-          title: '창경궁'
+            'http://tong.visitkorea.or.kr/cms/resource/88/1568388_image2_1.jpg',
+          title: '동대문 주변에서 만나는 역사의 현장'
         },
         {
           imageUrl:
-            'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f329dfe0-58e3-4a53-a2b3-f3f4670d6e30',
-          title: '종이잡지클럽'
+            'http://tong.visitkorea.or.kr/cms/resource/11/1945811_image2_1.jpg',
+          title: '사라진 성곽길을 따라 걷기'
         }
       ]
     }

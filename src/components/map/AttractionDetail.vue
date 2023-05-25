@@ -4,7 +4,11 @@
     <div class="row full-width" style="height: 35%">
       <q-img
         style="border-radius: 5px"
-        :src="attraction.firstimage"
+        :src="
+          attraction.firstimage
+            ? attraction.firstimage
+            : 'https://www.flaticon.com/kr/free-icon/no-pictures_3875148'
+        "
         :ratio="4 / 3"
       />
     </div>

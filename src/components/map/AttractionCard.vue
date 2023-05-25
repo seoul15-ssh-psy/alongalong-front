@@ -13,7 +13,11 @@
       <a href="#" @click="showDetailModal()"
         ><q-img
           class="q-ma-sm"
-          :src="attraction.firstimage"
+          :src="
+            attraction.firstimage
+              ? attraction.firstimage
+              : 'https://www.flaticon.com/kr/free-icon/no-pictures_3875148'
+          "
           :ratio="1"
           style="border-radius: 5px"
         ></q-img

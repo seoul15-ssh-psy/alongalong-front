@@ -35,7 +35,7 @@
       </div>
 
       <div class="col-5">
-        <div v-for="(item, index) in myPlans" :key="item">
+        <div v-for="(item, index) in listItems" :key="item">
           <div class="text-h5 text-bold q-pa-sm">
             {{ '📝' + (index + 1) + '일 차' }}
           </div>
@@ -64,6 +64,11 @@ export default {
   components: { MyAttractionCard },
   computed: {
     ...mapState(locationStore, ['bookMarked', 'myPlans'])
+  },
+  data() {
+    return {
+      listItems: []
+    }
   },
   setup() {
     let day = 1
@@ -122,14 +127,15 @@ export default {
         draggedEl.parentNode.removeChild(draggedEl)
         e.target.appendChild(draggedEl)
         e.target.classList.remove('drag-enter')
-      },
-
-      addRow() {
-        plan.value.push(day++)
-      },
-      removeRow() {
-        plan.value.pop()
       }
+    }
+  },
+  methods: {
+    addRow() {
+      this.listItems.push(1)
+    },
+    removeRow() {
+      this.listItems.pop()
     }
   }
 }
