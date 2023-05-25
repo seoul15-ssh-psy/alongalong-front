@@ -89,7 +89,7 @@
               </template>
             </q-input>
           </div>
-          <q-btn color="blue-8" label="SIGN UP" class="center" size="md" padding="sm" @click="goRegister" style="margin-top: 35px; width: 18rem;"/>
+          <q-btn color="blue-8" label="회원가입" class="center" size="md" padding="sm" @click="goRegister" style="margin-top: 35px; width: 18rem;"/>
         </form>
       </div>
     </div>
@@ -129,7 +129,6 @@ export default {
     'user.email': function(val) {
       this.checkRegistForm();
     }, 'user.userid': function (val) {
-      console.log("eeeeeeeeeee");
       this.checkRegistForm();
     },'user.username': function(val) {
       this.checkRegistForm();
@@ -141,7 +140,9 @@ export default {
   methods: {
     ...mapActions(memberStore, ["userRegister"]),
     async goRegister() {
-      if (this.alertMsg != "") {
+      console.log("goin"+this.alertMsg);
+      if (this.alertMsg == "") {
+        console.log("여기!!");
         await this.userRegister(this.user);
         if (this.registerSuccess) {
           alert("회원가입에 성공했습니다");
