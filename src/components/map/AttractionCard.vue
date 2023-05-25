@@ -21,8 +21,10 @@
     </div>
     <div class="col-7 q-ml-md">
       <div class="row items-center">
-        <a href="#" @click="showDetailModal()" class="subtitle1"
-          ><div class="text-subtitle1 text-bold">{{ attraction.title }}</div></a
+        <a href="#" @click="showDetailModal()" class="subtitle1" style=""
+          ><div class="text-subtitle1 text-bold text-black">
+            {{ attraction.title }}
+          </div></a
         >
         <div class="subtitle2 text-subtitle2 text-grey q-ml-xs">
           {{ this.contentType[attraction.contenttypeid] }}

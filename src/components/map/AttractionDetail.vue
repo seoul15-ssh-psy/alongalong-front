@@ -11,7 +11,7 @@
     <!-- 관광지 정보 -->
     <div class="q-my-md" style="height: 15%">
       <!-- 관광지 타입, 관광지 명 -->
-      <div class="row q-mx-md">
+      <div class="q-mx-md">
         <div class="text-subtitle1 text-grey">
           {{
             this.contentType[attraction.contenttypeid] +
@@ -19,23 +19,25 @@
             this.modalContentsCategory
           }}
         </div>
-        <div
-          class="ellipsis-component text-h5 text-bold text-black"
-          style="text-decoration: underline"
-        >
-          {{ this.attraction.title }}
+        <div class="flex">
+          <div
+            class="ellipsis-component text-h5 text-bold text-black"
+            style="text-decoration: underline"
+          >
+            {{ this.attraction.title }}
+          </div>
+          <q-checkbox
+            v-model="isBookMarked"
+            checked-icon="bookmark"
+            unchecked-icon="bookmark_border"
+            color="primary"
+            keep-color
+            size="40px"
+            indeterminate-icon="help"
+            @click="switchBookMark"
+            v-if="isLogin"
+          />
         </div>
-        <q-checkbox
-          v-model="isBookMarked"
-          checked-icon="bookmark"
-          unchecked-icon="bookmark_border"
-          color="primary"
-          keep-color
-          size="40px"
-          indeterminate-icon="help"
-          @click="switchBookMark"
-          v-if="isLogin"
-        />
       </div>
       <!-- 관광지 주소 정보 -->
       <div class="row q-ma-md">
@@ -105,20 +107,20 @@ const memberStore = 'memberStore'
 export default {
   setup() {
     return {
-      val: ref(false),
+      val: ref(false)
     }
   },
   props: {
     attraction: {
       type: Object,
       required: true
-    },
+    }
   },
   data() {
     return {
       contentType: contentTypeId,
       detailContents: [],
-      emptyData: '<span class="text-grey-6">데이터가 존재하지 않습니다.</span>',
+      emptyData: '<span class="text-grey-6">데이터가 존재하지 않습니다.</span>'
     }
   },
   computed: {
@@ -126,50 +128,15 @@ export default {
       'subwayStation',
       'modalContentsDetail',
       'modalContentsCategory',
-      'isBookMarked',
+      'isBookMarked'
     ]),
     ...mapState(memberStore, ['isLogin', 'userInfo']),
-    val() { 
-      return this.isBookMarked;
+    val() {
+      return this.isBookMarked
     }
   },
-  created() { 
-    getBookMarks(
-      this.userInfo.userid,
-      ({ data }) => {
-        console.log("북마크입니다~~");
-        console.log(data);
-      },
-      error => {
-        console.log(error)
-      }
-    ),
-    getPlans(
-      this.userInfo.userid,
-      ({ data }) => {
-        console.log("플랜입니다~~");
-        console.log(data);
-      },
-      error => {
-        console.log(error)
-      }
-      ),
-      getPlanByDate(
-        this.userInfo.userid,
-        1,
-      ({ data }) => {
-        console.log("플랜 by date 입니다~");
-        console.log(data);
-      },
-      error => {
-        console.log(error)
-      }
-	  )
-  },
   watch: {
-    
     modalContentsDetail(attractionDetail) {
-
       if (attractionDetail.contenttypeid == 12) {
         this.detailContents = [
           ['운영시간', [attractionDetail.usetime]],
@@ -265,48 +232,51 @@ export default {
         ]
       }
     },
-    async val(newVal) { 
-      console.log("hello"+this.isBookMarked);
+    async val(newVal) {
+      console.log('hello' + this.isBookMarked)
       if (newVal) {
         await this.callGetIfBookMarked({
           contentid: this.attraction.contentid,
-          userid: this.userInfo.userid,
-          
+          userid: this.userInfo.userid
         })
-      } else { 
+      } else {
         await this.callGetIfBookMarked({
           contentid: this.attraction.contentid,
-          userid: this.userInfo.userid,
+          userid: this.userInfo.userid
         })
       }
-      this.changeBookMarked(this.attraction);
-    },
+      this.changeBookMarked(this.attraction)
+    }
   },
   methods: {
     ...mapMutations(locationStore, ['SET_IS_DETAIL_MODAL_UPDATED']),
-    ...mapActions(locationStore, ['callClosestSubwayStation','callSaveIntoBookMark','callDeleteFromBookMark','callGetIfBookMarked']),
+    ...mapActions(locationStore, [
+      'callClosestSubwayStation',
+      'callSaveIntoBookMark',
+      'callDeleteFromBookMark',
+      'callGetIfBookMarked'
+    ]),
     makeNotEmptyData(data) {
       return data ? data : this.emptyData
     },
-    async switchBookMark() { 
-      console.log(this.attraction.contentid);
-      console.log(this.userInfo.userid);
+    async switchBookMark() {
+      console.log(this.attraction.contentid)
+      console.log(this.userInfo.userid)
       if (this.isBookMarked) {
         await this.callDeleteFromBookMark({
           contentid: this.attraction.contentid,
-          userid: this.userInfo.userid,
+          userid: this.userInfo.userid
         })
-      } else { 
+      } else {
         await this.callSaveIntoBookMark({
           contentid: this.attraction.contentid,
           firstimage: this.attraction.firstimage,
           address: this.attraction.address,
-          title : this.attraction.title,
-          userid: this.userInfo.userid,
+          title: this.attraction.title,
+          userid: this.userInfo.userid
         })
       }
     }
-    // TODO: 북마크 체크 시 로직 구현
   }
 }
 </script>
