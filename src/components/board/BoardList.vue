@@ -22,22 +22,23 @@
     <table id="tableList">
       <tr>
         <td>번호</td>
-        <td>Subject</td>
-        <td>User_ID</td>
-        <td>등록 시간</td>
-        <td>Hit</td>
+        <td>제목</td>
+        <td>아이디</td>
+        <td>날짜</td>
+        <td>조회수</td>
       </tr>
       <tr v-for="article in articles" v-bind:key="article">
         <td>{{ article.articleno }}</td>
         <td @click="viewArticle(article)" class="clickable">
           <div class="articleContent">
             <p>{{ article.subject }}</p>
+            <p class="q-ml-sm" style="color:rgb(3, 50, 179); font-weight:900; font-size:14px" v-if="article.commentno !=0 ">{{ article.commentno }}</p>
             <q-badge
               rounded
               color="red"
               label="new"
               v-if="article.isNew"
-              class="q-ml-xs"
+              class="q-ml-sm"
             />
           </div>
         </td>
@@ -177,8 +178,9 @@ export default {
 
 <style scope>
 #tableListDiv {
-  width: 55%;
+  width: 75%;
   min-width: 500px;
+  max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 200px;

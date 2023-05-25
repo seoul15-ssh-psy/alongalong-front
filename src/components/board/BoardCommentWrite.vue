@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 0 auto; padding: 30px" id="tableComment">
+  <div style="margin: 0 auto; padding: 30px width:100%; max-width:900px;" id="tableComment">
     <p class="text-subtitle1 text-bold">
       총 {{ commentCount }}개의 댓글이 있습니다.
     </p>
@@ -98,7 +98,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .submit-btn {
   padding: 7px 20px;
   color: white;

@@ -5,7 +5,8 @@
     
       <img class="center" src="../../../public/icons/mainIcon2.png" style="height:50px; width:200px; margin-top:25px;"/>
       <p class="center" style="text-align: center; margin:0px; margin-top: 5px; font-weight: 700; font-size: 15px;">Along Along에 오신 것을 환영합니다</p>
-    
+      
+      
     
   <div class="row q-mt-sm" >
     <div class="col" cols="8">
@@ -88,7 +89,7 @@
               </template>
             </q-input>
           </div>
-          <q-btn color="blue-8" label="SIGN UP" class="center" size="md" padding="sm" @click="goRegister" style="margin-top: 35px; width: 18rem;"/>
+          <q-btn color="blue-8" label="회원가입" class="center" size="md" padding="sm" @click="goRegister" style="margin-top: 35px; width: 18rem;"/>
         </form>
       </div>
     </div>
@@ -127,7 +128,7 @@ export default {
     },
     'user.email': function(val) {
       this.checkRegistForm();
-    },'user.userid': function(val) {
+    }, 'user.userid': function (val) {
       this.checkRegistForm();
     },'user.username': function(val) {
       this.checkRegistForm();
@@ -139,7 +140,9 @@ export default {
   methods: {
     ...mapActions(memberStore, ["userRegister"]),
     async goRegister() {
-      if (this.alertMsg != "") {
+      console.log("goin"+this.alertMsg);
+      if (this.alertMsg == "") {
+        console.log("여기!!");
         await this.userRegister(this.user);
         if (this.registerSuccess) {
           alert("회원가입에 성공했습니다");
@@ -156,7 +159,7 @@ export default {
         this.alertMsg = "비밀번호와 비밀번호 확인을 일치시켜주세요";
       } else if (this.user.email != "" && this.user.email != null && !emailRegex.test(this.user.email)) {
         this.alertMsg = "이메일 형식을 일치시켜주세요";
-      } else if(this.user.userpwd == "" || this.userpwdchk == "" || this.user.userpwd == null || this.userpwdchk == null || this.user.username == null || this.user.username == "" ||this.user.email == "" || this.user.email == null ){
+      } else if(this.user.userid == "" || this.user.userid == null ||this.user.userpwd == "" || this.userpwdchk == "" || this.user.userpwd == null || this.userpwdchk == null || this.user.username == null || this.user.username == "" ||this.user.email == "" || this.user.email == null ){
         this.alertMsg = "모든 정보를 입력해주세요";
       } else { 
         this.alertMsg = "";
