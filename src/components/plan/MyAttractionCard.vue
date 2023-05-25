@@ -4,7 +4,6 @@
       <q-img :src="imageUrl" :ratio="16 / 9" draggable="false">
         <q-checkbox
           class="favorite absolute-top-right transparent"
-          style="padding: 0"
           v-model="val"
           checked-icon="favorite"
           unchecked-icon="favorite_border"
@@ -57,7 +56,6 @@ export default {
 <style>
 .my-card {
   width: 25%;
-  height: auto;
   float: left;
   cursor: pointer;
 }

@@ -13,7 +13,11 @@
       <a href="#" @click="showDetailModal()"
         ><q-img
           class="q-ma-sm"
-          :src="attraction.firstimage"
+          :src="
+            attraction.firstimage
+              ? attraction.firstimage
+              : 'https://www.flaticon.com/kr/free-icon/no-pictures_3875148'
+          "
           :ratio="1"
           style="border-radius: 5px"
         ></q-img
@@ -21,8 +25,10 @@
     </div>
     <div class="col-7 q-ml-md">
       <div class="row items-center">
-        <a href="#" @click="showDetailModal()" class="subtitle1"
-          ><div class="text-subtitle1 text-bold">{{ attraction.title }}</div></a
+        <a href="#" @click="showDetailModal()" class="subtitle1" style=""
+          ><div class="text-subtitle1 text-bold text-black">
+            {{ attraction.title }}
+          </div></a
         >
         <div class="subtitle2 text-subtitle2 text-grey q-ml-xs">
           {{ this.contentType[attraction.contenttypeid] }}
