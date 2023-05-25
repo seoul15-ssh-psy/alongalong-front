@@ -165,7 +165,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .attraction-detail {
   height: 100%;
   left: 100%;

@@ -284,7 +284,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .ellipsis-component {
   text-overflow: ellipsis;
   overflow: hidden;

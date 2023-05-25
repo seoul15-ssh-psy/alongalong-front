@@ -27,7 +27,7 @@
     </q-scroll-area>
   </div>
 </template>
-<script>
+<script scoped>
 import { mapState } from 'vuex'
 import Mixins from '../../api/common/mixins'
 import AttractionCard from './AttractionCard.vue'
