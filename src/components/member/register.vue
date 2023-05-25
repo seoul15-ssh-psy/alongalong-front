@@ -5,7 +5,8 @@
     
       <img class="center" src="../../../public/icons/mainIcon2.png" style="height:50px; width:200px; margin-top:25px;"/>
       <p class="center" style="text-align: center; margin:0px; margin-top: 5px; font-weight: 700; font-size: 15px;">Along Along에 오신 것을 환영합니다</p>
-    
+      
+      
     
   <div class="row q-mt-sm" >
     <div class="col" cols="8">
@@ -127,7 +128,8 @@ export default {
     },
     'user.email': function(val) {
       this.checkRegistForm();
-    },'user.userid': function(val) {
+    }, 'user.userid': function (val) {
+      console.log("eeeeeeeeeee");
       this.checkRegistForm();
     },'user.username': function(val) {
       this.checkRegistForm();
@@ -156,7 +158,7 @@ export default {
         this.alertMsg = "비밀번호와 비밀번호 확인을 일치시켜주세요";
       } else if (this.user.email != "" && this.user.email != null && !emailRegex.test(this.user.email)) {
         this.alertMsg = "이메일 형식을 일치시켜주세요";
-      } else if(this.user.userpwd == "" || this.userpwdchk == "" || this.user.userpwd == null || this.userpwdchk == null || this.user.username == null || this.user.username == "" ||this.user.email == "" || this.user.email == null ){
+      } else if(this.user.userid == "" || this.user.userid == null ||this.user.userpwd == "" || this.userpwdchk == "" || this.user.userpwd == null || this.userpwdchk == null || this.user.username == null || this.user.username == "" ||this.user.email == "" || this.user.email == null ){
         this.alertMsg = "모든 정보를 입력해주세요";
       } else { 
         this.alertMsg = "";
