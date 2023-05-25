@@ -91,7 +91,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .subtitle1 {
   text-overflow: ellipsis;
   overflow: hidden;

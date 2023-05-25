@@ -54,7 +54,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 a {
   color: inherit;
   text-decoration: none;
