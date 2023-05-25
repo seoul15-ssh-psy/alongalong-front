@@ -25,11 +25,16 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/TestPageSSH.vue') }
-    ]
+    children: [{ path: '', component: () => import('pages/TestPageSSH.vue') }]
   },
-
+  {
+    path: '/map',
+    component: () => import('layouts/map/MapLayout.vue')
+  },
+  {
+    path: '/myPlan',
+    component: () => import('layouts/plan/PlanLayout.vue')
+  },
   {
     path: '/board',
     component: () => import('layouts/MainLayout.vue'),
@@ -79,9 +84,13 @@ const routes = [
   {
     path: '/myPage',
     component: () => import('layouts/MainLayout.vue'),
-    redirect: "/myPage/view",
+    redirect: '/myPage/view',
     children: [
-        { name:"mypageview",path: 'view', component: () => import('../components/member/myPage') },
+      {
+        name: 'mypageview',
+        path: 'view',
+        component: () => import('../components/member/myPage')
+      }
     ]
   },
 
