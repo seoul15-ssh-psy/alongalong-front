@@ -1,12 +1,15 @@
 <template>
-  <div style="margin: auto; padding: 100px">
+  <div style="margin: auto; padding: 80px">
     <div class="row q-px-md q-pt-md justify-around items-center">
       <div class="col-1">
         <div class="row q-pb-md justify-end">
           <q-btn label="일정 추가" color="primary" @click="addRow" />
         </div>
-        <div class="row justify-end">
+        <div class="row q-pb-md justify-end">
           <q-btn label="일정 삭제" color="accent" @click="removeRow" />
+        </div>
+        <div class="row justify-end">
+          <q-btn label="저장" color="dark" @click="submit" />
         </div>
       </div>
       <div
@@ -136,6 +139,9 @@ export default {
     },
     removeRow() {
       this.listItems.pop()
+    },
+    submit() {
+      alert('여행 계획 저장 완료!')
     }
   }
 }
