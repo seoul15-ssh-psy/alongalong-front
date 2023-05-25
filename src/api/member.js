@@ -25,4 +25,28 @@ async function register(user, success, fail) {
   await api.post(`/user/register`, JSON.stringify(user)).then(success).catch(fail);
 }
 
-export { login, findById, tokenRegeneration, logout, register };
+function getComments(userid, success, fail) {
+  return api({
+    method: 'GET',
+    url: '/user/comment',
+    params: {
+      userid: userid,
+    }
+  })
+    .then(success)
+    .catch(fail)
+}
+
+function getArticles(userid, success, fail) {
+  return api({
+    method: 'GET',
+    url: '/user/article',
+    params: {
+      userid: userid,
+    }
+  })
+    .then(success)
+    .catch(fail)
+}
+
+export { login, findById, tokenRegeneration, logout, register, getComments, getArticles };

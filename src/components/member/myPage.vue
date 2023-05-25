@@ -1,14 +1,77 @@
 <template>
   <div :style="{ paddingTop: '100px' }" id="myPage">
-    <p>{{ userInfo.userid }}</p>
-    <p>{{ userInfo.username }}</p>
-    <p>{{ userInfo.email }}</p>
-    <p>{{ userInfo.joindate }}</p>
+    <div id="myPageHeader">
+      <p id="upperText" style="">마이페이지</p>
+      <div id="upperTextBorder"></div>
+    </div>
+    <div class="row q-mt-md" style="justify-content:space-between;">
+    <div style=" width:40%; min-width:300px; max-width:500px;margin:0 auto; min-height:200px; margin-top:30px;">
+      <div>
+          <p class="inputLabel">아이디</p>
+          <q-input
+            class="text-h6"
+            :model-value="userInfo.userid"
+            readonly="readonly"
+          />
+        </div>
+        <div class="q-mt-lg">
+          <p class="inputLabel">이름</p>
+          <q-input
+            class="text-h6"
+            :model-value="userInfo.username"
+            readonly="readonly"
+          />
+        </div>
+        <div class="q-mt-lg">
+          <p class="inputLabel">이메일</p>
+          <q-input
+            class="text-h6"
+            :model-value="userInfo.email"
+            readonly="readonly"
+          />
+        </div>
+        <div class="q-mt-lg">
+          <p class="inputLabel">가입 일자</p>
+          <q-input
+            class="text-h6"
+            :model-value="convertedTime"
+            readonly="readonly"
+          />
+        </div>
+    </div>
+    <div style="width:20px;">
+    </div>
+    <div style="width:40%; min-width:300px; max-width:500px; margin:0 auto; min-height:200px;" >
+        <div style=" width:100%; height:50%;">
+          <div>
+            <p style="margin-bottom:10px; margin-top:30px;" class="inputLabel"> 작성한 게시글 ({{ articles.length }})</p>
+            <q-scroll-area style="height: 200px; max-width: 500px;" :visible="visible">
+              <div v-for="article in articles" :key="article" class="q-py-xs ellipsis" style="width:300px;">
+                <p @click="viewArticle(article.articleno)" class="q-mb-xs clickable linkList">{{article.subject}} </p>
+              </div>
+            </q-scroll-area>
+          </div>
+        </div >
+        <div style=" width:100%; height:50%; margin-top:30px;">
+          <div>
+            <p style="margin-bottom:10px;" class="inputLabel"> 작성한 댓글 ({{ comments.length }})</p>
+            <q-scroll-area style="height: 200px; max-width: 500px;" :visible="visible">
+              <div v-for="comment in comments" :key="comment" class="q-py-xs ellipsis " style="width:300px;" >
+                <p @click="viewArticle(comment.articleno)" class="q-mb-xs clickable linkList">{{comment.content}} </p>
+              </div>
+            </q-scroll-area>
+          </div>
+        </div>
+    </div>
+    </div>
+    
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import { convertTime } from '../../api/common/timeCal'
+import { getComments, getArticles} from '../../api/member.js'
 
 const memberStore = 'memberStore'
 
@@ -16,116 +79,125 @@ export default {
   name: 'MyPage',
   data() {
     return {
-      
+      comments: [],
+      articles: [],
+      convertedTime: "",
+      regTime:"",
     }
   },
   computed: {
     ...mapState(memberStore, ['isLogin','userInfo']),
     
   },
+
   
   created() {
+    
+    getComments(
+      this.userInfo.userid,
+      ({ data }) => {
+        if (data.message == "success") {
+          this.comments = data.data;
+          console.log(this.comments);
+          if (this.comments.length == 0) {
+            this.comments[0] = "작성한 댓글이 없습니다.";
 
+          }
+        } else {
+
+        }
+      },
+      error => {
+        console.log(error)
+      }
+    ),
+      getArticles(
+        this.userInfo.userid,
+        ({ data }) => {
+          if (data.message == "success") {
+            this.articles = data.data;
+            if (this.articles.length == 0) {
+              this.articles[0] = "작성한 글이 없습니다.";
+            }
+          } else {
+
+          }
+        },
+        error => {
+          console.log(error)
+        }
+      ),
+      this.convertedTime = this.userInfo.joindate + " (" + convertTime(this.userInfo.joindate) + ")";
   },
 
   methods: {
-    
+    viewArticle(articleno) {
+      this.$router.push({
+        name: 'boardview',
+        params: { articleno: articleno },
+        query: { pgno: 1 }
+      })
+    },
   }
 
 }
 </script>
 
-<style scope>
-#tableView * {
+<style scoped>
+#myPage{
+  width: 75%;
+  min-width: 550px;
+  margin: 0 auto;
+  margin-bottom: 200px;
+}
+
+#myPageHeader {
+  border-width: 0.13rem 0rem 0.13rem 0rem;
+  border-style: solid;
+  border-color: lightgray;
+  margin-top: 110px;
+}
+
+#upperText {
+  margin-top: 10px;
+  margin-bottom: 10px;
   text-align: center;
-  margin: auto;
-  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: 30px;
 }
 
-#tableView h1 {
-  margin: 50px auto;
+#upperTextBorder {
+  border-width: 0rem 0rem 0.23rem 0rem;
+  border-style: solid;
+  border-color: rgb(9, 177, 255);
+  margin-left: auto;
+  margin-right: auto;
+  width: 70px;
+  margin-bottom: 2px;
 }
 
-#tableView button {
-  border: 2px solid grey;
-  padding: 5px 8px;
-  border-radius: 3px;
-  color: black;
-  font-weight: bold;
-  text-decoration: none;
-  margin: 0;
-  border-radius: 3px;
+.inputLabel{
+  margin:0px;
+  font-weight:900;
+  font-size:14px;
 }
 
-#tableView button:hover {
-  background-color: black;
-  color: white;
+.ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-#tableView a {
-  color: black;
-  font-weight: bold;
-  text-decoration: none;
+.linkList{
+  text-decoration: underline;
 }
 
-#tableView p {
-  margin: 30px 0px;
+.linkList:visited{
+  color:rgb(74, 0, 97);
 }
 
-#tableView table {
-  background-color: whitesmoke;
-  margin: 15px auto;
-  border: 1px solid black;
-  border-collapse: collapse;
-  font-size: 16px;
+.linkList:hover{
+  color:rgb(74, 0, 97);
 }
 
-#tableView td {
-  width: 400px;
-}
 
-#tableView tr {
-  height: 40px;
-  border: 2px solid black;
-}
-
-#tableView td:nth-child(1) {
-  background-color: #606060;
-  color: whitesmoke;
-  font-weight: bold;
-  border-right: 2px solid black;
-  width: 35%;
-}
-
-#tableView input {
-  width: 100%;
-  outline: none;
-  background-color: whitesmoke;
-  border: none;
-  text-align: left;
-  padding-left: 12px;
-}
-
-#tableView #tableView textarea {
-  background-color: whitesmoke;
-  outline: none;
-  border: none;
-  font-size: 16px;
-}
-
-#buttons {
-  display: flex;
-  justify-content: center;
-}
-
-#buttons form,
-#buttons a {
-  margin: 3px;
-}
-
-#tableView .login {
-  margin-top: 25px;
-  margin-right: 10px;
-  text-align: right;
-}
 </style>
