@@ -193,11 +193,15 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .container {
-  width: 55%;
+  width: 75%;
+  min-width: 500px;
+  max-width: 950px;
   margin: 0 auto;
   padding: 20px;
+  margin-top: 60px;
+  margin-bottom:80px;
 }
 
 .header {
