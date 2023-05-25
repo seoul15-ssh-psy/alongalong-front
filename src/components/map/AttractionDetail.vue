@@ -99,7 +99,6 @@
 import { ref } from 'vue'
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 import { contentTypeId } from '../../../public/common/global.js'
-import { getBookMarks, getPlans, getPlanByDate } from '../../api/map'
 
 const locationStore = 'locationStore'
 const memberStore = 'memberStore'
@@ -271,7 +270,7 @@ export default {
         await this.callSaveIntoBookMark({
           contentid: this.attraction.contentid,
           firstimage: this.attraction.firstimage,
-          address: this.attraction.address,
+          address: this.attraction.addr1,
           title: this.attraction.title,
           userid: this.userInfo.userid
         })
