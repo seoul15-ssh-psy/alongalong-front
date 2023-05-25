@@ -1,56 +1,53 @@
 <template>
-  <div style="width: 100%; height: 100%">
-    <div class="row no-wrap justify-around q-px-md q-pt-md">
-      <div class="row q-gutter-md">
-        <q-btn
-          label="일정 추가"
-          color="primary"
-          @click="addRow"
-          :disable="listItems.length >= 7"
-        />
-        <q-btn
-          label="일정 삭제"
-          color="accent"
-          @click="removeRow"
-          :disable="listItems.length === 0"
-        />
+  <div style="margin: auto; padding: 100px">
+    <div class="row q-px-md q-pt-md justify-around items-center">
+      <div class="col-1">
+        <div class="row q-pb-md justify-end">
+          <q-btn label="일정 추가" color="primary" @click="addRow" />
+        </div>
+        <div class="row justify-end">
+          <q-btn label="일정 삭제" color="accent" @click="removeRow" />
+        </div>
       </div>
-    </div>
-    <div class="row justify-around q-px-md q-pt-md">
       <div
         @dragenter="onDragEnter"
         @dragleave="onDragLeave"
         @dragover="onDragOver"
         @drop="onDrop"
-        id="plan-container"
-        class="drop-target rounded-borders overflow-hidden"
+        id="bookmark-container"
+        class="col-5 q-pa-md rounded-borders overflow-hidden bg-grey-2"
+        :style="[
+          {
+            height: 200 * Math.floor(bookMarked.length / 4 + 1) + 'px'
+          }
+        ]"
       >
         <my-attraction-card
-          v-for="(item, index) in attractions"
+          v-for="(item, index) in bookMarked"
+          :key="item"
           :id="`card${index}`"
-          :key="index"
           link="/"
-          :imageUrl="item.imageUrl"
+          :imageUrl="item.firstimage"
           :title="item.title"
           draggable="true"
           @dragstart="onDragStart"
         ></my-attraction-card>
       </div>
 
-      <div style="width: 45%">
-        <div class="row justify-center">
-          <div class="full-width">
-            <div
-              v-for="(item, index) in listItems"
-              :key="index"
-              @dragenter="onDragEnter"
-              @dragleave="onDragLeave"
-              @dragover="onDragOver"
-              @drop="onDrop"
-              id="plan-container"
-              class="drop-list rounded-borders q-mb-md"
-            ></div>
+      <div class="col-5">
+        <div v-for="(item, index) in myPlans" :key="item">
+          <div class="text-h5 text-bold q-pa-sm">
+            {{ '📝' + (index + 1) + '일 차' }}
           </div>
+          <div
+            @dragenter="onDragEnter"
+            @dragleave="onDragLeave"
+            @dragover="onDragOver"
+            @drop="onDrop"
+            :id="`plan-container${index + 1}`"
+            class="full-width rounded-borders q-pa-md bg-grey-2 q-mb-sm"
+            style="height: 200px"
+          ></div>
         </div>
       </div>
     </div>
@@ -58,27 +55,19 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { mapState, mapActions } from 'vuex'
 import MyAttractionCard from './MyAttractionCard.vue'
+
+const locationStore = 'locationStore'
 
 export default {
   components: { MyAttractionCard },
-  data() {
-    return {
-      attractions: []
-    }
+  computed: {
+    ...mapState(locationStore, ['bookMarked', 'myPlans'])
   },
   setup() {
-    // add row
-    const listItems = ref([])
-
     let day = 1
-
     return {
-      status1,
-      status2,
-      listItems,
-      mutationInfo,
       day,
 
       // store the id of the draggable element
@@ -121,7 +110,10 @@ export default {
         }
 
         // 드래그 가능한 곳이 아니라면
-        if (e.target.id !== 'plan-container') {
+        if (
+          e.target.id.substring(0, 14) !== 'plan-container' &&
+          e.target.id !== 'bookmark-container'
+        ) {
           e.target.classList.remove('drag-enter')
           return
         }
@@ -133,10 +125,10 @@ export default {
       },
 
       addRow() {
-        listItems.value.push(day++)
+        plan.value.push(day++)
       },
       removeRow() {
-        listItems.value.pop()
+        plan.value.pop()
       }
     }
   }
@@ -144,18 +136,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.drop-target {
-  height: 350px;
-  width: 45%;
-  background-color: gainsboro;
-}
-
-.drop-list {
-  height: 175px;
-  width: 100%;
-  background-color: gainsboro;
-}
-
 .drag-enter {
   outline-style: dashed;
 }

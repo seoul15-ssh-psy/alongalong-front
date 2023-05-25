@@ -3,7 +3,15 @@ import {
   getAttractionCategory,
   getAttractionDetail
 } from 'src/api/location'
-import { location2Region, closestSubwayStation, getIfBookMarked, saveIntoBookMark, deleteFromBookMark } from 'src/api/map'
+import {
+  location2Region,
+  closestSubwayStation,
+  getIfBookMarked,
+  saveIntoBookMark,
+  deleteFromBookMark,
+  getBookMarks,
+  getPlans
+} from 'src/api/map'
 
 const locationStore = {
   namespaced: true,
@@ -16,7 +24,9 @@ const locationStore = {
     modalContents: {},
     modalContentsDetail: {},
     modalContentsCategory: {},
-    isBookMarked:false,
+    isBookMarked: false,
+    bookMarked: [],
+    myPlans: {},
     subwayStation: { place_name: '신림역 2호선', distance: 1000 }
   },
   getters: {
@@ -29,6 +39,8 @@ const locationStore = {
     getModalContentsDetail: state => state.modalContentsDetail,
     getSubwayStation: state => state.subwayStation,
     getIsBookMarked: state => state.isBookMarked,
+    getBookMarked: state => state.bookMarked,
+    getMyPlans: state => state.myPlans
   },
   mutations: {
     SET_CURRENT_LOCATION: (state, location) => {
@@ -62,6 +74,12 @@ const locationStore = {
     },
     IS_BOOK_MARKED: (state, isBookMarked) => {
       state.isBookMarked = isBookMarked
+    },
+    SET_BOOK_MARKED: (state, bookMarked) => {
+      state.bookMarked = bookMarked
+    },
+    SET_MY_PLANS: (state, myPlans) => {
+      state.myPlans = myPlans
     }
   },
   actions: {
@@ -169,10 +187,10 @@ const locationStore = {
         attraction.contentid,
         attraction.userid,
         response => {
-          console.log("결과는??"+response.data.msg);
-          if (response.data.msg == "success") {
+          console.log('결과는??' + response.data.msg)
+          if (response.data.msg == 'success') {
             commit('IS_BOOK_MARKED', true)
-          } else if(response.data.msg == "fail"){ 
+          } else if (response.data.msg == 'fail') {
             commit('IS_BOOK_MARKED', false)
           }
         },
@@ -182,13 +200,13 @@ const locationStore = {
       )
     },
     async callSaveIntoBookMark({ commit }, attractionLocationInfo) {
-      console.log(attractionLocationInfo);
+      console.log(attractionLocationInfo)
       await saveIntoBookMark(
         attractionLocationInfo,
         response => {
-          if (response.data == "success") {
+          if (response.data == 'success') {
             commit('IS_BOOK_MARKED', true)
-          } else if(response.data == "fail"){ 
+          } else if (response.data == 'fail') {
             commit('IS_BOOK_MARKED', false)
           }
         },
@@ -201,9 +219,9 @@ const locationStore = {
       await deleteFromBookMark(
         attractionLocationInfo,
         response => {
-          if (response.data == "success") {
+          if (response.data == 'success') {
             commit('IS_BOOK_MARKED', false)
-          } else if(response.data == "fail"){ 
+          } else if (response.data == 'fail') {
             commit('IS_BOOK_MARKED', true)
           }
         },
@@ -212,6 +230,32 @@ const locationStore = {
         }
       )
     },
+    async callBookMarked({ commit }, userInfo) {
+      await getBookMarks(
+        userInfo.userid,
+        ({ data }) => {
+          console.log('북마크입니다~~')
+          console.log(data)
+          commit('SET_BOOK_MARKED', data.bookmarks)
+        },
+        error => {
+          console.log(error)
+        }
+      )
+    },
+    async callMyPlans({ commit }, userInfo) {
+      getPlans(
+        userInfo.userid,
+        ({ data }) => {
+          console.log('플랜입니다~~')
+          console.log(data)
+          commit('SET_MY_PLANS', data.plans)
+        },
+        error => {
+          console.log(error)
+        }
+      )
+    }
   }
 }
 
