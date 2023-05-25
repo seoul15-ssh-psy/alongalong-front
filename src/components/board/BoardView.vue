@@ -1,25 +1,26 @@
 <template>
-  <div class="container">
+  <div class="container" id="boardView">
     <div class="header"></div>
     <div>
+      <p style="font-weight:700; font-size:20px;">자유게시판</p>
       <q-separator color="black" class="separator" />
       <!-- 제목 -->
       <div class="row q-pt-md">
-        <div class="col-1">
+        <div class="">
           <div
             class="full-width text-subtitle1 text-bold text-center text-grey-7"
           >
-            {{ 'No. ' + article.articleno }}
+            {{ 'No. ' + article.articleno }}:
           </div>
         </div>
-        <div class="col-11 text-h5 text-bold q-px-sm">
+        <div class="text-h5 text-bold q-px-md">
           {{ article.subject }}
         </div>
       </div>
 
       <!-- 글 정보 (작성자, 좋아요수, 조회수) -->
-      <div class="row q-py-sm">
-        <div class="flex col-10 items-center">
+      <div class="row q-py-sm" id="subjectHeader">
+        <div class="row">
           <q-icon name="person" size="30px" class="icon" />
           <div class="text-subtitle1 text-bold q-pl-sm">
             {{ article.userid }}
@@ -27,7 +28,7 @@
           <q-separator vertical size="2px" color="grey-5" inset spaced />
           <div class="text-subtitle2 text-grey-7">{{ article.regtime }}</div>
         </div>
-        <div class="flex col-2 justify-end items-center">
+        <div class="flex justify-end items-center">
           <q-icon name="favorite" color="red" size="18px" />
           <div class="text-subtitle2 q-px-sm">{{ 3 }}</div>
           <q-icon
@@ -42,9 +43,9 @@
       <q-separator color="grey-3" />
 
       <!-- 본문 내용 -->
-      <div class="q-pa-lg" style="min-height: 50vh">
-        <div v-html="article.content"></div>
-        <div id="imgDiv" class="q-my-md"></div>
+      <div class="q-pa-sm q-pt-lg" style="min-height: 50vh; position:relative;">
+        <div v-html="article.content" style="font-size:20px;"></div>
+        <div id="imgDiv" class="q-mt-lg"></div>
       </div>
 
       <q-separator color="grey-3" class="q-mt-xl q-mb-lg" />
@@ -101,11 +102,13 @@
         v-if="isLogin"
         :articleno="this.$route.params.articleno"
         :commentCount="this.commentList.length"
+        style="margin-top:15px;"
       ></board-comment-write>
       <!-- 댓글 리스트 -->
       <board-comment-list
         :articleno="this.$route.params.articleno"
         :commentList="this.commentList"
+        style="margin-top:18px;"
       ></board-comment-list>
     </div>
   </div>
@@ -150,6 +153,11 @@ export default {
         var divElement = document.getElementById('imgDiv')
         var imgElement = document.createElement('img')
         imgElement.src = 'http://localhost:9999/vue/file/' + newValue.articleno
+        imgElement.style.width = "100%"
+        imgElement.style.height = "auto"
+        imgElement.style.display = "absolute"
+        imgElement.style.bottom = "0"
+
         divElement.appendChild(imgElement)
       } else {
       }
@@ -225,9 +233,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .container {
-  width: 55%;
+  width: 75%;
+  min-width: 500px;
+  max-width: 950px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -246,6 +256,7 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  flex-wrap:nowrap;
 }
 
 .manage-btn {
@@ -256,4 +267,14 @@ export default {
   border-radius: 5px;
   margin: 15px 5px;
 }
+
+#subjectHeader{
+  justify-content: space-between;
+}
+
+#boardView{
+  margin-top: 80px;
+  margin-bottom:80px;
+}
+
 </style>
